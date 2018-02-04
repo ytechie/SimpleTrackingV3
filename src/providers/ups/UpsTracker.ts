@@ -98,7 +98,7 @@ export class UpsTracker {
 
     public static GetSampleTrackingData() {
 
-        var buf = fs.readFileSync(path.resolve(__dirname, '../../../src/providers/ups/sampleResponses/1Z6Y09Y00383605007.txt'));
+        var buf = fs.readFileSync(path.resolve(__dirname, 'sampleResponses/1Z6Y09Y00383605008.txt'));
         var utd = JSON.parse(buf.toString());
         let td = UpsTracker.StandardizeTrackingData(utd);
         return td;
