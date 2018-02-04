@@ -1,0 +1,177 @@
+{
+    "TrackResponse": {
+        "Response": {
+            "ResponseStatus": {
+                "Code": "1",
+                "Description": "Success"
+            },
+            "TransactionReference": ""
+        },
+        "Shipment": {
+            "InquiryNumber": {
+                "Code": "01",
+                "Description": "ShipmentIdentificationNumber",
+                "Value": "1ZR8Y7710355363026"
+            },
+            "ShipperNumber": "R8Y771",
+            "ShipmentAddress": [
+                {
+                    "Type": {
+                        "Code": "01",
+                        "Description": "Shipper Address"
+                    },
+                    "Address": {
+                        "AddressLine": "123 Main",
+                        "City": "MANITOWOC",
+                        "StateProvinceCode": "WI",
+                        "PostalCode": "54220   4573",
+                        "CountryCode": "US"
+                    }
+                },
+                {
+                    "Type": {
+                        "Code": "02",
+                        "Description": "ShipTo Address"
+                    },
+                    "Address": {
+                        "City": "BOCA RATON",
+                        "StateProvinceCode": "FL",
+                        "PostalCode": "33487",
+                        "CountryCode": "US"
+                    }
+                }
+            ],
+            "ShipmentWeight": {
+                "UnitOfMeasurement": {
+                    "Code": "LBS"
+                },
+                "Weight": "18.00"
+            },
+            "Service": {
+                "Code": "003",
+                "Description": "UPS GROUND"
+            },
+            "ReferenceNumber": [
+                {
+                    "Code": "01",
+                    "Value": "SO-2342356"
+                },
+                {
+                    "Code": "01",
+                    "Value": "SIGNED QUOTE"
+                }
+            ],
+            "PickupDate": "20180201",
+            "DeliveryDetail": {
+                "Type": {
+                    "Code": "03",
+                    "Description": "Scheduled Delivery"
+                },
+                "Date": "20180207"
+            },
+            "Package": {
+                "TrackingNumber": "1ZR8Y7710355363026",
+                "Activity": [
+                    {
+                        "ActivityLocation": {
+                            "Address": {
+                                "City": "HODGKINS",
+                                "StateProvinceCode": "IL",
+                                "CountryCode": "US"
+                            }
+                        },
+                        "Status": {
+                            "Type": "I",
+                            "Description": "Departure Scan",
+                            "Code": "DP"
+                        },
+                        "Date": "20180202",
+                        "Time": "073700"
+                    },
+                    {
+                        "ActivityLocation": {
+                            "Address": {
+                                "City": "HODGKINS",
+                                "StateProvinceCode": "IL",
+                                "CountryCode": "US"
+                            }
+                        },
+                        "Status": {
+                            "Type": "I",
+                            "Description": "Arrival Scan",
+                            "Code": "AR"
+                        },
+                        "Date": "20180201",
+                        "Time": "233400"
+                    },
+                    {
+                        "ActivityLocation": {
+                            "Address": {
+                                "City": "SHEBOYGAN",
+                                "StateProvinceCode": "WI",
+                                "CountryCode": "US"
+                            }
+                        },
+                        "Status": {
+                            "Type": "I",
+                            "Description": "Departure Scan",
+                            "Code": "DP"
+                        },
+                        "Date": "20180201",
+                        "Time": "211300"
+                    },
+                    {
+                        "ActivityLocation": {
+                            "Address": {
+                                "City": "SHEBOYGAN",
+                                "StateProvinceCode": "WI",
+                                "CountryCode": "US"
+                            }
+                        },
+                        "Status": {
+                            "Type": "I",
+                            "Description": "Origin Scan",
+                            "Code": "OR"
+                        },
+                        "Date": "20180201",
+                        "Time": "181100"
+                    },
+                    {
+                        "ActivityLocation": {
+                            "Address": {
+                                "CountryCode": "US"
+                            }
+                        },
+                        "Status": {
+                            "Type": "M",
+                            "Description": "Order Processed: Ready for UPS",
+                            "Code": "MP"
+                        },
+                        "Date": "20180201",
+                        "Time": "153300"
+                    }
+                ],
+                "Message": {
+                    "Code": "01",
+                    "Description": "On Time"
+                },
+                "PackageWeight": {
+                    "UnitOfMeasurement": {
+                        "Code": "LBS"
+                    },
+                    "Weight": "18.00"
+                },
+                "ReferenceNumber": [
+                    {
+                        "Code": "01",
+                        "Value": "SO-0078459"
+                    },
+                    {
+                        "Code": "01",
+                        "Value": "SIGNED QUOTE"
+                    }
+                ]
+            }
+        }
+    }
+}

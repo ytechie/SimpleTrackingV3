@@ -1,0 +1,32 @@
+<script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0"></script>
+
+<div class="container">
+    <h3>Tracking Results for {{trackData.trackingNumber}}</h3>
+    <a href="/">&lt; Track Another</a><br />
+    <a href="{{trackData.trackingNumber}}.rss">RSS Feed</a>
+
+    <table class="table table-striped table-bordered table-hover table-condensed" style="max-width: 500px">
+        <thead>
+            <tr>
+                <td>Date/Time</td>
+                <td>Location</td>
+                <td>Description</td>
+            </tr>
+        </thead>
+        <tbody>
+            {{#if trackData.activity}}
+                {{#each trackData.activity}}
+                    <tr>
+                            <td>{{friendlyTimestamp}}</td>
+                            <td>{{locationDescription}}</td>
+                            <td>{{shortDescription}}</td>
+                            <!--<td>@trackEvent.Latitude,@trackEvent.Longitude</td>-->
+                    </tr>
+                {{/each}}
+            {{/if}}
+        </tbody>
+    </table>
+    <p class="trackerTerms">
+       Terms and Conditions: {{trackData.usageRequirements}}
+    </p>
+</div>
