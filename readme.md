@@ -9,3 +9,16 @@ The site requires a number of environment variables to be set. Look at [.env.exa
 The docker image runs the node.js server behind an nginx proxy.
 
 Static files are served directly from nginx.
+
+## Tips
+
+In VSCode, put the following snippet in your configuration to hide .js files:
+
+    "files.exclude": {
+        "**/.DS_Store": true,
+        "**/*.js" : {
+            "when": "$(basename).ts"
+        },
+        "**/*.js.map": {
+            "when": "$(basename)"
+        }
