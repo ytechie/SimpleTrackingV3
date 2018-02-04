@@ -9,6 +9,11 @@ import { RssFormatter } from './providers/RssFormatter';
 var express = require('express');
 var app = express();
 
+//Needed for a form post to work
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded());
+
+//Only used for local dev. In prod, nginx serves these
 app.use(express.static(path.resolve(__dirname, 'static')));
 
 app.engine('hbs', expressHandlebars({
@@ -28,6 +33,12 @@ app.get('/echo', function (req, res) {
 
 app.get('/', function (req, res) {
     res.render('index.hbs');
+});
+app.post('/', function(req, res) {
+    
+    console.log(req.body);
+    let trackingNumber = req.body.trackingNumber;
+    res.redirect('/track/' + trackingNumber);
 });
 app.get('/track/:trackingNumber.rss', function (req, res) {
     let trackData = Tracker.Track(req.params.trackingNumber);
