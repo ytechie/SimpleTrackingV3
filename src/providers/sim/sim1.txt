@@ -1,0 +1,195 @@
+{
+    "TrackResponse": {
+        "Response": {
+            "ResponseStatus": {
+                "Code": "1",
+                "Description": "Success"
+            },
+            "TransactionReference": ""
+        },
+        "Shipment": {
+            "InquiryNumber": {
+                "Code": "01",
+                "Description": "ShipmentIdentificationNumber",
+                "Value": "1Z6Y09Y00383605008"
+            },
+            "ShipperNumber": "6Y09Y0",
+            "ShipmentAddress": [
+                {
+                    "Type": {
+                        "Code": "01",
+                        "Description": "Shipper Address"
+                    },
+                    "Address": {
+                        "AddressLine": "3510 E FRANCIS ST",
+                        "City": "ONTARIO",
+                        "StateProvinceCode": "CA",
+                        "PostalCode": "91761   2927",
+                        "CountryCode": "US"
+                    }
+                },
+                {
+                    "Type": {
+                        "Code": "02",
+                        "Description": "ShipTo Address"
+                    },
+                    "Address": {
+                        "City": "MILL CREEK",
+                        "StateProvinceCode": "WA",
+                        "PostalCode": "98012",
+                        "CountryCode": "US"
+                    }
+                }
+            ],
+            "ShipmentWeight": {
+                "UnitOfMeasurement": {
+                    "Code": "LBS"
+                },
+                "Weight": "26.00"
+            },
+            "Service": {
+                "Code": "003",
+                "Description": "UPS GROUND"
+            },
+            "PickupDate": "20171212",
+            "Package": {
+                "TrackingNumber": "1Z6Y09Y00383605008",
+                "Activity": [
+                    {
+                        "ActivityLocation": {
+                            "Address": {
+                                "City": "BOTHELL",
+                                "StateProvinceCode": "WA",
+                                "PostalCode": "98012",
+                                "CountryCode": "US"
+                            },
+                            "Code": "ML",
+                            "Description": "FRONT DOOR"
+                        },
+                        "Status": {
+                            "Type": "D",
+                            "Description": "Delivered",
+                            "Code": "FS"
+                        },
+                        "Date": "20171215",
+                        "Time": "172700"
+                    },
+                    {
+                        "ActivityLocation": {
+                            "Address": {
+                                "City": "REDMOND",
+                                "StateProvinceCode": "WA",
+                                "CountryCode": "US"
+                            }
+                        },
+                        "Status": {
+                            "Type": "I",
+                            "Description": "Out For Delivery Today",
+                            "Code": "OT"
+                        },
+                        "Date": "20171215",
+                        "Time": "092200"
+                    },
+                    {
+                        "ActivityLocation": {
+                            "Address": {
+                                "City": "REDMOND",
+                                "StateProvinceCode": "WA",
+                                "CountryCode": "US"
+                            }
+                        },
+                        "Status": {
+                            "Type": "I",
+                            "Description": "Destination Scan",
+                            "Code": "DS"
+                        },
+                        "Date": "20171214",
+                        "Time": "164700"
+                    },
+                    {
+                        "ActivityLocation": {
+                            "Address": {
+                                "City": "REDMOND",
+                                "StateProvinceCode": "WA",
+                                "CountryCode": "US"
+                            }
+                        },
+                        "Status": {
+                            "Type": "I",
+                            "Description": "Arrival Scan",
+                            "Code": "AR"
+                        },
+                        "Date": "20171214",
+                        "Time": "151000"
+                    },
+                    {
+                        "ActivityLocation": {
+                            "Address": {
+                                "City": "ONTARIO",
+                                "StateProvinceCode": "CA",
+                                "CountryCode": "US"
+                            }
+                        },
+                        "Status": {
+                            "Type": "I",
+                            "Description": "Departure Scan",
+                            "Code": "DP"
+                        },
+                        "Date": "20171212",
+                        "Time": "165300"
+                    },
+                    {
+                        "ActivityLocation": {
+                            "Address": {
+                                "City": "ONTARIO",
+                                "StateProvinceCode": "CA",
+                                "CountryCode": "US"
+                            }
+                        },
+                        "Status": {
+                            "Type": "I",
+                            "Description": "Origin Scan",
+                            "Code": "OR"
+                        },
+                        "Date": "20171212",
+                        "Time": "121300"
+                    },
+                    {
+                        "ActivityLocation": {
+                            "Address": {
+                                "CountryCode": "US"
+                            }
+                        },
+                        "Status": {
+                            "Type": "M",
+                            "Description": "Order Processed: Ready for UPS",
+                            "Code": "MP"
+                        },
+                        "Date": "20171212",
+                        "Time": "013300"
+                    }
+                ],
+                "PackageWeight": {
+                    "UnitOfMeasurement": {
+                        "Code": "LBS"
+                    },
+                    "Weight": "26.00"
+                },
+                "ReferenceNumber": [
+                    {
+                        "Code": "01",
+                        "Value": "50YWT6G11"
+                    },
+                    {
+                        "Code": "01",
+                        "Value": "938261861"
+                    },
+                    {
+                        "Code": "01",
+                        "Value": "6131777015915"
+                    }
+                ]
+            }
+        }
+    }
+}

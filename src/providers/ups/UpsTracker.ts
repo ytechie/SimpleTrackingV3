@@ -5,8 +5,9 @@ import path = require('path');
 
 import { TrackingData } from "../TrackingData";
 import { ActivityData } from "../ActivityData";
+import { ITracker } from '../ITracker';
 
-export class UpsTracker {
+export class UpsTracker implements ITracker {
     UPS_DEV_URL = 'https://onlinetools.ups.com/rest/Track';
 
     username: string;
@@ -19,15 +20,18 @@ export class UpsTracker {
         this.apikey = apiKey;
     }
 
-    Track(trackingNumber:string) {
-        let req = this.buildRequest(trackingNumber);
+    async Track(trackingNumber:string) {
+        return new Promise<TrackingData>((resolve) => {
+            let req = this.buildRequest(trackingNumber);
 
-        request.post(this.UPS_DEV_URL, req, (error, response, body) => {
-            console.log(body);
+            request.post(this.UPS_DEV_URL, {body: req}, (error, response, body) => {
+                let td = UpsTracker.StandardizeTrackingData(JSON.parse(body));
+                resolve(td);
+            });
         });
     }
 
-    private buildRequest(trackingNumber:string):any {
+    private buildRequest(trackingNumber:string) {
         return {
             "UPSSecurity": {
                 "UsernameToken": {
@@ -93,14 +97,6 @@ export class UpsTracker {
             });
         }
 
-        return td;
-    }
-
-    public static GetSampleTrackingData() {
-
-        var buf = fs.readFileSync(path.resolve(__dirname, 'sampleResponses/1Z6Y09Y00383605008.txt'));
-        var utd = JSON.parse(buf.toString());
-        let td = UpsTracker.StandardizeTrackingData(utd);
         return td;
     }
 }

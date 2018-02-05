@@ -26,6 +26,10 @@ app.set('views', path.resolve(__dirname, 'views'));
 
 console.log(path.resolve(__dirname, 'static'));
 
+//Set up the tracker
+let tracker = new Tracker();
+tracker.LoadTrackers();
+
 // respond with "hello world" when a GET request is made to the homepage
 app.get('/echo', function (req, res) {
     res.send('hello world');
@@ -41,14 +45,21 @@ app.post('/', function(req, res) {
     res.redirect('/track/' + trackingNumber);
 });
 app.get('/track/:trackingNumber.rss', function (req, res) {
-    let trackData = Tracker.Track(req.params.trackingNumber);
-    let rss = RssFormatter.ConvertTrackingDataToRss(trackData);
-    res.set('Content-Type', 'application/rss+xml');
-    res.send(rss);
+    tracker.Track(req.params.trackingNumber).then((trackData) => {
+        let rss = RssFormatter.ConvertTrackingDataToRss(trackData);
+        res.set('Content-Type', 'application/rss+xml');
+        res.send(rss);
+    }).catch((err) => {
+        res.send(err);
+    });
 });
 app.get('/track/:trackingNumber', function (req, res) {
-    let trackData = Tracker.Track(req.params.trackingNumber);
-    res.render('track.hbs', { trackData: trackData });
+    tracker.Track(req.params.trackingNumber).then((trackData) => {
+        res.render('track.hbs', { trackData: trackData });
+    }).catch((err) => {
+        console.error('Error getting tracking info: ' + err);
+        res.send(err);
+    });
 });
 
 const port: number = parseInt(process.env.PORT) || 3000;

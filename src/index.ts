@@ -1,4 +1,4 @@
-import { UpsTracker } from "./providers/ups/upstracker";
+import { UpsTracker } from "./providers/ups/UpsTracker";
 import fs = require('fs');
 import path = require('path');
 
