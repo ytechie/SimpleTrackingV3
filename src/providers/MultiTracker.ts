@@ -23,7 +23,10 @@ export class MultiTracker implements ITracker {
                     if(resolveCount === this.trackers.length) {
                         resolve(null);
                     }
-                });
+                }).catch((error) => {
+                    resolveCount++;
+                    console.error(error);
+                });;
             });
         });
     }
