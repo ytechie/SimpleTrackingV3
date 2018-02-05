@@ -1,7 +1,7 @@
 import * as request from 'request';
 
-import * as fs from 'fs';
-import path = require('path');
+var fs = require('fs');
+var path = require('path');
 
 import { TrackingData } from "../TrackingData";
 import { ActivityData } from "../ActivityData";
@@ -14,10 +14,11 @@ export class SimTracker implements ITracker {
     }
 
     GetSampleTrackingData() {
+        var standardize = UpsTracker.StandardizeTrackingData;
         return new Promise<TrackingData>((resolve) => {
             fs.readFile(path.resolve(__dirname, 'sim1.txt'), (err, data) => {
                 var utd = JSON.parse(data.toString());
-                let td = UpsTracker.StandardizeTrackingData(utd);
+                let td = standardize(utd);
                 resolve(td);
             });
         });
