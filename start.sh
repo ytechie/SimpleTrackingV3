@@ -1,4 +1,4 @@
 #!/bin/bash
 
-node /usr/share/node/server.js &
+/usr/share/node/node_modules/.bin/forever /usr/share/node/server.js &
 nginx
