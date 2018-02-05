@@ -9,6 +9,15 @@ import { RssFormatter } from './providers/RssFormatter';
 var express = require('express');
 var app = express();
 
+//Load configuration
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config({path: path.resolve(__dirname, '..', '.env')});
+}
+
+if(!process.env.UPS_KEY) {
+    console.error('Settings not loaded, check your environment');
+}
+
 //Needed for a form post to work
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded());

@@ -1,7 +1,6 @@
-import * as request from 'request';
-
-import fs = require('fs');
-import path = require('path');
+var request = require('request');
+var fs = require('fs');
+var path = require('path');
 
 import { TrackingData } from "../TrackingData";
 import { ActivityData } from "../ActivityData";
@@ -21,13 +20,15 @@ export class UpsTracker implements ITracker {
     }
 
     async Track(trackingNumber:string) {
-        return new Promise<TrackingData>((resolve) => {
-            resolve(null); //Don't return results until implemented
-
+        return new Promise<TrackingData>((resolve, reject) => {
             let req = this.buildRequest(trackingNumber);
 
-            request.post(this.UPS_DEV_URL, {body: req}, (error, response, body) => {
-                let td = UpsTracker.StandardizeTrackingData(JSON.parse(body));
+            request.post(this.UPS_DEV_URL, {json: true, body: req}, (error, response, body) => {
+                if(error) {
+                    console.log("Error in UPS tracker request: " + error);
+                    reject("Error in UPS tracker request: " + error);
+                }
+                let td = UpsTracker.StandardizeTrackingData(body);
                 resolve(td);
             });
         });
@@ -56,6 +57,11 @@ export class UpsTracker implements ITracker {
     }
 
     public static StandardizeTrackingData(upsNativeTrackingData:any) {
+        if(upsNativeTrackingData.Fault) {
+            console.log('UPS says they have no data for the package');
+            return null;
+        }
+
         let td = new TrackingData();
 
         //td.soureData = upsNativeTrackingData;
