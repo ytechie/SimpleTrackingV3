@@ -10,9 +10,6 @@ import { UpsTracker } from '../ups/UpsTracker';
 
 export class SimTracker implements ITracker {
     async Track(trackingNumber:string){
-        /*return new Promise<TrackingData>((resolve) => {
-            resolve(new TrackingData());
-        });*/
         return await this.GetSampleTrackingData();
     }
 
