@@ -13,7 +13,7 @@ export class SimTracker implements ITracker {
         return await this.GetSampleTrackingData();
     }
 
-    GetSampleTrackingData = () => {
+    GetSampleTrackingData() {
         return new Promise<TrackingData>((resolve) => {
             fs.readFile(path.resolve(__dirname, 'sim1.txt'), (err, data) => {
                 var utd = JSON.parse(data.toString());
