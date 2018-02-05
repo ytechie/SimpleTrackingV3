@@ -9,6 +9,22 @@ export class MultiTracker implements ITracker {
     }
 
     async Track(trackingNumber: string): Promise<TrackingData> {
-        return this.trackers[0].Track(trackingNumber);
+        return new Promise<TrackingData>((resolve) => {
+            var foundMatch = false;
+            var resolveCount = 0;
+            //Return the results from the first tracker that responds with data
+            this.trackers.forEach((tracker) => {
+                tracker.Track(trackingNumber).then((trackingData) => {
+                    resolveCount++;
+                    if(!foundMatch && trackingData) {
+                        foundMatch = true;
+                        resolve(trackingData);
+                    }
+                    if(resolveCount === this.trackers.length) {
+                        resolve(null);
+                    }
+                });
+            });
+        });
     }
 }

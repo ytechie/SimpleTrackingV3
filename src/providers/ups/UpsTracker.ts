@@ -22,6 +22,8 @@ export class UpsTracker implements ITracker {
 
     async Track(trackingNumber:string) {
         return new Promise<TrackingData>((resolve) => {
+            resolve(null); //Don't return results until implemented
+
             let req = this.buildRequest(trackingNumber);
 
             request.post(this.UPS_DEV_URL, {body: req}, (error, response, body) => {

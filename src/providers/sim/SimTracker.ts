@@ -10,7 +10,11 @@ import { UpsTracker } from '../ups/UpsTracker';
 
 export class SimTracker implements ITracker {
     async Track(trackingNumber:string){
-        return await this.GetSampleTrackingData();
+        if(trackingNumber === 'sim1') {
+            return await this.GetSampleTrackingData(); 
+        }
+
+        return null;
     }
 
     GetSampleTrackingData() {

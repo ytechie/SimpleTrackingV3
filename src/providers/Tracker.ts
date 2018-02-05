@@ -38,11 +38,5 @@ export class Tracker implements ITracker {
 
     public async Track(trackingNumber:string):Promise<TrackingData> {
         return this.rootTracker.Track(trackingNumber);
-
-        /*return new Promise<TrackingData>((resolve) => {
-            let td = SimTracker.GetSampleTrackingData();
-
-            resolve(td);
-        });*/
     }
 }

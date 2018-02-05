@@ -36,6 +36,8 @@ export class FedexTracker implements ITracker {
 
     Track(trackingNumber:string) {
         return new Promise<TrackingData>((resolve) => {
+            resolve(null); //Don't return results until implemented
+
             let req = this.buildRequest(trackingNumber);
 
             request.post(this.FEDEX_API_URL, {body:req}, (error, response, body) => {
