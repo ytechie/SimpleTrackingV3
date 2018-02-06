@@ -1,0 +1,24 @@
+{
+    "TrackReply": {
+        "$": {
+            "xmlns": "http://fedex.com/ws/track/v3"
+        },
+        "HighestSeverity": "ERROR",
+        "Notifications": {
+            "Severity": "ERROR",
+            "Source": "trck",
+            "Code": "6035",
+            "Message": "Invalid tracking numbers.   Please check the following numbers and resubmit.",
+            "LocalizedMessage": "Invalid tracking numbers.   Please check the following numbers and resubmit."
+        },
+        "TransactionDetail": {
+            "CustomerTransactionId": "ActiveShipping"
+        },
+        "Version": {
+            "ServiceId": "trck",
+            "Major": "3",
+            "Intermediate": "0",
+            "Minor": "0"
+        }
+    }
+}
