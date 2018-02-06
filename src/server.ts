@@ -71,7 +71,7 @@ app.get('/track/:trackingNumber', function (req, res) {
     });
 });
 
-const port: number = parseInt(process.env.PORT) || 3000;
+const port: number = 3000;
 const server = http.createServer(app);
 server.listen(port);
 server.on("error", (error) => {
