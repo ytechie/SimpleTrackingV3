@@ -4,6 +4,7 @@ import { ITracker } from "./ITracker";
 import { FedexTracker } from "./fedex/FedexTracker";
 import { MultiTracker } from "./MultiTracker";
 import { SimTracker } from "./sim/SimTracker";
+import { CleanInputTracker } from "./CleanInputTracker";
 
 export class Tracker implements ITracker {
     rootTracker:ITracker;
@@ -46,7 +47,10 @@ export class Tracker implements ITracker {
             console.error('Fedex Tracker not loaded due to missing environment variables');
         }
 
-        this.rootTracker = new MultiTracker(trackers);
+        let multiTracker = new MultiTracker(trackers);
+        let cleanInput = new CleanInputTracker(multiTracker);
+
+        this.rootTracker = cleanInput;
     }
 
     public async Track(trackingNumber:string):Promise<TrackingData> {
