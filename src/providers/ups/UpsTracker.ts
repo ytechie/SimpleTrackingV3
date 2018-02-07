@@ -24,12 +24,16 @@ export class UpsTracker implements ITracker {
             let req = this.buildRequest(trackingNumber);
 
             request.post(this.UPS_DEV_URL, {json: true, body: req}, (error, response, body) => {
-                if(error) {
-                    console.log("Error in UPS tracker request: " + error);
-                    reject("Error in UPS tracker request: " + error);
+                try {
+                    if(error) {
+                        console.log("Error in UPS tracker request: " + error);
+                        reject("Error in UPS tracker request: " + error);
+                    }
+                    let td = UpsTracker.StandardizeTrackingData(body);
+                    resolve(td);
+                } catch(err) {
+                    reject(err);
                 }
-                let td = UpsTracker.StandardizeTrackingData(body);
-                resolve(td);
             });
         });
     }
