@@ -18,20 +18,33 @@ export class Tracker implements ITracker {
         let simTracker = new SimTracker();
         trackers.push(simTracker);
 
-        let upsTracker = new UpsTracker(
-            process.env.UPS_USERNAME,
-            process.env.UPS_PASSWORD,
-            process.env.UPS_KEY
-        );
-        trackers.push(upsTracker);
+        if(process.env.UPS_USERNAME
+            && process.env.UPS_PASSWORD
+            && process.env.UPS_KEY) {
+            let upsTracker = new UpsTracker(
+                process.env.UPS_USERNAME,
+                process.env.UPS_PASSWORD,
+                process.env.UPS_KEY
+            );
+            trackers.push(upsTracker);
+        } else {
+            console.error('UPS Tracker not loaded due to missing environment variables');
+        }
 
-        let fedexTracker = new FedexTracker(
-            process.env.FEDEX_KEY,
-            process.env.FEDEX_PASSWORD,
-            process.env.FEDEX_ACCOUNT_NUMBER,
-            process.env.FEDEX_METER_NUMBER
-        );
-        trackers.push(fedexTracker);
+        if(process.env.FEDEX_KEY
+            && process.env.FEDEX_PASSWORD
+            && process.env.FEDEX_ACCOUNT_NUMBER
+            && process.env.FEDEX_METER_NUMBER) {
+            let fedexTracker = new FedexTracker(
+                process.env.FEDEX_KEY,
+                process.env.FEDEX_PASSWORD,
+                process.env.FEDEX_ACCOUNT_NUMBER,
+                process.env.FEDEX_METER_NUMBER
+            );
+            trackers.push(fedexTracker);
+        } else {
+            console.error('Fedex Tracker not loaded due to missing environment variables');
+        }
 
         this.rootTracker = new MultiTracker(trackers);
     }
