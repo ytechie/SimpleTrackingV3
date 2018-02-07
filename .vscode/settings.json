@@ -1,0 +1,6 @@
+{
+    //-------- Mocha options --------
+    "mocha.files.glob": "src/**/*.test.js",
+    // Mocha: Environment variables to run your tests
+    "mocha.env": {},
+}

@@ -65,14 +65,14 @@ export class FedexTracker implements ITracker {
                     if(err) {
                         reject(err);
                     } else {
-                        resolve(this.ConvertJsonToStandardFormat(result));
+                        resolve(FedexTracker.ConvertJsonToStandardFormat(result));
                     }
                 });
             });
         });
     }
 
-    private ConvertJsonToStandardFormat(results:any):TrackingData {
+    public static ConvertJsonToStandardFormat(results:any):TrackingData {
         //Check for invalid tracking number code
         if(results.TrackReply.Notifications && results.TrackReply.Notifications.Code === "6035") {
             console.log('Fedex says they have no data for the package');
