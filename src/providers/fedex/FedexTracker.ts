@@ -53,26 +53,32 @@ export class FedexTracker implements ITracker {
 
             console.log('requesting fedex data');
             request.post(this.FEDEX_API_URL, options, (error, response, body) => {
-                if(error) {
-                    console.log("Error in Fedex tracker request: " + error);
-                    reject("Error in Fedex tracker request: " + error);
-                    return;
-                }
-
-                console.log('got fedex data');
-                let parser = new xml2js.Parser({explicitArray: false});
-                parser.parseString(body, (err, result) => {
-                    if(err) {
-                        reject(err);
-                    } else {
-                        resolve(FedexTracker.ConvertJsonToStandardFormat(result));
+                try { //Try catch is needed inside the request
+                    if(error) {
+                        console.log("Error in Fedex tracker request: " + error);
+                        reject("Error in Fedex tracker request: " + error);
+                        return;
                     }
-                });
+
+                    console.log('got fedex data');
+                    let parser = new xml2js.Parser({explicitArray: false});
+                    parser.parseString(body, (err, result) => {
+                        if(err) {
+                            reject(err);
+                        } else {
+                            resolve(FedexTracker.ConvertJsonToStandardFormat(result));
+                        }
+                    });
+                } catch(err) {
+                    reject(err);
+                }
             });
         });
     }
 
     public static ConvertJsonToStandardFormat(results:any):TrackingData {
+        //todo, look for this: results["v3:TrackReply"]["v3:HighestSeverity"] === "ERROR"
+
         //Check for invalid tracking number code
         if(results.TrackReply.Notifications && results.TrackReply.Notifications.Code === "6035") {
             console.log('Fedex says they have no data for the package');
