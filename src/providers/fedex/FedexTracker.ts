@@ -82,18 +82,29 @@ export class FedexTracker implements ITracker {
         let td = new TrackingData();
         td.activity = new Array<ActivityData>();
         let trackDetail = results.TrackReply.TrackDetails;
+
         td.trackingNumber = trackDetail.TrackingNumber;
-        td.weight = trackDetail.PackageWeight.Value + trackDetail.PackageWeight.Units;
+        if(trackDetail.PackageWeight) {
+            td.weight = trackDetail.PackageWeight.Value + trackDetail.PackageWeight.Units;
+        }
         if(trackDetail.ActualDeliveryTimestamp) {
             td.estimatedDelivery = new Date(Date.parse(trackDetail.ActualDeliveryTimestamp));
         }
-        trackDetail.Events.forEach((event) => {
+        if(trackDetail.Events instanceof Array) {
+            trackDetail.Events.forEach((event) => {
+                var ad = new ActivityData();
+                ad.timestamp = new Date(Date.parse(event.Timestamp));
+                ad.locationDescription = event.Address.City;
+                ad.shortDescription = event.EventDescription;
+                td.activity.push(ad);
+            });
+        } else {
             var ad = new ActivityData();
-            ad.timestamp = new Date(Date.parse(event.Timestamp));
-            ad.locationDescription = event.Address.City;
-            ad.shortDescription = event.EventDescription;
-            td.activity.push(ad)
-        });
+            ad.timestamp = new Date(Date.parse(trackDetail.Events.Timestamp));
+            ad.locationDescription = trackDetail.Events.Address.PostalCode;
+            ad.shortDescription = trackDetail.Events.EventDescription;
+            td.activity.push(ad);
+        }
 
         td.usageRequirements = "NOTICE: FedEx authorizes you to use FedEx tracking"
             + " systems solely to track shipments tendered by"
