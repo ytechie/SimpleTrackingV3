@@ -42,8 +42,6 @@ export class FedexTracker implements ITracker {
             let req = this.buildRequest(trackingNumber);
 
             let options = {
-                    //json:false,
-                    //strictSSL: false,
                     body:req,
                     headers:
                         {
@@ -51,7 +49,6 @@ export class FedexTracker implements ITracker {
                         }
             };
 
-            console.log('requesting fedex data');
             request.post(this.FEDEX_API_URL, options, (error, response, body) => {
                 try { //Try catch is needed inside the request
                     if(error) {
@@ -60,7 +57,6 @@ export class FedexTracker implements ITracker {
                         return;
                     }
 
-                    console.log('got fedex data');
                     let parser = new xml2js.Parser({explicitArray: false});
                     parser.parseString(body, (err, result) => {
                         if(err) {
@@ -77,7 +73,10 @@ export class FedexTracker implements ITracker {
     }
 
     public static ConvertJsonToStandardFormat(results:any):TrackingData {
-        //todo, look for this: results["v3:TrackReply"]["v3:HighestSeverity"] === "ERROR"
+        if(results["v3:TrackReply"] && results["v3:TrackReply"]["v3:HighestSeverity"] === "ERROR") {
+            console.error('Got a non-expected error from fedex');
+            return null;
+        }
 
         //Check for invalid tracking number code
         if(results.TrackReply.Notifications && results.TrackReply.Notifications.Code === "6035") {
