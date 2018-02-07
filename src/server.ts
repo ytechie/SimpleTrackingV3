@@ -18,6 +18,10 @@ if(!process.env.UPS_KEY) {
     console.error('Settings not loaded, check your environment');
 }
 
+const appInsights = require('applicationinsights');
+appInsights.setup('1ecc74c4-f098-440d-af50-395d91273245').start();
+appInsights.start();
+
 //Needed for a form post to work
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded());
