@@ -19,6 +19,15 @@ describe('Fedex Sample Test Suite', function () {
     });
 });
 
+describe('Fedex', function () {
+    it('Location Formatting', function () {
+        let sample = loadSample('231300687629630');
+        let td = FedexTracker.FedexTracker.ConvertJsonToStandardFormat(sample);
+        
+        td.activity[0].locationDescription.should.equal('MIAMI, FL, 33178, US')
+    });
+});
+
 function loadSample(name) {
     let contents = fs.readFileSync(path.resolve(__dirname, 'sampleResponses/' + name + '.json'));
     let jsonObj = JSON.parse(contents.toString());

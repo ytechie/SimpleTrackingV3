@@ -99,7 +99,15 @@ export class FedexTracker implements ITracker {
             trackDetail.Events.forEach((event) => {
                 var ad = new ActivityData();
                 ad.timestamp = new Date(Date.parse(event.Timestamp));
-                ad.locationDescription = event.Address.City;
+
+                let locParts = new Array<string>();
+                if(event.Address.City) locParts.push(event.Address.City);
+                if(event.Address.StateOrProvinceCode) locParts.push(event.Address.StateOrProvinceCode);
+                if(event.Address.PostalCode) locParts.push(event.Address.PostalCode);
+                if(event.Address.CountryCode) locParts.push(event.Address.CountryCode);
+
+                ad.locationDescription = locParts.join(', ');
+
                 ad.shortDescription = event.EventDescription;
                 td.activity.push(ad);
             });

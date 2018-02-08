@@ -1,0 +1,217 @@
+{
+    "TrackReply": {
+        "$": {
+            "xmlns": "http://fedex.com/ws/track/v3"
+        },
+        "HighestSeverity": "SUCCESS",
+        "Notifications": {
+            "Severity": "SUCCESS",
+            "Source": "trck",
+            "Code": "0",
+            "Message": "Request was successfully processed.",
+            "LocalizedMessage": "Request was successfully processed."
+        },
+        "TransactionDetail": {
+            "CustomerTransactionId": "ActiveShipping"
+        },
+        "Version": {
+            "ServiceId": "trck",
+            "Major": "3",
+            "Intermediate": "0",
+            "Minor": "0"
+        },
+        "DuplicateWaybill": "false",
+        "MoreData": "false",
+        "TrackDetails": {
+            "Notification": {
+                "Severity": "SUCCESS",
+                "Source": "trck",
+                "Code": "0",
+                "Message": "Request was successfully processed.",
+                "LocalizedMessage": "Request was successfully processed."
+            },
+            "TrackingNumber": "231300687629630",
+            "TrackingNumberUniqueIdentifier": "12013~231300687629630~FDEG",
+            "StatusCode": "OD",
+            "StatusDescription": "On FedEx vehicle for delivery",
+            "CarrierCode": "FDXG",
+            "OtherIdentifiers": [
+                {
+                    "Value": "231300687629630",
+                    "Type": "GROUND_SHIPMENT_ID"
+                },
+                {
+                    "Value": "6228334",
+                    "Type": "PURCHASE_ORDER"
+                },
+                {
+                    "Value": "W62283340102",
+                    "Type": "CUSTOMER_REFERENCE"
+                }
+            ],
+            "ServiceInfo": "FedEx Home Delivery",
+            "ServiceType": "GROUND_HOME_DELIVERY",
+            "PackageWeight": {
+                "Units": "LB",
+                "Value": "1.0"
+            },
+            "Packaging": "Package",
+            "PackagingType": "YOUR_PACKAGING",
+            "PackageSequenceNumber": "1",
+            "PackageCount": "1",
+            "ShipperAddress": {
+                "City": "Wichita",
+                "StateOrProvinceCode": "KS",
+                "CountryCode": "US",
+                "Residential": "false"
+            },
+            "OriginLocationAddress": {
+                "City": "WICHITA",
+                "StateOrProvinceCode": "KS",
+                "CountryCode": "US",
+                "Residential": "false"
+            },
+            "ShipTimestamp": "2016-08-01T00:00:00",
+            "DestinationAddress": {
+                "City": "MIAMI",
+                "StateOrProvinceCode": "FL",
+                "CountryCode": "US",
+                "Residential": "false"
+            },
+            "EstimatedDeliveryTimestamp": "2019-12-31T00:00:00",
+            "SignatureProofOfDeliveryAvailable": "false",
+            "Events": [
+                {
+                    "Timestamp": "2014-01-04T06:55:00-05:00",
+                    "EventType": "OD",
+                    "EventDescription": "On FedEx vehicle for delivery",
+                    "Address": {
+                        "City": "MIAMI",
+                        "StateOrProvinceCode": "FL",
+                        "PostalCode": "33178",
+                        "CountryCode": "US",
+                        "Residential": "false"
+                    }
+                },
+                {
+                    "Timestamp": "2014-01-04T05:10:00-05:00",
+                    "EventType": "AR",
+                    "EventDescription": "Arrived at FedEx location",
+                    "Address": {
+                        "City": "MIAMI",
+                        "StateOrProvinceCode": "FL",
+                        "PostalCode": "33178",
+                        "CountryCode": "US",
+                        "Residential": "false"
+                    }
+                },
+                {
+                    "Timestamp": "2014-01-04T05:08:00-05:00",
+                    "EventType": "AR",
+                    "EventDescription": "At local FedEx facility",
+                    "Address": {
+                        "City": "MIAMI",
+                        "StateOrProvinceCode": "FL",
+                        "PostalCode": "33178",
+                        "CountryCode": "US",
+                        "Residential": "false"
+                    }
+                },
+                {
+                    "Timestamp": "2014-01-04T00:11:19-05:00",
+                    "EventType": "DP",
+                    "EventDescription": "Departed FedEx location",
+                    "Address": {
+                        "City": "ORLANDO",
+                        "StateOrProvinceCode": "FL",
+                        "PostalCode": "32809",
+                        "CountryCode": "US",
+                        "Residential": "false"
+                    }
+                },
+                {
+                    "Timestamp": "2014-01-03T15:04:00-05:00",
+                    "EventType": "AR",
+                    "EventDescription": "Arrived at FedEx location",
+                    "Address": {
+                        "City": "ORLANDO",
+                        "StateOrProvinceCode": "FL",
+                        "PostalCode": "32809",
+                        "CountryCode": "US",
+                        "Residential": "false"
+                    }
+                },
+                {
+                    "Timestamp": "2014-01-02T08:28:56-06:00",
+                    "EventType": "IT",
+                    "EventDescription": "In transit",
+                    "Address": {
+                        "City": "KANSAS CITY",
+                        "StateOrProvinceCode": "MO",
+                        "PostalCode": "64161",
+                        "CountryCode": "US",
+                        "Residential": "false"
+                    }
+                },
+                {
+                    "Timestamp": "2014-01-02T07:21:15-06:00",
+                    "EventType": "DP",
+                    "EventDescription": "Departed FedEx location",
+                    "Address": {
+                        "City": "LENEXA",
+                        "StateOrProvinceCode": "KS",
+                        "PostalCode": "66227",
+                        "CountryCode": "US",
+                        "Residential": "false"
+                    }
+                },
+                {
+                    "Timestamp": "2014-01-02T02:03:00-06:00",
+                    "EventType": "AR",
+                    "EventDescription": "Arrived at FedEx location",
+                    "Address": {
+                        "City": "LENEXA",
+                        "StateOrProvinceCode": "KS",
+                        "PostalCode": "66227",
+                        "CountryCode": "US",
+                        "Residential": "false"
+                    }
+                },
+                {
+                    "Timestamp": "2013-12-31T18:08:00-06:00",
+                    "EventType": "AR",
+                    "EventDescription": "Arrived at FedEx location",
+                    "Address": {
+                        "City": "WICHITA",
+                        "StateOrProvinceCode": "KS",
+                        "PostalCode": "67226",
+                        "CountryCode": "US",
+                        "Residential": "false"
+                    }
+                },
+                {
+                    "Timestamp": "2013-12-31T15:21:00-06:00",
+                    "EventType": "PU",
+                    "EventDescription": "Picked up",
+                    "Address": {
+                        "City": "WICHITA",
+                        "StateOrProvinceCode": "KS",
+                        "PostalCode": "67226",
+                        "CountryCode": "US",
+                        "Residential": "false"
+                    }
+                },
+                {
+                    "Timestamp": "2013-12-31T12:58:00-06:00",
+                    "EventType": "OC",
+                    "EventDescription": "Shipment information sent to FedEx",
+                    "Address": {
+                        "PostalCode": "67226",
+                        "CountryCode": "US",
+                        "Residential": "false"
+                    }
+                }
+            ]
+        }
+    }
+}
