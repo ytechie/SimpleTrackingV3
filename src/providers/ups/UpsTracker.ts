@@ -89,8 +89,19 @@ export class UpsTracker implements ITracker {
         if(activity) {
             activity.forEach(a => {
                 let newActivity = new ActivityData();
-                newActivity.locationDescription =
-                    a.ActivityLocation && a.ActivityLocation.Address && a.ActivityLocation.Address.City;
+                newActivity.locationDescription = '';
+                if(a.ActivityLocation && a.ActivityLocation.Address) {
+                    let address = a.ActivityLocation.Address;
+                    let parts = new Array<string>();
+
+                    if(address.City) parts.push(address.City);
+                    if(address.StateProvinceCode) parts.push(address.StateProvinceCode);
+                    if(address.PostalCode) parts.push(address.PostalCode);
+                    if(address.CountryCode) parts.push(address.CountryCode);
+
+                    newActivity.locationDescription = parts.join(', ');
+                }
+                
                 newActivity.shortDescription = a.Status && a.Status.Description;
                 if(a.Time && a.Date) {
                     //Date format: "20171214"
