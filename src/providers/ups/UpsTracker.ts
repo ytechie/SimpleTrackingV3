@@ -21,6 +21,12 @@ export class UpsTracker implements ITracker {
 
     async Track(trackingNumber:string) {
         return new Promise<TrackingData>((resolve, reject) => {
+            if(!UpsTracker.IsValidTrackingNumber(trackingNumber)) {
+                console.log('Not a USPS Tracking Number');
+                resolve(null)
+                return;
+            }
+
             let req = this.buildRequest(trackingNumber);
 
             request.post(this.UPS_DEV_URL, {json: true, body: req}, (error, response, body) => {
@@ -36,6 +42,11 @@ export class UpsTracker implements ITracker {
                 }
             });
         });
+    }
+
+    public static IsValidTrackingNumber(trackingNumber:string) {
+        return trackingNumber.length === 18
+            && trackingNumber.startsWith("1Z");
     }
 
     private buildRequest(trackingNumber:string) {
