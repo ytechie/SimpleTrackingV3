@@ -29,6 +29,15 @@ describe('USPS Sample Responses', function () {
     });
 });
 
+describe('Valid Tracking Numbers', function () {
+    it('Dont track wrong length tracking numbers', () => {
+        UspsTracker.UspsTracker.IsValidTrackingNumber("123").should.be.false;
+    });
+    it('Validate correct tracking number', () => {
+        UspsTracker.UspsTracker.IsValidTrackingNumber("9400110200883692641453").should.be.true;
+    });
+});
+
 function loadSample(name) {
     let contents = fs.readFileSync(path.resolve(__dirname, 'sampleResponses/' + name + '.xml'));
 

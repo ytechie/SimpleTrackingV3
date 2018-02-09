@@ -20,11 +20,17 @@ export class UspsTracker implements ITracker {
     private buildRequest(trackingNumber:string) {
         return this.requestUrl
             .replace('{userId}', this.userId)
-            .replace('{password}', this.password);
+            .replace('{password}', this.password)
+            .replace('{trackingNumber}', trackingNumber);
     }
 
     async Track(trackingNumber:string):Promise<TrackingData> {
         return new Promise<TrackingData>((resolve, reject) => {
+            if(!UspsTracker.IsValidTrackingNumber(trackingNumber)) {
+                console.log('Not a USPS Tracking Number');
+                return null;
+            }
+
             let req = this.buildRequest(trackingNumber);
 
             request.post(req, async (error, response, body) => {
@@ -35,8 +41,8 @@ export class UspsTracker implements ITracker {
                         return;
                     }
 
-                    var td = await UspsTracker.ConvertResponseToTrackData(response);
-                    return td;
+                    let td = await UspsTracker.ConvertResponseToTrackData(body);
+                    resolve(td);
                 } catch(err) {
                     reject(err);
                 }
@@ -44,14 +50,24 @@ export class UspsTracker implements ITracker {
         });
     }
 
+    public static IsValidTrackingNumber(trackingNumber:string) {
+        return trackingNumber.length === 20
+            || trackingNumber.length === 22;
+    }
+
     public static async ConvertResponseToTrackData(response:any):Promise<TrackingData> {
         return new Promise<TrackingData>((resolve, reject) => {
             let parser = new xml2js.Parser({explicitArray: false});
             parser.parseString(response, (err, result) => {
-                if(err) {
-                    reject(err);
-                } else {
-                    resolve(UspsTracker.ParseJsonToTrackData(result));
+                try {
+                    if(err) {
+                        reject(err);
+                    } else {
+                        let td = UspsTracker.ParseJsonToTrackData(result)
+                        resolve(td);
+                    }
+                } catch(error) {
+                    reject(error);
                 }
             });
         });

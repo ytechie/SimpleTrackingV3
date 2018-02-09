@@ -5,6 +5,7 @@ import { FedexTracker } from "./fedex/FedexTracker";
 import { MultiTracker } from "./MultiTracker";
 import { SimTracker } from "./sim/SimTracker";
 import { CleanInputTracker } from "./CleanInputTracker";
+import { UspsTracker } from "./usps/UspsTracker";
 
 export class Tracker implements ITracker {
     rootTracker:ITracker;
@@ -45,6 +46,17 @@ export class Tracker implements ITracker {
             trackers.push(fedexTracker);
         } else {
             console.error('Fedex Tracker not loaded due to missing environment variables');
+        }
+
+        if(process.env.USPS_USERNAME
+            && process.env.USPS_PASSWORD) {
+            let uspsTracker = new UspsTracker(
+                process.env.USPS_USERNAME,
+                process.env.USPS_PASSWORD
+            );
+            trackers.push(uspsTracker);
+        } else {
+            console.error('USPS Tracker not loaded due to missing environment variables');
         }
 
         let multiTracker = new MultiTracker(trackers);
