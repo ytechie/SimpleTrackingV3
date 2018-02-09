@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TrackResponse>
+    <TrackInfo ID="9400110200883692641453">
+        <TrackSummary>Your item was delivered to a parcel locker at 10:28 am on January 22, 2018 in BOTHELL, WA 98012.</TrackSummary>
+        <TrackDetail>Out for Delivery, January 22, 2018, 10:00 am, BOTHELL, WA 98012</TrackDetail>
+        <TrackDetail>Sorting Complete, January 22, 2018, 9:50 am, BOTHELL, WA 98012</TrackDetail>
+        <TrackDetail>Arrived at Post Office, January 22, 2018, 8:24 am, BOTHELL, WA 98012</TrackDetail>
+        <TrackDetail>Arrived at USPS Regional Destination Facility, January 21, 2018, 1:03 am, SEATTLE WA NETWORK DISTRIBUTION CENTER</TrackDetail>
+        <TrackDetail>In Transit to Destination, January 20, 2018, 12:34 pm, On its way to ZIP Code 98012</TrackDetail>
+        <TrackDetail>In Transit to Destination, January 19, 2018, 12:34 pm, On its way to ZIP Code 98012</TrackDetail>
+        <TrackDetail>Departed Post Office, January 18, 2018, 4:34 pm, REXFORD, NY 12148</TrackDetail>
+        <TrackDetail>USPS picked up item, January 18, 2018, 12:26 pm, REXFORD, NY 12148</TrackDetail>
+        <TrackDetail>Shipping Label Created, USPS Awaiting Item, January 18, 2018, 7:12 am, REXFORD, NY 12148</TrackDetail>
+    </TrackInfo>
+</TrackResponse>

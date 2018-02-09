@@ -1,0 +1,83 @@
+import * as request from 'request';
+import * as xml2js from 'xml2js';
+import { TrackingData } from '../TrackingData';
+import { ITracker } from '../ITracker';
+import { ActivityData } from '../ActivityData';
+
+export class UspsTracker implements ITracker {
+    requestUrl:string = 'http://production.shippingapis.com/ShippingAPI.dll?'
+        + 'API=TrackV2&XML=<TrackRequest PASSWORD="{password}" USERID="{userId}">'
+        + '<TrackID ID="{trackingNumber}" /></TrackRequest>'
+        
+    userId: string;
+    password:string;
+
+    constructor(userId:string, password:string) {
+        this.userId = userId;
+        this.password = password;
+    }
+
+    private buildRequest(trackingNumber:string) {
+        return this.requestUrl
+            .replace('{userId}', this.userId)
+            .replace('{password}', this.password);
+    }
+
+    async Track(trackingNumber:string):Promise<TrackingData> {
+        return new Promise<TrackingData>((resolve, reject) => {
+            let req = this.buildRequest(trackingNumber);
+
+            request.post(req, async (error, response, body) => {
+                try { //Try catch is needed inside the request
+                    if(error) {
+                        console.log("Error in USPS tracker request: " + error);
+                        reject("Error in USPS tracker request: " + error);
+                        return;
+                    }
+
+                    var td = await UspsTracker.ConvertResponseToTrackData(response);
+                    return td;
+                } catch(err) {
+                    reject(err);
+                }
+            });
+        });
+    }
+
+    public static async ConvertResponseToTrackData(response:any):Promise<TrackingData> {
+        return new Promise<TrackingData>((resolve, reject) => {
+            let parser = new xml2js.Parser({explicitArray: false});
+            parser.parseString(response, (err, result) => {
+                if(err) {
+                    reject(err);
+                } else {
+                    resolve(UspsTracker.ParseJsonToTrackData(result));
+                }
+            });
+        });
+    }
+
+    static ParseJsonToTrackData(json:any):TrackingData {
+        let td = new TrackingData();
+        td.activity = new Array<ActivityData>();
+
+        td.trackingNumber = json.TrackResponse.TrackInfo['$'].ID;
+
+        json.TrackResponse.TrackInfo.TrackDetail.forEach((event) => {
+            let ad = new ActivityData();
+            
+            let parts = event.split(', ');
+
+            ad.shortDescription = parts.shift();
+            if(parts.length === 7) {
+                ad.shortDescription += ', ' + parts.shift();
+            }
+            ad.timestamp = new Date(Date.parse(parts.shift() + ', ' + parts.shift() + ', ' + parts.shift()));
+            ad.locationDescription = parts.shift() + ', ' + parts.shift();
+            
+            td.activity.push(ad);
+        });
+
+        return td;
+    }
+}
