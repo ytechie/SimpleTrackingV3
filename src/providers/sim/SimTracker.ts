@@ -18,12 +18,16 @@ export class SimTracker implements ITracker {
     }
 
     GetSampleTrackingData() {
-        return new Promise<TrackingData>((resolve) => {
+        return new Promise<TrackingData>((resolve, reject) => {
+            try {
             fs.readFile(path.resolve(__dirname, 'sim1.txt'), (err, data) => {
                 var utd = JSON.parse(data.toString());
                 let td = UpsTracker.StandardizeTrackingData(utd);
                 resolve(td);
             });
+            } catch(err) {
+                reject(err);
+            }
         });
     }
 }
