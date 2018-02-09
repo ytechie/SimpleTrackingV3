@@ -41,7 +41,8 @@ export class FedexTracker implements ITracker {
         return new Promise<TrackingData>((resolve, reject) => {
             if(!FedexTracker.IsValidTrackingNumber(trackingNumber)) {
                 console.log('Not a FedEx Tracking Number');
-                return null;
+                resolve(null)
+                return;
             }
 
             let req = this.buildRequest(trackingNumber);
