@@ -39,6 +39,11 @@ export class FedexTracker implements ITracker {
 
     async Track(trackingNumber:string):Promise<TrackingData> {
         return new Promise<TrackingData>((resolve, reject) => {
+            if(!FedexTracker.IsValidTrackingNumber(trackingNumber)) {
+                console.log('Not a FedEx Tracking Number');
+                return null;
+            }
+
             let req = this.buildRequest(trackingNumber);
 
             let options = {
@@ -70,6 +75,12 @@ export class FedexTracker implements ITracker {
                 }
             });
         });
+    }
+
+    public static IsValidTrackingNumber(trackingNumber:string) {
+        return trackingNumber.length === 12
+            || trackingNumber.length === 15
+            || trackingNumber.length === 22;
     }
 
     public static ConvertJsonToStandardFormat(results:any):TrackingData {
