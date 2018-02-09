@@ -85,14 +85,25 @@ export class UspsTracker implements ITracker {
             
             let parts = event.split(', ');
 
-            ad.shortDescription = parts.shift();
-            if(parts.length === 7) {
-                ad.shortDescription += ', ' + parts.shift();
+            //Ignore useless update
+            if(parts[0] !== 'In Transit to Destination') {
+                ad.shortDescription = parts.shift();
+                if(parts.length === 7) {
+                    ad.shortDescription += ', ' + parts.shift();
+                }
+                ad.timestamp = new Date(Date.parse(parts.shift() + ', ' + parts.shift() + ', ' + parts.shift()));
+
+                //Arrived at USPS Regional Origin Facility, November 17, 2017, 8:38 pm, FORT WORTH TX DISTRIBUTION CENTER
+                if(parts.length === 1) {
+                    let loc = parts.shift();
+                    loc = loc.replace(' DISTRIBUTION CENTER', '')
+                    ad.locationDescription = loc;
+                } else {
+                    ad.locationDescription = parts.shift() + ', ' + parts.shift();
+                }
+                
+                td.activity.push(ad);
             }
-            ad.timestamp = new Date(Date.parse(parts.shift() + ', ' + parts.shift() + ', ' + parts.shift()));
-            ad.locationDescription = parts.shift() + ', ' + parts.shift();
-            
-            td.activity.push(ad);
         });
 
         return td;

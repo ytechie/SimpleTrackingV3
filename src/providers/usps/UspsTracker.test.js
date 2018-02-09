@@ -27,6 +27,14 @@ describe('USPS Sample Responses', function () {
     //td.activity[0].timestamp.should.equal(new Date(Date.parse('January 22, 2018, 10:00 am')));
         td.activity[0].locationDescription.should.equal('BOTHELL, WA 98012');
     });
+    it('Parse Distribution Center Location', async () => {
+        let sample = loadSample('9405511899560863442597');
+        let td = await UspsTracker.UspsTracker.ConvertResponseToTrackData(sample);
+        
+        td.activity[8].shortDescription.should.equal('Arrived at USPS Regional Origin Facility');
+    //td.activity[0].timestamp.should.equal(new Date(Date.parse('January 22, 2018, 10:00 am')));
+        td.activity[8].locationDescription.should.equal('FORT WORTH TX');
+    });
 });
 
 describe('Valid Tracking Numbers', function () {
