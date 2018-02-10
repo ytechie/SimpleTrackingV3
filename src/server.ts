@@ -54,7 +54,7 @@ app.get('/', function (req, res) {
 app.post('/', function(req, res) {
     
     console.log(req.body);
-    let trackingNumber = req.body.trackingNumber;
+    let trackingNumber = req.body.trackingNumber.replace(/ /g, '');;
     res.redirect('/track/' + trackingNumber);
 });
 app.get('/track/:trackingNumber.rss', function (req, res) {
