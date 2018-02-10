@@ -86,26 +86,13 @@ export class UspsTracker implements ITracker {
 
         json.TrackResponse.TrackInfo.TrackDetail.forEach((event) => {
             let ad = new ActivityData();
-            
-            let parts = event.split(', ');
 
-            //Ignore useless update
-            if(parts[0] !== 'In Transit to Destination') {
-                ad.shortDescription = parts.shift();
-                if(parts.length === 7) {
-                    ad.shortDescription += ', ' + parts.shift();
-                }
-                ad.timestamp = new Date(Date.parse(parts.shift() + ', ' + parts.shift() + ', ' + parts.shift()));
+            let parsed = this.ParseUspsTrackDetail(event);
+            if(parsed) {
+                ad.locationDescription = parsed.location;
+                ad.shortDescription = parsed.description;
+                ad.timestamp = parsed.timestamp;
 
-                //Arrived at USPS Regional Origin Facility, November 17, 2017, 8:38 pm, FORT WORTH TX DISTRIBUTION CENTER
-                if(parts.length === 1) {
-                    let loc = parts.shift();
-                    loc = loc.replace(' DISTRIBUTION CENTER', '')
-                    ad.locationDescription = loc;
-                } else {
-                    ad.locationDescription = parts.shift() + ', ' + parts.shift();
-                }
-                
                 td.activity.push(ad);
             }
         });
@@ -116,5 +103,41 @@ export class UspsTracker implements ITracker {
             + ' is strictly prohibited.';
 
         return td;
+    }
+
+    public static ParseUspsTrackDetail(input:string) {
+        //Don't look for the I because of casing
+        if(input.indexOf('ransit to') > -1) {
+            return null;
+        }
+
+        let data = {
+            description:'',
+            timestamp:new Date(),
+            location:''
+        };
+        let parts = input.split(', ');
+
+        //The position of the month/day/time is critical to parsing
+
+        var monthPattern = new RegExp(/(January|Feburary|March|April|May|June|July|August|September|October|November|December) \d{1,2}/g);
+        //Determine the position of the month day
+        let monthPosition = parts.findIndex((text) => {
+            return !!monthPattern.exec(text);
+        });
+
+        data.timestamp = new Date(Date.parse(parts[monthPosition] + ', ' + parts[monthPosition+1] + ', ' + parts[monthPosition+2]));
+
+        //the parts before the date are the description
+        let descParts = parts.slice(0, monthPosition);
+        data.description = descParts.join(', ');
+
+        let locParts = parts.slice(monthPosition+3);
+        data.location = locParts.join(', ');
+
+        data.location = data.location.replace(' DISTRIBUTION CENTER', '')
+            .replace('INTERNATIONAL DISTRIBUTION CENTER', '');
+
+        return data;
     }
 }
