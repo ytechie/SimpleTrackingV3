@@ -6,6 +6,7 @@ import { MultiTracker } from "./MultiTracker";
 import { SimTracker } from "./sim/SimTracker";
 import { CleanInputTracker } from "./CleanInputTracker";
 import { UspsTracker } from "./usps/UspsTracker";
+import { DbLogTracker } from "./DbLogTracker";
 
 export class Tracker implements ITracker {
     rootTracker:ITracker;
@@ -61,8 +62,9 @@ export class Tracker implements ITracker {
 
         let multiTracker = new MultiTracker(trackers);
         let cleanInput = new CleanInputTracker(multiTracker);
+        let dbLogTracker = new DbLogTracker(process.env.COSMOS_CONNECTION_STRING, cleanInput);
 
-        this.rootTracker = cleanInput;
+        this.rootTracker = dbLogTracker;
     }
 
     public async Track(trackingNumber:string):Promise<TrackingData> {
