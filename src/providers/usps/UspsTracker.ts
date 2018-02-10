@@ -52,8 +52,12 @@ export class UspsTracker implements ITracker {
     }
 
     public static IsValidTrackingNumber(trackingNumber:string) {
+        //valid: Number types: https://tools.usps.com/go/TrackConfirmAction_input
+
         return trackingNumber.length === 20
-            || trackingNumber.length === 22;
+            || trackingNumber.length === 22
+            || trackingNumber.length === 10
+            || trackingNumber.length === 13;
     }
 
     public static async ConvertResponseToTrackData(response:any):Promise<TrackingData> {
@@ -105,6 +109,11 @@ export class UspsTracker implements ITracker {
                 td.activity.push(ad);
             }
         });
+
+        td.usageRequirements = 'NOTICE: U.S.P.S. authorizes you to use U.S.P.S. tracking systems'
+            + ' solely to track shipments tendered by or for you to U.S.P.S. for delivery and'
+            + ' for no other purpose. Any other use of U.S.P.S. tracking systems and information'
+            + ' is strictly prohibited.';
 
         return td;
     }

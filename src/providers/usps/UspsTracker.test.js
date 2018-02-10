@@ -13,11 +13,11 @@ describe('USPS Sample Responses', function () {
         
         td.should.not.be.null;
     });
-    it('Sample Response 9 Activities', async () => {
+    it('Sample Response 7 Activities', async () => {
         let sample = loadSample('9400110200883692641453');
         let td = await UspsTracker.UspsTracker.ConvertResponseToTrackData(sample);
         
-        td.activity.length.should.equal(9);
+        td.activity.length.should.equal(7);
     });
     it('Activity Details Correct', async () => {
         let sample = loadSample('9400110200883692641453');
@@ -31,9 +31,9 @@ describe('USPS Sample Responses', function () {
         let sample = loadSample('9405511899560863442597');
         let td = await UspsTracker.UspsTracker.ConvertResponseToTrackData(sample);
         
-        td.activity[8].shortDescription.should.equal('Arrived at USPS Regional Origin Facility');
+        td.activity[6].shortDescription.should.equal('Arrived at USPS Regional Origin Facility');
     //td.activity[0].timestamp.should.equal(new Date(Date.parse('January 22, 2018, 10:00 am')));
-        td.activity[8].locationDescription.should.equal('FORT WORTH TX');
+        td.activity[6].locationDescription.should.equal('FORT WORTH TX');
     });
 });
 
@@ -43,6 +43,15 @@ describe('Valid Tracking Numbers', function () {
     });
     it('Validate correct tracking number', () => {
         UspsTracker.UspsTracker.IsValidTrackingNumber("9400110200883692641453").should.be.true;
+    });
+});
+
+describe('USPS Requirements', function () {
+    it('Valid disclaimer', async () => {
+        let sample = loadSample('9405511899560863442597');
+        let td = await UspsTracker.UspsTracker.ConvertResponseToTrackData(sample);
+        td.usageRequirements.should.not.be.null;
+        td.usageRequirements.should.not.be.empty;
     });
 });
 
