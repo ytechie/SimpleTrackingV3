@@ -23,8 +23,11 @@ describe('Fedex', function () {
     it('Location Formatting', function () {
         let sample = loadSample('231300687629630');
         let td = FedexTracker.FedexTracker.ConvertJsonToStandardFormat(sample);
-        
-        td.activity[0].locationDescription.should.equal('MIAMI, FL, 33178, US')
+
+        td.activity[0].location.city.should.equal('MIAMI');
+        td.activity[0].location.state.should.equal('FL');
+        td.activity[0].location.zip.should.equal('33178');
+        td.activity[0].location.countryCode.should.equal('US');
     });
 });
 

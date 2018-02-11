@@ -89,7 +89,7 @@ export class UspsTracker implements ITracker {
 
             let parsed = this.ParseUspsTrackDetail(event);
             if(parsed) {
-                ad.locationDescription = parsed.location;
+                ad.location = parsed.location;
                 ad.shortDescription = parsed.description;
                 ad.timestamp = parsed.timestamp;
 
@@ -114,7 +114,12 @@ export class UspsTracker implements ITracker {
         let data = {
             description:'',
             timestamp:new Date(),
-            location:''
+            location:{
+                city:'',
+                state:'',
+                zip:'',
+                countryCode:''
+            }
         };
         let parts = input.split(', ');
 
@@ -133,11 +138,66 @@ export class UspsTracker implements ITracker {
         data.description = descParts.join(', ');
 
         let locParts = parts.slice(monthPosition+3);
-        data.location = locParts.join(', ');
-
-        data.location = data.location.replace(' DISTRIBUTION CENTER', '')
-            .replace('INTERNATIONAL DISTRIBUTION CENTER', '');
+        let locationStr = locParts.join(', ');
+        data.location = UspsTracker.ParseLocation(locationStr);
 
         return data;
+    }
+
+    public static ParseLocation(location:string) {
+        let ret = {
+            city:'',
+            state:'',
+            zip:'',
+            countryCode:''
+        };
+
+        //MIAMI, UNITED STATES
+        let r = RegExp(/([^,]+), UNITED STATES/g);
+        let a = r.exec(location);
+        if(a) {
+            ret.city = a[1];
+            ret.countryCode = 'US'
+            return ret;
+        }
+
+        //REXFORD, NY 12148
+        r = RegExp(/(.*), ([A-Z]{2}) ([\d-]+)/g);
+        a = r.exec(location);
+        if(a) {
+            ret.city = a[1];
+            ret.state = a[2];
+            ret.zip = a[3];
+            return ret;
+        }
+
+        //FORT WORTH TX
+        r = RegExp(/^([A-Z ]+) ([A-Z]{2})$/);
+        a = r.exec(location);
+        if(a) {
+            ret.city = a[1];
+            ret.state = a[2];
+            return ret;
+        }
+
+        //Distribution center
+        //SEATTLE WA NETWORK DISTRIBUTION CENTER
+        r = RegExp(/([A-Z ]+) ([A-Z]{2})(?: NETWORK)* DISTRIBUTION CENTER/);
+        a = r.exec(location);
+        if(a) {
+            ret.city = a[1];
+            ret.state = a[2];
+            return ret;
+        }
+
+        //ISRAEL
+        r = RegExp(/^([A-Z ]+)$/);
+        a = r.exec(location);
+        if(a) {
+            ret.countryCode = a[1];
+            return ret;
+        }
+
+        return ret;
     }
 }

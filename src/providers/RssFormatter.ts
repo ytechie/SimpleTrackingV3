@@ -16,7 +16,7 @@ export class RssFormatter {
         if(trackingData.activity) {
             trackingData.activity.forEach((a) => {
                 feed.item({
-                    title:  a.locationDescription,
+                    title:  a.locationDislpay,
                     description: a.shortDescription,
                     guid: a.timestamp.toString(),
                     date: a.timestamp.toString()

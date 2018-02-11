@@ -24,21 +24,28 @@ describe('UPS Tracker', function () {
         let sample = loadSample('1Z6Y09Y00383605008');
         let td = UpsTracker.UpsTracker.StandardizeTrackingData(sample);
         
-        td.activity[0].locationDescription.should.equal('BOTHELL, WA, 98012, US');
+        td.activity[0].location.city.should.equal('BOTHELL');
+        td.activity[0].location.state.should.equal('WA');
+        td.activity[0].location.zip.should.equal('98012');
+        td.activity[0].location.countryCode.should.equal('US');
+
         td.activity.length.should.be.equal(7);
     });
     it('Verify activity address without postal code', function() {
         let sample = loadSample('1Z6Y09Y00383605008');
         let td = UpsTracker.UpsTracker.StandardizeTrackingData(sample);
+
+        td.activity[1].location.city.should.equal('REDMOND');
+        td.activity[1].location.state.should.equal('WA');
+        td.activity[1].location.countryCode.should.equal('US');
         
-        td.activity[1].locationDescription.should.equal('REDMOND, WA, US');
         td.activity.length.should.be.equal(7);
     });
     it('Verify activity address with only country', function() {
         let sample = loadSample('1Z6Y09Y00383605008');
         let td = UpsTracker.UpsTracker.StandardizeTrackingData(sample);
         
-        td.activity[6].locationDescription.should.equal('US');
+        td.activity[6].location.countryCode.should.equal('US');
     });
 });
 

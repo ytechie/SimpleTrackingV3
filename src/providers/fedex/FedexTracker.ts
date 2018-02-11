@@ -112,13 +112,12 @@ export class FedexTracker implements ITracker {
                 var ad = new ActivityData();
                 ad.timestamp = new Date(Date.parse(event.Timestamp));
 
-                let locParts = new Array<string>();
-                if(event.Address.City) locParts.push(event.Address.City);
-                if(event.Address.StateOrProvinceCode) locParts.push(event.Address.StateOrProvinceCode);
-                if(event.Address.PostalCode) locParts.push(event.Address.PostalCode);
-                if(event.Address.CountryCode) locParts.push(event.Address.CountryCode);
-
-                ad.locationDescription = locParts.join(', ');
+                ad.location = {
+                    city:event.Address.City,
+                    state:event.Address.StateOrProvinceCode,
+                    zip:event.Address.PostalCode,
+                    countryCode:event.Address.CountryCode
+                };
 
                 ad.shortDescription = event.EventDescription;
                 td.activity.push(ad);
@@ -126,8 +125,13 @@ export class FedexTracker implements ITracker {
         } else {
             var ad = new ActivityData();
             ad.timestamp = new Date(Date.parse(trackDetail.Events.Timestamp));
-            ad.locationDescription = trackDetail.Events.Address.PostalCode;
-            ad.shortDescription = trackDetail.Events.EventDescription;
+            ad.location = {
+                city: trackDetail.Events.Address.City,
+                state: trackDetail.Events.Address.StateOrProvinceCode,
+                zip: trackDetail.Events.Address.PostalCode,
+                countryCode: trackDetail.Events.Address.CountryCode
+            };
+
             td.activity.push(ad);
         }
 
