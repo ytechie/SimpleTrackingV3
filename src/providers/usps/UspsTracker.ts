@@ -3,6 +3,7 @@ import * as xml2js from 'xml2js';
 import { TrackingData } from '../TrackingData';
 import { ITracker } from '../ITracker';
 import { ActivityData } from '../ActivityData';
+import { Location } from '../../Location';
 
 export class UspsTracker implements ITracker {
     requestUrl:string = 'http://production.shippingapis.com/ShippingAPI.dll?'
@@ -114,12 +115,7 @@ export class UspsTracker implements ITracker {
         let data = {
             description:'',
             timestamp:new Date(),
-            location:{
-                city:'',
-                state:'',
-                zip:'',
-                countryCode:''
-            }
+            location:new Location()
         };
         let parts = input.split(', ');
 
@@ -144,13 +140,11 @@ export class UspsTracker implements ITracker {
         return data;
     }
 
-    public static ParseLocation(location:string) {
-        let ret = {
-            city:'',
-            state:'',
-            zip:'',
-            countryCode:''
-        };
+    public static ParseLocation(location:string):Location {
+        let ret = new Location();
+
+        //This is the fallback
+        ret.rawLocationString = location;
 
         //MIAMI, UNITED STATES
         let r = RegExp(/([^,]+), UNITED STATES/g);

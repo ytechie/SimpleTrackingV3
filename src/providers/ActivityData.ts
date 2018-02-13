@@ -1,24 +1,14 @@
 import * as moment from 'moment'
+import { Location } from '../Location';
 
 export class ActivityData {
     shortDescription: string;
     timestamp: Date;
-    latLong: [number, number];
-    location: {
-        city:string,
-        state:string,
-        zip:string,
-        countryCode:string
-    }
+    location: Location;
 
     constructor() {
         //Initialize for safety
-        this.location = {
-            city:'',
-            state:'',
-            zip:'',
-            countryCode:''
-        }
+        this.location = new Location();
     }
 
     get locationDislpay() {
@@ -28,7 +18,11 @@ export class ActivityData {
         if(this.location.zip) parts.push(this.location.zip);
         if(this.location.countryCode) parts.push(this.location.countryCode);
 
-        return parts.join(', ');
+        if(parts.length === 0) {
+            return this.location.rawLocationString;
+        }
+
+        return parts.join(', '); 
     }
     
     get friendlyTimestamp() {

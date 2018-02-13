@@ -6,3 +6,4 @@ node_modules
 *.js.map
 !src/static/*.js
 .env
+src/geocode.db

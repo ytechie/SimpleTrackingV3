@@ -1,4 +1,5 @@
 import { ActivityData } from './ActivityData'
+import { Geocoder } from '../geocoder';
 
 //A common format to return all tracking data
 export class TrackingData {
@@ -11,4 +12,15 @@ export class TrackingData {
     lastUpdated: Date;
     sourceData: string;
     activity: ActivityData[];
+
+    constructor() {
+        this.activity = new Array<ActivityData>();
+    }
+
+    async Geocode(geo:Geocoder) {
+        for(let element of this.activity) {
+            let gps = await geo.Geocode(element.location);
+        }
+        
+    }
 }

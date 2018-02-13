@@ -7,6 +7,7 @@ import { SimTracker } from "./sim/SimTracker";
 import { CleanInputTracker } from "./CleanInputTracker";
 import { UspsTracker } from "./usps/UspsTracker";
 import { DbLogTracker } from "./DbLogTracker";
+import { GeocodeTracker } from "./GeocodeTracker";
 
 export class Tracker implements ITracker {
     rootTracker:ITracker;
@@ -61,7 +62,8 @@ export class Tracker implements ITracker {
         }
 
         let multiTracker = new MultiTracker(trackers);
-        let cleanInput = new CleanInputTracker(multiTracker);
+        let geocodeTracker = new GeocodeTracker(multiTracker);
+        let cleanInput = new CleanInputTracker(geocodeTracker);
         let dbLogTracker = new DbLogTracker(process.env.COSMOS_CONNECTION_STRING, cleanInput);
 
         this.rootTracker = dbLogTracker;

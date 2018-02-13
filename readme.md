@@ -10,6 +10,14 @@ The docker image runs the node.js server behind an nginx proxy.
 
 Static files are served directly from nginx.
 
+## Geocode Database
+
+Sqlite is used to load a database of cities and lat/long coordinates.
+
+Generate the database by navigating to the `sqlite` folder in the project and executing:
+
+    sqlite3 ../src/geocode.db ".read commands.sql"
+
 ## Tips
 
 In VSCode, put the following snippet in your configuration to hide .js files:

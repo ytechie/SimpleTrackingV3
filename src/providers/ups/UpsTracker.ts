@@ -103,12 +103,10 @@ export class UpsTracker implements ITracker {
                 if(a.ActivityLocation && a.ActivityLocation.Address) {
                     let address = a.ActivityLocation.Address;
 
-                    newActivity.location = {
-                        city: address.City,
-                        state: address.StateProvinceCode,
-                        zip: address.PostalCode,
-                        countryCode: address.CountryCode
-                    }
+                    newActivity.location.city = address.City;
+                    newActivity.location.state = address.StateProvinceCode;
+                    newActivity.location.zip = address.PostalCode;
+                    newActivity.location.countryCode = address.CountryCode;
                 }
                 
                 newActivity.shortDescription = a.Status && a.Status.Description;
