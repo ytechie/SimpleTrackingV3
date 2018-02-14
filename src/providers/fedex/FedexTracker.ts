@@ -1,5 +1,5 @@
-import * as request from 'request';
-import * as xml2js from 'xml2js';
+import * as request from 'request-promise';
+import * as xml2js from 'xml2js-es6-promise';
 import { TrackingData } from '../TrackingData';
 import { ITracker } from '../ITracker';
 import { ActivityData } from '../ActivityData';
@@ -37,45 +37,26 @@ export class FedexTracker implements ITracker {
             .replace('{trackingNumber}', trackingNumber);
     }
 
-    async Track(trackingNumber:string):Promise<TrackingData> {
-        return new Promise<TrackingData>((resolve, reject) => {
-            if(!FedexTracker.IsValidTrackingNumber(trackingNumber)) {
-                console.log('Not a FedEx Tracking Number');
-                resolve(null)
-                return;
-            }
+    async Track(trackingNumber:string) {
+        if(!FedexTracker.IsValidTrackingNumber(trackingNumber)) {
+            console.log('Not a FedEx Tracking Number');
+            return null;
+        }
 
-            let req = this.buildRequest(trackingNumber);
+        let req = this.buildRequest(trackingNumber);
 
-            let options = {
-                    body:req,
-                    headers:
-                        {
-                            'Host': 'gatewaybeta.fedex.com:443',
-                        }
-            };
-
-            request.post(this.FEDEX_API_URL, options, (error, response, body) => {
-                try { //Try catch is needed inside the request
-                    if(error) {
-                        console.log("Error in Fedex tracker request: " + error);
-                        reject("Error in Fedex tracker request: " + error);
-                        return;
+        let options = {
+                body:req,
+                headers:
+                    {
+                        'Host': 'gatewaybeta.fedex.com:443',
                     }
+        };
 
-                    let parser = new xml2js.Parser({explicitArray: false});
-                    parser.parseString(body, (err, result) => {
-                        if(err) {
-                            reject(err);
-                        } else {
-                            resolve(FedexTracker.ConvertJsonToStandardFormat(result));
-                        }
-                    });
-                } catch(err) {
-                    reject(err);
-                }
-            });
-        });
+        let body = await request.post(this.FEDEX_API_URL, options);
+        let json = await xml2js(body, {explicitArray: false});
+        let td = FedexTracker.ConvertJsonToStandardFormat(json);
+        return td;
     }
 
     public static IsValidTrackingNumber(trackingNumber:string) {
