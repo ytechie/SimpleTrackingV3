@@ -15,7 +15,11 @@ export class GeocodeTracker implements ITracker {
         let td = await this.upstreamTracker.Track(trackingNumber);
 
         if(td) {
-            await td.Geocode(this.geocoder);
+            try {
+                await td.Geocode(this.geocoder);
+            } catch(err) {
+                console.error('Error geocoding response: ' + err);
+            }
             return td;
         } else {
             return td;

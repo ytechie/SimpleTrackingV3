@@ -14,6 +14,7 @@
     "@types/mocha": "^2.2.48",
     "@types/mongodb": "^3.0.5",
     "@types/request": "^2.47.0",
+    "@types/request-promise": "^4.1.41",
     "@types/sqlite3": "^3.1.1",
     "applicationinsights": "^1.0.1",
     "body-parser": "^1.18.2",
@@ -29,7 +30,9 @@
     "moment": "^2.20.1",
     "mongodb": "^3.0.2",
     "request": "^2.83.0",
+    "request-promise": "^4.2.2",
     "rss": "^1.2.2",
+    "sqlite": "^2.9.1",
     "sqlite3": "^3.1.13",
     "typescript": "^2.6.2",
     "xml2js": "^0.4.19"
