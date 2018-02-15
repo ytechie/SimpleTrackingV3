@@ -1,14 +1,16 @@
 FROM nginx:alpine
 
 RUN apk add --update nodejs
-RUN apk add bash
+#RUN apk add bash
 
 COPY ./src /usr/share/node
-COPY ./node_modules /usr/share/node/node_modules
+COPY ./package.json /usr/share/node
+
+WORKDIR /usr/share/node/
+RUN npm install
 
 COPY ./start.sh /usr/share
 
-#RUN rm /etc/nginx/nginx.conf.default
 COPY nginx.conf /etc/nginx/nginx.conf
 
 CMD ["/usr/share/start.sh"]
