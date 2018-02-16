@@ -19,6 +19,13 @@ export class Geocoder {
     }
 
     async Geocode(location:Location) {
+        //Not specific enough to locate - this avoid all kinds
+        //of stange bugs and makes the distance really high
+        if(location.toString() === 'US'
+            || location.toString() === 'United States') {
+            return;
+        }
+
         console.time('Geocode');
         try {
         if(await this.TryLocalGeocode(location)) {
