@@ -7,7 +7,7 @@ const path = require("path");
 chai.should();
 
 describe('Geocoder', function () {
-    it('asdf', async () => {
+    it('Simple Lookup - Seattle, WA', async () => {
         let g = new Geocoder();
         console.time('Geocode Timing');
         let rec = await g.Geocode('Seattle', 'WA');
