@@ -8,7 +8,7 @@ export class TrackingData {
     trackerName: string; //Friendly name for a tracker, for example, UPS or FedEx
     usageRequirements: string;
     serviceType: string; //ground, etc.
-    weight: number;
+    weight: string;
     lastUpdated: Date;
     sourceData: string;
     activity: ActivityData[];
