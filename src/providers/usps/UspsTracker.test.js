@@ -101,6 +101,13 @@ describe('Parse USPS Track Detail', function () {
         results.timestamp.toLocaleString().should.eq('2017-5-9 14:24:00');
         results.location.city.should.equal('MIAMI');
     });
+    it('February Misspelled (real prod bug)', () => {
+        let text = 'Sorting Complete, February 16, 2018, 7:18 am, BOTHELL, WA 98012';
+        let results = UspsTracker.ParseUspsTrackDetail(text);
+        results.description.should.equal('Sorting Complete');
+        results.timestamp.toLocaleString().should.eq('2018-2-16 07:18:00');
+        results.location.city.should.equal('BOTHELL');        
+    });
 });
 
 describe('Address Parsing', function () {

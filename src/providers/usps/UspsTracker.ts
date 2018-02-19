@@ -121,7 +121,7 @@ export class UspsTracker implements ITracker {
 
         //The position of the month/day/time is critical to parsing
 
-        var monthPattern = new RegExp(/(January|Feburary|March|April|May|June|July|August|September|October|November|December) \d{1,2}/g);
+        var monthPattern = new RegExp(/(January|February|March|April|May|June|July|August|September|October|November|December) \d{1,2}/g);
         //Determine the position of the month day
         let monthPosition = parts.findIndex((text) => {
             return !!monthPattern.exec(text);
