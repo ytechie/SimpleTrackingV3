@@ -42,27 +42,22 @@ export class Geocoder {
     }
 
     async TryLocalGeocode(location:Location) {
-        if((location.city && location.state) || location.rawLocationString) {
-            let sql='';
-            let sqlParams:any = {};
-            if(location.city && location.state) {
-                sql = 'select * from uscities where city=$city COLLATE NOCASE and state_id=$state;';
-                sqlParams.$city = location.city;
-                sqlParams.$state = location.state;
-            } else {
-                sql = 'select * from otherlocations where location=$location;';
-                sqlParams.$location = location.rawLocationString;
-            }
+        let sql='';
+        let sqlParams:any = {};
+        if(location.city && location.state) {
+            sql = 'select * from uscities where city=$city COLLATE NOCASE and state_id=$state;';
+            sqlParams.$city = location.city;
+            sqlParams.$state = location.state;
+        } else {
+            sql = 'select * from otherlocations where location=$location;';
+            sqlParams.$location = location.toString();
+        }
 
-            let rows = await this.db.all(sql, sqlParams);
-                //If there is more than 1 row, it's ambiguous  
-                if(rows && rows.length === 1) {
-                    location.lat = rows[0].lat;
-                    location.long = rows[0].lng;
-                    return true;
-                } else {
-                    return false;
-                }
+        let rows = await this.db.all(sql, sqlParams); 
+        if(rows && rows.length >= 1) {
+            location.lat = rows[0].lat;
+            location.long = rows[0].lng;
+            return true;
         } else {
             return false;
         }
@@ -85,9 +80,9 @@ export class Geocoder {
                 let sql = Geocoder.GetInsertStatement('uscities', sqlParams);
 
                 await this.db.run(sql, sqlParams);
-            } else if(location.rawLocationString) {
+            } else {
                 let sqlParams:any = {};
-                sqlParams.$location = location.rawLocationString;
+                sqlParams.$location = location.toString();
                 sqlParams.$new = 1;
                 sqlParams.$lat = location.lat;
                 sqlParams.$lng = location.long;
