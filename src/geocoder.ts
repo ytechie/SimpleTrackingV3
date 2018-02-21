@@ -122,6 +122,8 @@ export class Geocoder {
         let loc = body.results[0].geometry.location;
         location.lat = body.results[0].geometry.location.lat;
         location.long = body.results[0].geometry.location.lng;
+
+        return true;
     }
 }
 
