@@ -21,7 +21,7 @@ export class Geocoder {
     async Geocode(location:Location) {
         //Not specific enough to locate - this avoid all kinds
         //of stange bugs and makes the distance really high
-        if(location.toString() === 'US'
+        if(location.toString().length <= 2
             || location.toString() === 'United States') {
             return;
         }
