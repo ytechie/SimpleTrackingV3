@@ -6,6 +6,8 @@ import { TrackingData } from "../TrackingData";
 import { ActivityData } from "../ActivityData";
 import { ITracker } from '../ITracker';
 
+import * as moment from 'moment'
+
 export class UpsTracker implements ITracker {
     UPS_DEV_URL = 'https://onlinetools.ups.com/rest/Track';
 
@@ -91,6 +93,18 @@ export class UpsTracker implements ITracker {
         let p = upsNativeTrackingData.TrackResponse.Shipment.Package;
 
         td.trackingNumber = p.TrackingNumber;
+
+        if(upsNativeTrackingData.TrackResponse.Shipment.DeliveryDetail
+            && upsNativeTrackingData.TrackResponse.Shipment.DeliveryDetail.Type.Code === "03") {
+                let upsDateString = upsNativeTrackingData.TrackResponse.Shipment.DeliveryDetail.Date;
+                let year = parseInt(upsDateString.substring(0,4));
+                let month = parseInt(upsDateString.substring(4,6));
+                let day = parseInt(upsDateString.substring(6,8));
+
+                td.estimatedDelivery = new Date(Date.UTC(year, month-1, day));
+                td.estimatedDeliveryFriendly = moment(td.estimatedDelivery).calendar();
+            }
+
         //td.estimatedDelivery =
         td.serviceType = upsNativeTrackingData.TrackResponse.Shipment.Service.Description;
         td.weight = p.PackageWeight.Weight + p.PackageWeight.UnitOfMeasurement.Code;

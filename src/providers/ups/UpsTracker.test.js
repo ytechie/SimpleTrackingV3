@@ -49,6 +49,16 @@ describe('UPS Tracker', function () {
     });
 });
 
+describe('Package Attributes', () => {
+    it('Should have estimated delivery date', () => {
+        let sample = loadSample('1ZR8Y7710355363026');
+        let td = UpsTracker.UpsTracker.StandardizeTrackingData(sample);
+
+        td.estimatedDelivery.should.be.eql(new Date(Date.parse('2018-02-07')));
+        //20180207
+    });
+});
+
 function loadSample(name) {
     let contents = fs.readFileSync(path.resolve(__dirname, 'sampleResponses/' + name + '.txt'));
     let jsonObj = JSON.parse(contents.toString());
