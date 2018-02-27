@@ -6,7 +6,9 @@
     <a href="{{trackData.trackingNumber}}.rss">RSS Feed</a>
 
     <p>
-        Weight: {{trackData.weight}}<br />
+        {{#if trackData.weight }}
+            Weight: {{trackData.weight}}<br />
+        {{/if}}
         {{#if trackData.estimatedDelivery}}
             Estimated Delivery: {{trackData.estimatedDeliveryFriendly}}<br />
         {{/if}}
