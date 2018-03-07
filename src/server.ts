@@ -52,10 +52,12 @@ app.get('/', function (req, res) {
     res.render('index.hbs');
 });
 app.post('/', function(req, res) {
-    
-    console.log(req.body);
-    let trackingNumber = req.body.trackingNumber.replace(/ /g, '');;
-    res.redirect('/track/' + trackingNumber);
+    if(req.body && req.body.trackingNumber) {
+        let trackingNumber = req.body.trackingNumber.replace(/ /g, '');;
+        res.redirect('/track/' + trackingNumber);
+    } else {
+        res.render('index.hbs'); //empty tracking number
+    }
 });
 app.get('/track/:trackingNumber.rss', function (req, res) {
     tracker.Track(req.params.trackingNumber).then((trackData) => {
