@@ -68,7 +68,11 @@ app.get('/track/:trackingNumber.rss', function (req, res) {
         res.send(err);
     });
 });
-app.get('/track/:trackingNumber', function (req, res) {
+app.get('/track/:trackingNumber?', function (req, res) {
+    if(!req.params.trackingNumber) {
+        res.redirect(301, '/');
+    }
+
     tracker.Track(req.params.trackingNumber).then((trackData) => {
         console.log('UI received tracking data');
         res.render('track.hbs', { trackData: trackData });
