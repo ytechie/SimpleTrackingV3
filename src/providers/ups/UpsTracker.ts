@@ -1,6 +1,7 @@
 var request = require('request');
 var fs = require('fs');
 var path = require('path');
+import * as _ from "lodash";
 
 import { TrackingData } from "../TrackingData";
 import { ActivityData } from "../ActivityData";
@@ -92,7 +93,15 @@ export class UpsTracker implements ITracker {
 
         let p = upsNativeTrackingData.TrackResponse.Shipment.Package;
 
-        td.trackingNumber = p.TrackingNumber;
+        td.trackingNumber = upsNativeTrackingData.TrackResponse.Shipment.InquiryNumber.Value;
+
+        //TODO: FIND THE RIGHT PACKAGE!!!
+        if(p instanceof Array) {
+            p = _.find(p, (x) => { return x.TrackingNumber === td.trackingNumber });
+            //p = p[0]; //very bad for multi-package shipment
+        }
+
+        
 
         if(upsNativeTrackingData.TrackResponse.Shipment.DeliveryDetail
             && upsNativeTrackingData.TrackResponse.Shipment.DeliveryDetail.Type.Code === "03") {
@@ -109,7 +118,7 @@ export class UpsTracker implements ITracker {
         td.serviceType = upsNativeTrackingData.TrackResponse.Shipment.Service.Description;
         td.weight = p.PackageWeight.Weight + p.PackageWeight.UnitOfMeasurement.Code;
 
-        let activity = upsNativeTrackingData.TrackResponse.Shipment.Package.Activity;
+        let activity = p.Activity;
         td.activity = new Array<ActivityData>();
         if(activity) {
             activity.forEach(a => {

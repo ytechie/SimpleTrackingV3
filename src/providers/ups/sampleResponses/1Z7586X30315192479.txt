@@ -1,0 +1,291 @@
+{
+    "TrackResponse": {
+        "Response": {
+            "ResponseStatus": {
+                "Code": "1",
+                "Description": "Success"
+            },
+            "TransactionReference": ""
+        },
+        "Shipment": {
+            "InquiryNumber": {
+                "Code": "01",
+                "Description": "ShipmentIdentificationNumber",
+                "Value": "1Z7586X30315192479"
+            },
+            "ShipperNumber": "7586X3",
+            "ShipmentAddress": [
+                {
+                    "Type": {
+                        "Code": "01",
+                        "Description": "Shipper Address"
+                    },
+                    "Address": {
+                        "AddressLine": "1507 E HIGHWAY A",
+                        "City": "WENTZVILLE",
+                        "StateProvinceCode": "MO",
+                        "PostalCode": "63385   5625",
+                        "CountryCode": "US"
+                    }
+                },
+                {
+                    "Type": {
+                        "Code": "02",
+                        "Description": "ShipTo Address"
+                    },
+                    "Address": {
+                        "City": "MILL CREEK",
+                        "StateProvinceCode": "WA",
+                        "PostalCode": "98012",
+                        "CountryCode": "US"
+                    }
+                }
+            ],
+            "ShipmentWeight": {
+                "UnitOfMeasurement": {
+                    "Code": "LBS"
+                },
+                "Weight": "157.70"
+            },
+            "Service": {
+                "Code": "003",
+                "Description": "UPS GROUND"
+            },
+            "ReferenceNumber": [
+                {
+                    "Code": "01",
+                    "Value": "106234884"
+                },
+                {
+                    "Code": "01",
+                    "Value": "1302"
+                }
+            ],
+            "PickupDate": "20180305",
+            "DeliveryDetail": {
+                "Type": {
+                    "Code": "03",
+                    "Description": "Scheduled Delivery"
+                },
+                "Date": "20180309",
+                "Time": "235900"
+            },
+            "Package": [
+                {
+                    "TrackingNumber": "1Z7586X30328070460",
+                    "Activity": [
+                        {
+                            "ActivityLocation": {
+                                "Address": {
+                                    "City": "HODGKINS",
+                                    "StateProvinceCode": "IL",
+                                    "CountryCode": "US"
+                                }
+                            },
+                            "Status": {
+                                "Type": "I",
+                                "Description": "Departure Scan",
+                                "Code": "DP"
+                            },
+                            "Date": "20180306",
+                            "Time": "103500"
+                        },
+                        {
+                            "ActivityLocation": {
+                                "Address": {
+                                    "City": "HODGKINS",
+                                    "StateProvinceCode": "IL",
+                                    "CountryCode": "US"
+                                }
+                            },
+                            "Status": {
+                                "Type": "I",
+                                "Description": "Arrival Scan",
+                                "Code": "AR"
+                            },
+                            "Date": "20180306",
+                            "Time": "025000"
+                        },
+                        {
+                            "ActivityLocation": {
+                                "Address": {
+                                    "City": "EARTH CITY",
+                                    "StateProvinceCode": "MO",
+                                    "CountryCode": "US"
+                                }
+                            },
+                            "Status": {
+                                "Type": "I",
+                                "Description": "Departure Scan",
+                                "Code": "DP"
+                            },
+                            "Date": "20180305",
+                            "Time": "203600"
+                        },
+                        {
+                            "ActivityLocation": {
+                                "Address": {
+                                    "City": "EARTH CITY",
+                                    "StateProvinceCode": "MO",
+                                    "CountryCode": "US"
+                                }
+                            },
+                            "Status": {
+                                "Type": "I",
+                                "Description": "Origin Scan",
+                                "Code": "OR"
+                            },
+                            "Date": "20180305",
+                            "Time": "194400"
+                        },
+                        {
+                            "ActivityLocation": {
+                                "Address": {
+                                    "CountryCode": "US"
+                                }
+                            },
+                            "Status": {
+                                "Type": "M",
+                                "Description": "Order Processed: Ready for UPS",
+                                "Code": "MP"
+                            },
+                            "Date": "20180305",
+                            "Time": "191200"
+                        }
+                    ],
+                    "Message": {
+                        "Code": "01",
+                        "Description": "On Time"
+                    },
+                    "PackageWeight": {
+                        "UnitOfMeasurement": {
+                            "Code": "LBS"
+                        },
+                        "Weight": "72.70"
+                    },
+                    "ReferenceNumber": [
+                        {
+                            "Code": "01",
+                            "Value": "106234884"
+                        },
+                        {
+                            "Code": "01",
+                            "Value": "1302"
+                        },
+                        {
+                            "Code": "01",
+                            "Value": "3/3/2018 7:47:30 PM"
+                        }
+                    ]
+                },
+                {
+                    "TrackingNumber": "1Z7586X30315192479",
+                    "Activity": [
+                        {
+                            "ActivityLocation": {
+                                "Address": {
+                                    "City": "HODGKINS",
+                                    "StateProvinceCode": "IL",
+                                    "CountryCode": "US"
+                                }
+                            },
+                            "Status": {
+                                "Type": "I",
+                                "Description": "Departure Scan",
+                                "Code": "DP"
+                            },
+                            "Date": "20180306",
+                            "Time": "101000"
+                        },
+                        {
+                            "ActivityLocation": {
+                                "Address": {
+                                    "City": "HODGKINS",
+                                    "StateProvinceCode": "IL",
+                                    "CountryCode": "US"
+                                }
+                            },
+                            "Status": {
+                                "Type": "I",
+                                "Description": "Arrival Scan",
+                                "Code": "AR"
+                            },
+                            "Date": "20180306",
+                            "Time": "025000"
+                        },
+                        {
+                            "ActivityLocation": {
+                                "Address": {
+                                    "City": "EARTH CITY",
+                                    "StateProvinceCode": "MO",
+                                    "CountryCode": "US"
+                                }
+                            },
+                            "Status": {
+                                "Type": "I",
+                                "Description": "Departure Scan",
+                                "Code": "DP"
+                            },
+                            "Date": "20180305",
+                            "Time": "203600"
+                        },
+                        {
+                            "ActivityLocation": {
+                                "Address": {
+                                    "City": "EARTH CITY",
+                                    "StateProvinceCode": "MO",
+                                    "CountryCode": "US"
+                                }
+                            },
+                            "Status": {
+                                "Type": "I",
+                                "Description": "Origin Scan",
+                                "Code": "OR"
+                            },
+                            "Date": "20180305",
+                            "Time": "194200"
+                        },
+                        {
+                            "ActivityLocation": {
+                                "Address": {
+                                    "CountryCode": "US"
+                                }
+                            },
+                            "Status": {
+                                "Type": "M",
+                                "Description": "Order Processed: Ready for UPS",
+                                "Code": "MP"
+                            },
+                            "Date": "20180305",
+                            "Time": "191200"
+                        }
+                    ],
+                    "Message": {
+                        "Code": "01",
+                        "Description": "On Time"
+                    },
+                    "PackageWeight": {
+                        "UnitOfMeasurement": {
+                            "Code": "LBS"
+                        },
+                        "Weight": "85.00"
+                    },
+                    "ReferenceNumber": [
+                        {
+                            "Code": "01",
+                            "Value": "106234884"
+                        },
+                        {
+                            "Code": "01",
+                            "Value": "1302"
+                        },
+                        {
+                            "Code": "01",
+                            "Value": "3/3/2018 7:47:30 PM"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

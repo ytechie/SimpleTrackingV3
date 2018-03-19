@@ -59,6 +59,15 @@ describe('Package Attributes', () => {
     });
 });
 
+describe('Multi-package shipment', () => {
+    it('Should return correct package', () => {
+        let sample = loadSample('1Z7586X30315192479');
+        let td = UpsTracker.UpsTracker.StandardizeTrackingData(sample);
+
+        td.trackingNumber.should.equal('1Z7586X30315192479')
+    });
+});
+
 function loadSample(name) {
     let contents = fs.readFileSync(path.resolve(__dirname, 'sampleResponses/' + name + '.txt'));
     let jsonObj = JSON.parse(contents.toString());
