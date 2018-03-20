@@ -30,3 +30,7 @@ In VSCode, put the following snippet in your configuration to hide .js files:
         "**/*.js.map": {
             "when": "$(basename)"
         }
+
+## Deploying to Kubernetes
+
+kubectl apply -f https://raw.githubusercontent.com/ytechie/SimpleTrackingV3/master/simpletracking-k8s.yaml
