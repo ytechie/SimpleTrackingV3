@@ -75,7 +75,7 @@ app.get('/track/:trackingNumber?', function (req, res) {
 
     tracker.Track(req.params.trackingNumber).then((trackData) => {
         console.log('UI received tracking data');
-        res.render('track.hbs', { trackData: trackData });
+        res.render('track.hbs', { trackData: trackData, trackDataJson: new handlebars.SafeString(JSON.stringify(trackData)) });
     }).catch((err) => {
         console.error('Error getting tracking info: ' + err);
         res.send(err);
