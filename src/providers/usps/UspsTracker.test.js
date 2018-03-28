@@ -38,6 +38,16 @@ describe('USPS Sample Responses', function () {
         td.activity[6].location.city.should.equal('FORT WORTH');
         td.activity[6].location.state.should.equal('TX');
     });
+    it('Only has summary and 1 detail', async () => {
+        let sample = loadSample('92055901755477000065372881');
+        let td = await UspsTracker.ConvertResponseToTrackData(sample);
+        
+        td.activity[0].shortDescription.should.equal('Shipping Label Created, USPS Awaiting Item');
+    //td.activity[0].timestamp.should.equal(new Date(Date.parse('January 22, 2018, 10:00 am')));
+        td.activity[0].location.city.should.equal('YUMA');
+        td.activity[0].location.state.should.equal('AZ');
+        td.activity[0].location.zip.should.equal('85365');
+    });
 });
 
 describe('Parse USPS Track Detail', function () {
@@ -150,6 +160,9 @@ describe('Valid Tracking Numbers', function () {
     });
     it('Validate correct tracking number', () => {
         UspsTracker.IsValidTrackingNumber("9400110200883692641453").should.be.true;
+    });
+    it('Validate long real tracking number', () => {
+        UspsTracker.IsValidTrackingNumber("92055901755477000065372881").should.be.true;
     });
 });
 

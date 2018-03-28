@@ -1,5 +1,5 @@
-import * as request from 'request';
-import * as xml2js from 'xml2js';
+import * as request from 'request-promise';
+import * as xml2js from 'xml2js-es6-promise';
 import { TrackingData } from '../TrackingData';
 import { ITracker } from '../ITracker';
 import { ActivityData } from '../ActivityData';
@@ -25,31 +25,17 @@ export class UspsTracker implements ITracker {
             .replace('{trackingNumber}', trackingNumber);
     }
 
-    async Track(trackingNumber:string):Promise<TrackingData> {
-        return new Promise<TrackingData>((resolve, reject) => {
+    async Track(trackingNumber:string) {
             if(!UspsTracker.IsValidTrackingNumber(trackingNumber)) {
                 console.log('Not a USPS Tracking Number');
-                resolve(null);
-                return;
+                return null;
             }
 
-            let req = this.buildRequest(trackingNumber);
+            let reqUrl = this.buildRequest(trackingNumber);
 
-            request.post(req, async (error, response, body) => {
-                try { //Try catch is needed inside the request
-                    if(error) {
-                        console.log("Error in USPS tracker request: " + error);
-                        reject("Error in USPS tracker request: " + error);
-                        return;
-                    }
-
-                    let td = await UspsTracker.ConvertResponseToTrackData(body);
-                    resolve(td);
-                } catch(err) {
-                    reject(err);
-                }
-            });
-        });
+            let body = await request.get(reqUrl);
+            let td = await UspsTracker.ConvertResponseToTrackData(body);
+            return td;
     }
 
     public static IsValidTrackingNumber(trackingNumber:string) {
@@ -62,22 +48,10 @@ export class UspsTracker implements ITracker {
             || trackingNumber.length === 10;
     }
 
-    public static async ConvertResponseToTrackData(response:any):Promise<TrackingData> {
-        return new Promise<TrackingData>((resolve, reject) => {
-            let parser = new xml2js.Parser({explicitArray: false});
-            parser.parseString(response, (err, result) => {
-                try {
-                    if(err) {
-                        reject(err);
-                    } else {
-                        let td = UspsTracker.ParseJsonToTrackData(result)
-                        resolve(td);
-                    }
-                } catch(error) {
-                    reject(error);
-                }
-            });
-        });
+    public static async ConvertResponseToTrackData(response:any) {
+        let json = await xml2js(response, {explicitArray: false});
+        let td = UspsTracker.ParseJsonToTrackData(json)
+        return td;
     }
 
     static ParseJsonToTrackData(json:any):TrackingData {
@@ -86,10 +60,25 @@ export class UspsTracker implements ITracker {
 
         td.trackingNumber = json.TrackResponse.TrackInfo['$'].ID;
 
-        json.TrackResponse.TrackInfo.TrackDetail.forEach((event) => {
-            let ad = new ActivityData();
+        let detail = json.TrackResponse.TrackInfo.TrackDetail;
 
-            let parsed = this.ParseUspsTrackDetail(event);
+        if(detail instanceof Array) {
+            detail.forEach((event) => {
+                let ad = new ActivityData();
+
+                let parsed = this.ParseUspsTrackDetail(event);
+                if(parsed) {
+                    ad.location = parsed.location;
+                    ad.shortDescription = parsed.description;
+                    ad.timestamp = parsed.timestamp;
+
+                    td.activity.push(ad);
+                }
+            });
+        } else {
+            let summaryDetail = json.TrackResponse.TrackInfo.TrackDetail;
+            let ad = new ActivityData();
+            let parsed = this.ParseUspsTrackDetail(summaryDetail);
             if(parsed) {
                 ad.location = parsed.location;
                 ad.shortDescription = parsed.description;
@@ -97,7 +86,19 @@ export class UspsTracker implements ITracker {
 
                 td.activity.push(ad);
             }
-        });
+        }
+
+        /* Parsing doesn't currently work for the summary
+        let summary = json.TrackResponse.TrackInfo.TrackSummary;
+        let ad = new ActivityData();
+        let parsed = this.ParseUspsTrackDetail(summary);
+        if(parsed) {
+            ad.location = parsed.location;
+            ad.shortDescription = parsed.description;
+            ad.timestamp = parsed.timestamp;
+
+            td.activity.push(ad);
+        }*/
 
         td.usageRequirements = 'NOTICE: U.S.P.S. authorizes you to use U.S.P.S. tracking systems'
             + ' solely to track shipments tendered by or for you to U.S.P.S. for delivery and'
