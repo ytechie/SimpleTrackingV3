@@ -55,10 +55,11 @@ export class UspsTracker implements ITracker {
     public static IsValidTrackingNumber(trackingNumber:string) {
         //valid: Number types: https://tools.usps.com/go/TrackConfirmAction_input
 
-        return trackingNumber.length === 20
+        return trackingNumber.length === 26
             || trackingNumber.length === 22
-            || trackingNumber.length === 10
-            || trackingNumber.length === 13;
+            || trackingNumber.length === 20
+            || trackingNumber.length === 13
+            || trackingNumber.length === 10;
     }
 
     public static async ConvertResponseToTrackData(response:any):Promise<TrackingData> {
