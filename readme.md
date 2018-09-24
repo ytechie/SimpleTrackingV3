@@ -34,3 +34,7 @@ In VSCode, put the following snippet in your configuration to hide .js files:
 ## Deploying to Kubernetes
 
 kubectl apply -f https://raw.githubusercontent.com/ytechie/SimpleTrackingV3/master/simpletracking-k8s.yaml
+
+## Requirements
+
+There is currently a bug with sqlite3 and Node 10. You must use node 9.4.

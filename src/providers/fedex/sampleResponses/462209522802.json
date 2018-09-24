@@ -1,0 +1,206 @@
+{
+    "TrackReply": {
+        "$": {
+            "xmlns": "http://fedex.com/ws/track/v16"
+        },
+        "HighestSeverity": "SUCCESS",
+        "Notifications": {
+            "Severity": "SUCCESS",
+            "Source": "trck",
+            "Code": "0",
+            "Message": "Request was successfully processed.",
+            "LocalizedMessage": "Request was successfully processed."
+        },
+        "TransactionDetail": {
+            "CustomerTransactionId": "Track By Number_v16",
+            "Localization": {
+                "LanguageCode": "EN",
+                "LocaleCode": "US"
+            }
+        },
+        "Version": {
+            "ServiceId": "trck",
+            "Major": "16",
+            "Intermediate": "0",
+            "Minor": "0"
+        },
+        "CompletedTrackDetails": {
+            "HighestSeverity": "SUCCESS",
+            "Notifications": {
+                "Severity": "SUCCESS",
+                "Source": "trck",
+                "Code": "0",
+                "Message": "Request was successfully processed.",
+                "LocalizedMessage": "Request was successfully processed."
+            },
+            "DuplicateWaybill": "false",
+            "MoreData": "false",
+            "TrackDetailsCount": "0",
+            "TrackDetails": {
+                "Notification": {
+                    "Severity": "SUCCESS",
+                    "Source": "trck",
+                    "Code": "0",
+                    "Message": "Request was successfully processed.",
+                    "LocalizedMessage": "Request was successfully processed."
+                },
+                "TrackingNumber": "462209522802",
+                "TrackingNumberUniqueIdentifier": "2458382000~462209522802~FX",
+                "StatusDetail": {
+                    "CreationTime": "2018-09-21T00:00:00",
+                    "Code": "DL",
+                    "Description": "Delivered",
+                    "Location": {
+                        "City": "Manitowoc",
+                        "StateOrProvinceCode": "WI",
+                        "CountryCode": "US",
+                        "CountryName": "United States",
+                        "Residential": "false"
+                    }
+                },
+                "CarrierCode": "FDXE",
+                "OperatingCompanyOrCarrierDescription": "FedEx Express",
+                "OtherIdentifiers": [
+                    {
+                        "PackageIdentifier": {
+                            "Type": "PURCHASE_ORDER",
+                            "Value": "M146001_000846843"
+                        }
+                    },
+                    {
+                        "PackageIdentifier": {
+                            "Type": "SHIPPER_REFERENCE",
+                            "Value": "M146001_000846843"
+                        }
+                    }
+                ],
+                "Service": {
+                    "Type": "STANDARD_OVERNIGHT",
+                    "Description": "FedEx Standard Overnight",
+                    "ShortDescription": "SOS"
+                },
+                "PackageWeight": {
+                    "Units": "LB",
+                    "Value": "2.0"
+                },
+                "PackageDimensions": {
+                    "Length": "9",
+                    "Width": "6",
+                    "Height": "4",
+                    "Units": "IN"
+                },
+                "ShipmentWeight": {
+                    "Units": "LB",
+                    "Value": "2.0"
+                },
+                "Packaging": "Your Packaging",
+                "PackagingType": "YOUR_PACKAGING",
+                "PackageSequenceNumber": "1",
+                "PackageCount": "1",
+                "CreatorSoftwareId": "FXRS",
+                "SpecialHandlings": [
+                    {
+                        "Type": "DELIVER_WEEKDAY",
+                        "Description": "Deliver Weekday",
+                        "PaymentType": "OTHER"
+                    },
+                    {
+                        "Type": "RESIDENTIAL_DELIVERY",
+                        "Description": "Residential Delivery",
+                        "PaymentType": "OTHER"
+                    },
+                    {
+                        "Type": "INDIRECT_SIGNATURE_OPTION",
+                        "Description": "Indirect Signature Required",
+                        "PaymentType": "OTHER"
+                    }
+                ],
+                "Payments": {
+                    "Classification": "TRANSPORTATION",
+                    "Type": "THIRD_PARTY_ACCOUNT",
+                    "Description": "Third Party"
+                },
+                "ShipperAddress": {
+                    "City": "MEMPHIS",
+                    "StateOrProvinceCode": "TN",
+                    "CountryCode": "US",
+                    "CountryName": "United States",
+                    "Residential": "false"
+                },
+                "DatesOrTimes": [
+                    {
+                        "Type": "ACTUAL_DELIVERY",
+                        "DateOrTimestamp": "2018-09-21T14:43:00-05:00"
+                    },
+                    {
+                        "Type": "ACTUAL_PICKUP",
+                        "DateOrTimestamp": "2018-09-20T15:31:00-05:00"
+                    },
+                    {
+                        "Type": "SHIP",
+                        "DateOrTimestamp": "2018-09-20T00:00:00"
+                    },
+                    {
+                        "Type": "ACTUAL_TENDER",
+                        "DateOrTimestamp": "2018-09-20T15:31:00-05:00"
+                    }
+                ],
+                "DestinationAddress": {
+                    "City": "Manitowoc",
+                    "StateOrProvinceCode": "WI",
+                    "CountryCode": "US",
+                    "CountryName": "United States",
+                    "Residential": "false"
+                },
+                "ActualDeliveryAddress": {
+                    "City": "Manitowoc",
+                    "StateOrProvinceCode": "WI",
+                    "CountryCode": "US",
+                    "CountryName": "United States",
+                    "Residential": "false"
+                },
+                "DeliveryLocationType": "RECEPTIONIST_OR_FRONT_DESK",
+                "DeliveryLocationDescription": "Receptionist/Front Desk",
+                "DeliveryAttempts": "0",
+                "DeliverySignatureName": "M.MEISSNER",
+                "TotalUniqueAddressCountInConsolidation": "0",
+                "AvailableImages": {
+                    "Type": "SIGNATURE_PROOF_OF_DELIVERY"
+                },
+                "NotificationEventsAvailable": "ON_DELIVERY",
+                "DeliveryOptionEligibilityDetails": [
+                    {
+                        "Option": "INDIRECT_SIGNATURE_RELEASE",
+                        "Eligibility": "INELIGIBLE"
+                    },
+                    {
+                        "Option": "REDIRECT_TO_HOLD_AT_LOCATION",
+                        "Eligibility": "INELIGIBLE"
+                    },
+                    {
+                        "Option": "REROUTE",
+                        "Eligibility": "INELIGIBLE"
+                    },
+                    {
+                        "Option": "RESCHEDULE",
+                        "Eligibility": "INELIGIBLE"
+                    }
+                ],
+                "Events": {
+                    "Timestamp": "2018-09-21T14:43:00-05:00",
+                    "EventType": "DL",
+                    "EventDescription": "Delivered",
+                    "Address": {
+                        "City": "Manitowoc",
+                        "StateOrProvinceCode": "WI",
+                        "PostalCode": "54220",
+                        "CountryCode": "US",
+                        "CountryName": "United States",
+                        "Residential": "false"
+                    },
+                    "ArrivalLocation": "DELIVERY_LOCATION"
+                }
+            }
+        }
+    }
+}

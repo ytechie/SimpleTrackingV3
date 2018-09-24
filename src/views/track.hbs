@@ -35,6 +35,9 @@
             {{/if}}
         </tbody>
     </table>
+
+    <div id="map" style="height: 400px; width: 600px"></div>
+
     <p class="trackerTerms">
        Terms and Conditions: {{trackData.usageRequirements}}
     </p>
@@ -42,4 +45,9 @@
 
 <script>
     var trackData = {{trackDataJson}};
+</script>
+<script src="/map.js"></script>
+
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmvS6F72dNrnN8ZLbiFHWR7LMuE1aA9hI&callback=initMap">
 </script>

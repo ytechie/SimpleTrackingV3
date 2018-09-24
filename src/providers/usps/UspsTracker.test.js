@@ -118,6 +118,13 @@ describe('Parse USPS Track Detail', function () {
         results.timestamp.toLocaleString().should.eq('2018-2-16 07:18:00');
         results.location.city.should.equal('BOTHELL');        
     });
+    it('Origin Post is Preparing Shipment', () => {
+        let text = 'Origin Post is Preparing Shipment';
+        let results = UspsTracker.ParseUspsTrackDetail(text);
+        results.description.should.equal('Origin Post is Preparing Shipment');
+        //results.timestamp.toLocaleString().should.eq('2018-2-16 07:18:00');
+        results.location.city.should.equal('BOTHELL');        
+    });
 });
 
 describe('Address Parsing', function () {

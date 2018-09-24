@@ -55,8 +55,8 @@ export class Geocoder {
 
         let rows = await this.db.all(sql, sqlParams); 
         if(rows && rows.length >= 1) {
-            location.lat = rows[0].lat;
-            location.long = rows[0].lng;
+            location.lat = parseFloat(rows[0].lat);
+            location.long = parseFloat(rows[0].lng);
             return true;
         } else {
             return false;
@@ -115,8 +115,8 @@ export class Geocoder {
         let body = await request.get(url, {json:true});
 
         let loc = body.results[0].geometry.location;
-        location.lat = body.results[0].geometry.location.lat;
-        location.long = body.results[0].geometry.location.lng;
+        location.lat = parseFloat(body.results[0].geometry.location.lat);
+        location.long = parseFloat(body.results[0].geometry.location.lng);
 
         return true;
     }

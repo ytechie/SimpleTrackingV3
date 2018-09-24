@@ -8,7 +8,12 @@ chai.should();
 
 describe('Fedex Sample Test Suite', function () {
     it('Shipment information sent to FedEx', function () {
-        let sample = loadSample('449044304137821');
+        let sample = loadSample('789536724391');
+        let td = FedexTracker.FedexTracker.ConvertJsonToStandardFormat(sample);
+        td.should.be.not.null;
+    });
+    it('Delivered', function () {
+        let sample = loadSample('462209522802');
         let td = FedexTracker.FedexTracker.ConvertJsonToStandardFormat(sample);
         td.should.be.not.null;
     });

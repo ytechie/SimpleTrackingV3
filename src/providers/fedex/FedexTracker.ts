@@ -1,3 +1,5 @@
+import * as fs from 'fs';
+import * as path from 'path';
 import * as request from 'request-promise';
 import * as xml2js from 'xml2js-es6-promise';
 import { TrackingData } from '../TrackingData';
@@ -5,16 +7,9 @@ import { ITracker } from '../ITracker';
 import { ActivityData } from '../ActivityData';
 
 export class FedexTracker implements ITracker {
-    FEDEX_REQUEST_TEMPLATE = '<TrackRequest xmlns=\'http://fedex.com/ws/track/v3\'><WebAuthenticationDetail><UserCredential><Key>{key}</Key>'
-        + '<Password>{password}</Password></UserCredential></WebAuthenticationDetail><ClientDetail>'
-        + '<AccountNumber>{accountNumber}</AccountNumber><MeterNumber>{meterNumber}</MeterNumber></ClientDetail>'
-        + '<TransactionDetail><CustomerTransactionId>ActiveShipping</CustomerTransactionId></TransactionDetail>'
-        + '<Version><ServiceId>trck</ServiceId><Major>3</Major><Intermediate>0</Intermediate><Minor>0</Minor></Version>'
-        + '<PackageIdentifier><Value>{trackingNumber}</Value><Type>TRACKING_NUMBER_OR_DOORTAG</Type></PackageIdentifier>'
-        + '<IncludeDetailedScans>1</IncludeDetailedScans></TrackRequest>';
+    FEDEX_API_URL = "https://wsbeta.fedex.com:443/web-services/track";
 
-    FEDEX_API_URL = "https://gatewaybeta.fedex.com/xml";
-    //FEDEX_API_URL = "https://ws.fedex.com/web-services";
+    trackRequestTemplate:string = '';
 
     key:string;
     password:string;
@@ -29,7 +24,12 @@ export class FedexTracker implements ITracker {
     }
 
     private buildRequest(trackingNumber:string) {
-        return this.FEDEX_REQUEST_TEMPLATE
+        if(this.trackRequestTemplate.length === 0) {
+            let templatePath = path.join(__dirname, 'RequestTemplate.xml');
+            this.trackRequestTemplate = fs.readFileSync(templatePath).toString();
+        }
+
+        return this.trackRequestTemplate 
             .replace('{key}', this.key)
             .replace('{password}', this.password)
             .replace('{accountNumber}', this.accountNumber)
@@ -49,12 +49,16 @@ export class FedexTracker implements ITracker {
                 body:req,
                 headers:
                     {
-                        'Host': 'gatewaybeta.fedex.com:443',
+                        //'Host': 'wsbeta.fedex.com:443',
                     }
         };
 
         let body = await request.post(this.FEDEX_API_URL, options);
         let json = await xml2js(body, {explicitArray: false});
+
+        //Unwrap the SOAP envelope
+        json = json['SOAP-ENV:Envelope']['SOAP-ENV:Body'];
+
         let td = FedexTracker.ConvertJsonToStandardFormat(json);
         return td;
     }
@@ -72,14 +76,15 @@ export class FedexTracker implements ITracker {
         }
 
         //Check for invalid tracking number code
-        if(results.TrackReply.Notifications && results.TrackReply.Notifications.Code === "6035") {
+        if(results.TrackReply.CompletedTrackDetails.TrackDetails.Notification.Code === "9040") {
             console.log('Fedex says they have no data for the package');
             return null;
         }
 
         let td = new TrackingData();
         td.activity = new Array<ActivityData>();
-        let trackDetail = results.TrackReply.TrackDetails;
+        let a = results.TrackReply.CompletedTrackDetails.TrackDetails;
+        let trackDetail = results.TrackReply.CompletedTrackDetails.TrackDetails;
 
         td.trackingNumber = trackDetail.TrackingNumber;
         if(trackDetail.PackageWeight) {

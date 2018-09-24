@@ -7,3 +7,5 @@ node_modules
 !src/static/*.js
 .env
 src/geocode.db
+coverage/
+.nyc_output/

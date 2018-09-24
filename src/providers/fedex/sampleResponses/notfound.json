@@ -1,24 +1,78 @@
 {
     "TrackReply": {
         "$": {
-            "xmlns": "http://fedex.com/ws/track/v3"
+            "xmlns": "http://fedex.com/ws/track/v16"
         },
-        "HighestSeverity": "ERROR",
+        "HighestSeverity": "SUCCESS",
         "Notifications": {
-            "Severity": "ERROR",
+            "Severity": "SUCCESS",
             "Source": "trck",
-            "Code": "6035",
-            "Message": "Invalid tracking numbers.   Please check the following numbers and resubmit.",
-            "LocalizedMessage": "Invalid tracking numbers.   Please check the following numbers and resubmit."
+            "Code": "0",
+            "Message": "Request was successfully processed.",
+            "LocalizedMessage": "Request was successfully processed."
         },
         "TransactionDetail": {
-            "CustomerTransactionId": "ActiveShipping"
+            "CustomerTransactionId": "Track By Number_v16",
+            "Localization": {
+                "LanguageCode": "EN",
+                "LocaleCode": "US"
+            }
         },
         "Version": {
             "ServiceId": "trck",
-            "Major": "3",
+            "Major": "16",
             "Intermediate": "0",
             "Minor": "0"
+        },
+        "CompletedTrackDetails": {
+            "HighestSeverity": "SUCCESS",
+            "Notifications": {
+                "Severity": "SUCCESS",
+                "Source": "trck",
+                "Code": "0",
+                "Message": "Request was successfully processed.",
+                "LocalizedMessage": "Request was successfully processed."
+            },
+            "DuplicateWaybill": "false",
+            "MoreData": "false",
+            "TrackDetailsCount": "0",
+            "TrackDetails": {
+                "Notification": {
+                    "Severity": "ERROR",
+                    "Source": "trck",
+                    "Code": "9040",
+                    "Message": "This tracking number cannot be found. Please check the number or contact the sender.",
+                    "LocalizedMessage": "This tracking number cannot be found. Please check the number or contact the sender."
+                },
+                "TrackingNumber": "652376543276",
+                "StatusDetail": {
+                    "Location": {
+                        "Residential": "false"
+                    }
+                },
+                "PackageSequenceNumber": "0",
+                "PackageCount": "0",
+                "DeliveryAttempts": "0",
+                "TotalUniqueAddressCountInConsolidation": "0",
+                "DeliveryOptionEligibilityDetails": [
+                    {
+                        "Option": "INDIRECT_SIGNATURE_RELEASE",
+                        "Eligibility": "INELIGIBLE"
+                    },
+                    {
+                        "Option": "REDIRECT_TO_HOLD_AT_LOCATION",
+                        "Eligibility": "INELIGIBLE"
+                    },
+                    {
+                        "Option": "REROUTE",
+                        "Eligibility": "INELIGIBLE"
+                    },
+                    {
+                        "Option": "RESCHEDULE",
+                        "Eligibility": "INELIGIBLE"
+                    }
+                ]
+            }
         }
     }
 }

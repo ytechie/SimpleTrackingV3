@@ -1,0 +1,199 @@
+{
+    "TrackReply": {
+        "$": {
+            "xmlns": "http: //fedex.com/ws/track/v16"
+        },
+        "HighestSeverity": "SUCCESS",
+        "Notifications": {
+            "Severity": "SUCCESS",
+            "Source": "trck",
+            "Code": "0",
+            "Message": "Request was successfully processed.",
+            "LocalizedMessage": "Request was successfully processed."
+        },
+        "TransactionDetail": {
+            "CustomerTransactionId": "Track By Number_v16",
+            "Localization": {
+                "LanguageCode": "EN",
+                "LocaleCode": "US"
+            }
+        },
+        "Version": {
+            "ServiceId": "trck",
+            "Major": "16",
+            "Intermediate": "0",
+            "Minor": "0"
+        },
+        "CompletedTrackDetails": {
+            "HighestSeverity": "SUCCESS",
+            "Notifications": {
+                "Severity": "SUCCESS",
+                "Source": "trck",
+                "Code": "0",
+                "Message": "Request was successfully processed.",
+                "LocalizedMessage": "Request was successfully processed."
+            },
+            "DuplicateWaybill": "false",
+            "MoreData": "false",
+            "TrackDetailsCount": "0",
+            "TrackDetails": {
+                "Notification": {
+                    "Severity": "SUCCESS",
+                    "Source": "trck",
+                    "Code": "0",
+                    "Message": "Request was successfully processed.",
+                    "LocalizedMessage": "Request was successfully processed."
+                },
+                "TrackingNumber": "789536724391",
+                "TrackingNumberUniqueIdentifier": "12018~789536724391~FDEG",
+                "StatusDetail": {
+                    "CreationTime": "2018-02-02T00:00:00",
+                    "Code": "DL",
+                    "Description": "Delivered",
+                    "Location": {
+                        "City": "Bothell",
+                        "StateOrProvinceCode": "WA",
+                        "CountryCode": "US",
+                        "CountryName": "United States",
+                        "Residential": "false"
+                    }
+                },
+                "CarrierCode": "FDXG",
+                "OperatingCompanyOrCarrierDescription": "FedEx Ground",
+                "OtherIdentifiers": [
+                    {
+                        "PackageIdentifier": {
+                            "Type": "TRACKING_NUMBER_OR_DOORTAG",
+                            "Value": "DT722248529007"
+                        }
+                    },
+                    {
+                        "PackageIdentifier": {
+                            "Type": "INVOICE",
+                            "Value": "B48021445"
+                        }
+                    }
+                ],
+                "Service": {
+                    "Type": "FEDEX_GROUND",
+                    "Description": "FedEx Ground",
+                    "ShortDescription": "FG"
+                },
+                "PackageWeight": {
+                    "Units": "LB",
+                    "Value": "8.0"
+                },
+                "PackageDimensions": {
+                    "Length": "13",
+                    "Width": "9",
+                    "Height": "4",
+                    "Units": "IN"
+                },
+                "Packaging": "Package",
+                "PackagingType": "YOUR_PACKAGING",
+                "PhysicalPackagingType": "PACKAGE",
+                "PackageSequenceNumber": "1",
+                "PackageCount": "1",
+                "SpecialHandlings": {
+                    "Type": "DIRECT_SIGNATURE_OPTION",
+                    "Description": "Direct Signature Required",
+                    "PaymentType": "OTHER"
+                },
+                "Payments": {
+                    "Classification": "TRANSPORTATION",
+                    "Type": "SHIPPER_ACCOUNT",
+                    "Description": "Shipper"
+                },
+                "ShipperAddress": {
+                    "City": "Mountain View",
+                    "StateOrProvinceCode": "CA",
+                    "CountryCode": "US",
+                    "CountryName": "United States",
+                    "Residential": "false"
+                },
+                "OriginLocationAddress": {
+                    "City": "NEWARK",
+                    "StateOrProvinceCode": "CA",
+                    "CountryCode": "US",
+                    "CountryName": "United States",
+                    "Residential": "false"
+                },
+                "DatesOrTimes": [
+                    {
+                        "Type": "ACTUAL_DELIVERY",
+                        "DateOrTimestamp": "2018-02-02T12:54:08-08:00"
+                    },
+                    {
+                        "Type": "ACTUAL_PICKUP",
+                        "DateOrTimestamp": "2018-01-30T00:00:00"
+                    },
+                    {
+                        "Type": "SHIP",
+                        "DateOrTimestamp": "2018-01-30T00:00:00"
+                    },
+                    {
+                        "Type": "ACTUAL_TENDER",
+                        "DateOrTimestamp": "2018-01-30T00:00:00"
+                    },
+                    {
+                        "Type": "ANTICIPATED_TENDER",
+                        "DateOrTimestamp": "2018-01-30T00:00:00"
+                    }
+                ],
+                "DestinationAddress": {
+                    "City": "MILL CREEK",
+                    "StateOrProvinceCode": "WA",
+                    "CountryCode": "US",
+                    "CountryName": "United States",
+                    "Residential": "false"
+                },
+                "ActualDeliveryAddress": {
+                    "City": "Bothell",
+                    "StateOrProvinceCode": "WA",
+                    "CountryCode": "US",
+                    "CountryName": "United States",
+                    "Residential": "false"
+                },
+                "DeliveryAttempts": "0",
+                "DeliverySignatureName": "MYOUNG",
+                "TotalUniqueAddressCountInConsolidation": "0",
+                "AvailableImages": {
+                    "Type": "SIGNATURE_PROOF_OF_DELIVERY"
+                },
+                "NotificationEventsAvailable": "ON_DELIVERY",
+                "DeliveryOptionEligibilityDetails": [
+                    {
+                        "Option": "INDIRECT_SIGNATURE_RELEASE",
+                        "Eligibility": "INELIGIBLE"
+                    },
+                    {
+                        "Option": "REDIRECT_TO_HOLD_AT_LOCATION",
+                        "Eligibility": "INELIGIBLE"
+                    },
+                    {
+                        "Option": "REROUTE",
+                        "Eligibility": "INELIGIBLE"
+                    },
+                    {
+                        "Option": "RESCHEDULE",
+                        "Eligibility": "INELIGIBLE"
+                    }
+                ],
+                "Events": {
+                    "Timestamp": "2018-02-02T12:54:08-08:00",
+                    "EventType": "DL",
+                    "EventDescription": "Delivered",
+                    "Address": {
+                        "City": "Bothell",
+                        "StateOrProvinceCode": "WA",
+                        "PostalCode": "98012",
+                        "CountryCode": "US",
+                        "CountryName": "United States",
+                        "Residential": "false"
+                    },
+                    "ArrivalLocation": "DELIVERY_LOCATION"
+                }
+            }
+        }
+    }
+}
