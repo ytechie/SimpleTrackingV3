@@ -1,6 +1,7 @@
 FROM nginx:alpine
 
 RUN apk add --update nodejs
+RUN apk add npm
 RUN apk add bash
 
 COPY ./src /usr/share/node
