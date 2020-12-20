@@ -32,7 +32,11 @@ app.use(express.static(path.resolve(__dirname, 'static')));
 app.engine('hbs', expressHandlebars({
         defaultLayout: path.resolve(__dirname, 'views/layouts/main.hbs'),
         partialsDir: path.resolve(__dirname, 'views/partials'),
-        layoutsDir: path.resolve(__dirname, 'views/layouts')
+        layoutsDir: path.resolve(__dirname, 'views/layouts'),
+        runtimeOptions: {
+            allowProtoPropertiesByDefault: true,
+            allowProtoMethodsByDefault: true
+        }
 }));
 app.set('view engine', 'hbs');
 app.set('views', path.resolve(__dirname, 'views'));

@@ -11,7 +11,7 @@ export class ActivityData {
         this.location = new Location();
     }
 
-    get locationDislpay() {
+    get locationDisplay() {
         let parts = new Array<string>();
         if(this.location.city) parts.push(this.location.city);
         if(this.location.state) parts.push(this.location.state);
