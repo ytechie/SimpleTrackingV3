@@ -7,6 +7,8 @@ RUN apk add bash
 COPY ./src /usr/share/node
 COPY ./package.json /usr/share/node
 
+RUN echo "`date -u`" > /usr/share/node/static/when.txt
+
 WORKDIR /usr/share/node/
 RUN npm install
 
