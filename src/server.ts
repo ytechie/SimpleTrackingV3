@@ -5,6 +5,7 @@ import * as handlebars from 'handlebars';
 import * as expressHandlebars from 'express-handlebars';
 import { Tracker } from './providers/Tracker'
 import { RssFormatter } from './providers/RssFormatter';
+import { Info } from './info';
 
 var express = require('express');
 var app = express();
@@ -84,6 +85,12 @@ app.get('/track/:trackingNumber?', function (req, res) {
         console.error('Error getting tracking info: ' + err);
         res.send(err);
     });
+});
+app.get('/info', function(req, res) {
+    const i = new Info();
+    i.Collect().then(() => {
+        res.render('info.hbs', i);
+    })
 });
 
 const port: number = 3080;

@@ -1,4 +1,6 @@
 import { TrackingData } from '../providers/TrackingData';
+import { TrackingDataRecord } from './TrackingDataRecord';
+
 import { Container, CosmosClient } from '@azure/cosmos';
 
 export class Cosmos {
@@ -12,10 +14,24 @@ export class Cosmos {
     }
 
     async SaveTrackingData(td:TrackingData) {
-        //Add an ID so upserts work
-        let tagged:any = td;
-        tagged.id = td.trackingNumber;
+        let tdClone:TrackingDataRecord = JSON.parse(JSON.stringify(td));
 
-        await this.container.items.upsert(tagged);
+        //Add an ID so upserts work
+        tdClone.id = td.trackingNumber;
+
+        //Don't need to keep storing usage requirements
+        tdClone.usageRequirements = null;
+
+        if(tdClone.activity && tdClone.activity.length > 0) {
+            tdClone.newestActivity = tdClone.activity[0];
+
+            tdClone.delivered = tdClone.activity[0].shortDescription.indexOf("Delivered") >= 0;
+        }
+
+        await this.container.items.upsert(tdClone);
+    }
+
+    async GetTrackingNumberCount() {
+        return await this.container.items.query("select count(1) from c");
     }
 }
