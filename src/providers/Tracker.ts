@@ -66,10 +66,14 @@ export class Tracker implements ITracker {
         let geocodeTracker = new GeocodeTracker(multiTracker);
         let cleanInput = new CleanInputTracker(geocodeTracker);
 
-        let cosmos = new Cosmos(process.env.COSMOS_CONNECTION_STRING);
-        let dbLogTracker = new DbLogTracker(cosmos, cleanInput);
-
-        this.rootTracker = dbLogTracker;
+        if(process.env.COSMOS_CONNECTION_STRING) {
+            let cosmos = new Cosmos(process.env.COSMOS_CONNECTION_STRING);
+            let dbLogTracker = new DbLogTracker(cosmos, cleanInput);
+    
+            this.rootTracker = dbLogTracker;
+        } else {
+            this.rootTracker = cleanInput;
+        }        
     }
 
     public async Track(trackingNumber:string):Promise<TrackingData> {
