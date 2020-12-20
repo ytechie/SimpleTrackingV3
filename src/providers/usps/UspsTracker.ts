@@ -35,6 +35,7 @@ export class UspsTracker implements ITracker {
 
             let body = await request.get(reqUrl);
             let td = await UspsTracker.ConvertResponseToTrackData(body);
+            td.lastHardFetch = new Date();
             return td;
     }
 
@@ -57,6 +58,7 @@ export class UspsTracker implements ITracker {
 
     static ParseJsonToTrackData(json:any):TrackingData {
         let td = new TrackingData();
+        td.trackerName = "USPS";
         td.activity = new Array<ActivityData>();
 
         td.trackingNumber = json.TrackResponse.TrackInfo['$'].ID;

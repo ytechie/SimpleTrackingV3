@@ -23,6 +23,7 @@ export class SimTracker implements ITracker {
             fs.readFile(path.resolve(__dirname, 'sim1.txt'), (err, data) => {
                 var utd = JSON.parse(data.toString());
                 let td = UpsTracker.StandardizeTrackingData(utd);
+                td.lastHardFetch = new Date();
                 resolve(td);
             });
             } catch(err) {

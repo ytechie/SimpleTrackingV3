@@ -10,8 +10,7 @@ export class TrackingData {
     usageRequirements: string;
     serviceType: string; //ground, etc.
     weight: string;
-    lastUpdated: Date;
-    sourceData: string;
+    lastHardFetch: Date;
     activity: ActivityData[];
 
     constructor() {

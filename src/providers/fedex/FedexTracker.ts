@@ -60,6 +60,7 @@ export class FedexTracker implements ITracker {
         json = json['SOAP-ENV:Envelope']['SOAP-ENV:Body'];
 
         let td = FedexTracker.ConvertJsonToStandardFormat(json);
+        td.lastHardFetch = new Date();
         return td;
     }
 
@@ -82,6 +83,7 @@ export class FedexTracker implements ITracker {
         }
 
         let td = new TrackingData();
+        td.trackerName = "FedEx";
         td.activity = new Array<ActivityData>();
         let a = results.TrackReply.CompletedTrackDetails.TrackDetails;
         let trackDetail = results.TrackReply.CompletedTrackDetails.TrackDetails;

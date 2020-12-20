@@ -39,6 +39,7 @@ export class UpsTracker implements ITracker {
                         reject("Error in UPS tracker request: " + error);
                     }
                     let td = UpsTracker.StandardizeTrackingData(body);
+                    td.lastHardFetch = new Date();
                     resolve(td);
                 } catch(err) {
                     reject(err);
