@@ -17,4 +17,4 @@ COPY nginx.conf /etc/nginx/nginx.conf
 CMD ["/usr/share/start.sh"]
 
 EXPOSE 80
-#EXPOSE 3000
+#EXPOSE 3080
