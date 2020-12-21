@@ -34,4 +34,16 @@ export class Cosmos {
     async GetTrackingNumberCount() {
         return await this.container.items.query("select count(1) from c");
     }
+
+    async GetCurrentPackageLocations():Promise<any[]> {
+        let results = await this.container.items.query(' \
+            SELECT c.newestActivity.location.lat, c.newestActivity.location.long \
+            FROM c \
+            Where IS_DEFINED(c.newestActivity.location.lat) \
+        ');
+
+        let fetched = await results.fetchAll();
+
+        return fetched.resources;
+    }
 }

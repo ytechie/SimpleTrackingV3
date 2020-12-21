@@ -1,4 +1,17 @@
 <div class="container">
     <h1>Cool info</h1>
     <p>Number of packages: {{ numberOfPackages }}</p>
+    <br/>
+    <h2>Active Packages</h2>
+    <div id="map" style="height: 400px; width: 600px"></div>
 </div>
+
+
+<script>
+    var latestLocations = {{packageLocationJson}};
+</script>
+<script src="/info.js"></script>
+
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmvS6F72dNrnN8ZLbiFHWR7LMuE1aA9hI&callback=initMap">
+</script>
