@@ -80,14 +80,19 @@ app.get('/track/:trackingNumber?', function (req, res) {
 
     tracker.Track(req.params.trackingNumber).then((trackData) => {
         console.log('UI received tracking data');
-        res.render('track.hbs', { trackData: trackData, trackDataJson: new handlebars.SafeString(JSON.stringify(trackData)) });
+        res.render('track.hbs', {
+            trackData: trackData,
+            trackDataJson: new handlebars.SafeString(JSON.stringify(trackData)),
+            googleMapsKey: process.env.GOOGLE_MAPS_KEY
+        });
     }).catch((err) => {
         console.error('Error getting tracking info: ' + err);
         res.send(err);
     });
 });
 app.get('/info', function(req, res) {
-    const i = new Info();
+    const i = new Info() as any;
+    i.googleMapsKey = process.env.GOOGLE_MAPS_KEY;
     i.Collect().then(() => {
         res.render('info.hbs', i);
     })
