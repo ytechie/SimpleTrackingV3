@@ -1,5 +1,3 @@
-<script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0"></script>
-
 <div class="container">
     <h3>Tracking Results for {{trackData.trackingNumber}}</h3>
     <a href="/">&lt; Track Another</a><br />
@@ -46,7 +44,7 @@
 <script>
     var trackData = {{trackDataJson}};
 </script>
-<script src="/map.js"></script>
+<script defer src="/map.js"></script>
 
 <script async defer
     src="https://maps.googleapis.com/maps/api/js?key={{ googleMapsKey }}&callback=initMap">
