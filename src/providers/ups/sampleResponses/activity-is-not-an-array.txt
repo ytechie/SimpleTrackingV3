@@ -1,0 +1,115 @@
+{
+    "TrackResponse": {
+        "Response": {
+            "ResponseStatus": {
+                "Code": "1",
+                "Description": "Success"
+            },
+            "TransactionReference": ""
+        },
+        "Shipment": {
+            "InquiryNumber": {
+                "Code": "01",
+                "Description": "ShipmentIdentificationNumber",
+                "Value": "1ZX86529A691322590"
+            },
+            "ShipperNumber": "X86529",
+            "ShipmentAddress": [
+                {
+                    "Type": {
+                        "Code": "01",
+                        "Description": "Shipper Address"
+                    },
+                    "Address": {
+                        "AddressLine": "S 1800 MAIN ST",
+                        "City": "PARIS",
+                        "StateProvinceCode": "KY",
+                        "PostalCode": "403611109",
+                        "CountryCode": "US"
+                    }
+                },
+                {
+                    "Type": {
+                        "Code": "02",
+                        "Description": "ShipTo Address"
+                    },
+                    "Address": {
+                        "City": "APPLETON",
+                        "StateProvinceCode": "WI",
+                        "PostalCode": "54914",
+                        "CountryCode": "US"
+                    }
+                }
+            ],
+            "ShipmentWeight": {
+                "UnitOfMeasurement": {
+                    "Code": "LBS"
+                },
+                "Weight": "0.20"
+            },
+            "Service": {
+                "Code": "002",
+                "Description": "UPS 2nd Day Air"
+            },
+            "ReferenceNumber": {
+                "Code": "01",
+                "Value": "3727412"
+            },
+            "PickupDate": "20201222",
+            "DeliveryDetail": {
+                "Type": {
+                    "Code": "03",
+                    "Description": "Scheduled Delivery"
+                },
+                "Date": "20201224"
+            },
+            "Package": {
+                "TrackingNumber": "1ZX86529A691322590",
+                "PackageServiceOption": [
+                    {
+                        "Type": {
+                            "Code": "02",
+                            "Description": "Adult Signature Required"
+                        }
+                    },
+                    {
+                        "Type": {
+                            "Code": "043",
+                            "Description": "Customized Delivery Confirmation"
+                        }
+                    },
+                    {
+                        "Type": {
+                            "Code": "010",
+                            "Description": "Hundredweight"
+                        }
+                    }
+                ],
+                "Activity": {
+                    "ActivityLocation": {
+                        "Address": {
+                            "CountryCode": "US"
+                        }
+                    },
+                    "Status": {
+                        "Type": "M",
+                        "Description": "Shipper created a label, UPS has not received the package yet.",
+                        "Code": "MP"
+                    },
+                    "Date": "20201222",
+                    "Time": "101624"
+                },
+                "PackageWeight": {
+                    "UnitOfMeasurement": {
+                        "Code": "LBS"
+                    },
+                    "Weight": "0.20"
+                },
+                "ReferenceNumber": {
+                    "Code": "01",
+                    "Value": "3727412"
+                }
+            }
+        }
+    }
+}

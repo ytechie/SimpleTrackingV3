@@ -57,6 +57,12 @@ describe('Package Attributes', () => {
         td.estimatedDelivery.should.be.eql(new Date(Date.parse('2018-02-07')));
         //20180207
     });
+    it('Should handle activity not being an array', () => {
+        let sample = loadSample('activity-is-not-an-array');
+        let td = UpsTracker.UpsTracker.StandardizeTrackingData(sample);
+
+        td.estimatedDelivery.should.be.eql(new Date(Date.parse('2020-12-23 18:00')));
+    });
 });
 
 describe('Multi-package shipment', () => {

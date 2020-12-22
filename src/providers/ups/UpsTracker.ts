@@ -122,6 +122,12 @@ export class UpsTracker implements ITracker {
         let activity = p.Activity;
         td.activity = new Array<ActivityData>();
         if(activity) {
+            if(!(activity instanceof Array)) {
+                let activityArr = [];
+                activityArr.push(activity);
+                activity = activityArr;
+            }
+
             activity.forEach(a => {
                 let newActivity = new ActivityData();
                 if(a.ActivityLocation && a.ActivityLocation.Address) {
