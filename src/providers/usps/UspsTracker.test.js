@@ -56,7 +56,7 @@ describe('Parse USPS Track Detail', function () {
         let results = UspsTracker.ParseUspsTrackDetail(text);
 
         results.description.should.equal('Departed Post Office');
-        results.timestamp.toLocaleString().should.eq('2017-5-8 18:42:00');
+        results.timestamp.toISOString().should.equal('2017-05-08T23:42:00.000Z');
         results.location.city.should.equal('PALM COAST');
     });
     it('Description with comma, 6 parts', () => {
@@ -64,7 +64,7 @@ describe('Parse USPS Track Detail', function () {
         let results = UspsTracker.ParseUspsTrackDetail(text);
 
         results.description.should.equal('Payment of charges - Item being held, addressee being notified');
-        results.timestamp.toLocaleString().should.eq('2017-5-16 07:28:00');
+        results.timestamp.toISOString().should.eq('2017-05-16T12:28:00.000Z');
         results.location.countryCode.should.equal('ISRAEL');
     });
     it('Distribution center, 5 parts', () => {
@@ -72,7 +72,7 @@ describe('Parse USPS Track Detail', function () {
         let results = UspsTracker.ParseUspsTrackDetail(text);
 
         results.description.should.equal('Arrived at USPS Regional Origin Facility');
-        results.timestamp.toLocaleString().should.eq('2017-11-17 20:38:00');
+        results.timestamp.toISOString().should.eq('2017-11-18T02:38:00.000Z');
         results.location.city.should.equal('FORT WORTH');
     });
     it('5 parts', () => {
@@ -80,7 +80,7 @@ describe('Parse USPS Track Detail', function () {
         let results = UspsTracker.ParseUspsTrackDetail(text);
 
         results.description.should.equal('Addressee not available - Will attempt delivery on next working day');
-        results.timestamp.toLocaleString().should.eq('2017-5-16 12:35:00');
+        results.timestamp.toISOString().should.eq('2017-05-16T17:35:00.000Z');
         results.location.countryCode.should.equal('ISRAEL');
     });
     it('In transit - useless message', () => {
@@ -100,7 +100,7 @@ describe('Parse USPS Track Detail', function () {
         let results = UspsTracker.ParseUspsTrackDetail(text);
 
         results.description.should.equal('Shipping Label Created, USPS Awaiting Item');
-        results.timestamp.toLocaleString().should.eq('2018-1-18 07:12:00');
+        results.timestamp.toISOString().should.eq('2018-01-18T13:12:00.000Z');
         results.location.city.should.equal('REXFORD');
     });
     it('Single digit days', () => {
@@ -108,22 +108,20 @@ describe('Parse USPS Track Detail', function () {
         let results = UspsTracker.ParseUspsTrackDetail(text);
 
         results.description.should.equal('Arrived');
-        results.timestamp.toLocaleString().should.eq('2017-5-9 14:24:00');
+        results.timestamp.toISOString().should.eq('2017-05-09T19:24:00.000Z');
         results.location.city.should.equal('MIAMI');
     });
     it('February Misspelled (real prod bug)', () => {
         let text = 'Sorting Complete, February 16, 2018, 7:18 am, BOTHELL, WA 98012';
         let results = UspsTracker.ParseUspsTrackDetail(text);
         results.description.should.equal('Sorting Complete');
-        results.timestamp.toLocaleString().should.eq('2018-2-16 07:18:00');
+        results.timestamp.toISOString().should.eq('2018-02-16T13:18:00.000Z');
         results.location.city.should.equal('BOTHELL');        
     });
     it('Origin Post is Preparing Shipment', () => {
         let text = 'Origin Post is Preparing Shipment';
         let results = UspsTracker.ParseUspsTrackDetail(text);
-        results.description.should.equal('Origin Post is Preparing Shipment');
-        //results.timestamp.toLocaleString().should.eq('2018-2-16 07:18:00');
-        results.location.city.should.equal('BOTHELL');        
+        results.description.should.equal('Origin Post is Preparing Shipment'); 
     });
 });
 

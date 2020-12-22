@@ -112,6 +112,14 @@ export class UspsTracker implements ITracker {
     }
 
     public static ParseUspsTrackDetail(input:string) {
+        if(input === 'Origin Post is Preparing Shipment') {
+            return {
+                description: input,
+                location: new Location(),
+                timestamp: null
+            }
+        }
+
         //Don't look for the I because of casing
         if(input.indexOf('ransit to') > -1) {
             return null;
