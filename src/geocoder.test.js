@@ -1,6 +1,6 @@
 "use strict";
 const chai = require("chai");
-const Geocoder = require("./Geocoder").Geocoder;
+const Geocoder = require("./geocoder").Geocoder;
 const fs = require("fs");
 const path = require("path");
 

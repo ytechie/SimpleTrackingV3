@@ -9,6 +9,7 @@ import { UspsTracker } from "./usps/UspsTracker";
 import { DbLogTracker } from "./DbLogTracker";
 import { GeocodeTracker } from "./GeocodeTracker";
 import { Cosmos } from "../db/Cosmos";
+import { CachingTracker } from "./CachingTracker";
 
 export class Tracker implements ITracker {
     rootTracker:ITracker;
@@ -64,15 +65,21 @@ export class Tracker implements ITracker {
 
         let multiTracker = new MultiTracker(trackers);
         let geocodeTracker = new GeocodeTracker(multiTracker);
-        let cleanInput = new CleanInputTracker(geocodeTracker);
+        
 
         if(process.env.COSMOS_CONNECTION_STRING) {
             let cosmos = new Cosmos(process.env.COSMOS_CONNECTION_STRING);
-            let dbLogTracker = new DbLogTracker(cosmos, cleanInput);
+
+            //Clean input -> db log -> caching -> geocode
+
+            let cachingTracer = new CachingTracker(cosmos, geocodeTracker)
+            let dbLogTracker = new DbLogTracker(cosmos, cachingTracer);
+            let cleanInputTracker = new CleanInputTracker(dbLogTracker);
     
-            this.rootTracker = dbLogTracker;
+            this.rootTracker = cleanInputTracker;
         } else {
-            this.rootTracker = cleanInput;
+            let cleanInputTracker = new CleanInputTracker(geocodeTracker);
+            this.rootTracker = cleanInputTracker;
         }        
     }
 

@@ -31,6 +31,24 @@ export class Cosmos {
         await this.container.items.upsert(tdClone);
     }
 
+    async LoadTrackingData(trackingNumber:string): Promise<TrackingDataRecord> {
+        let qr = await this.container.items.query<TrackingDataRecord>(" \
+            SELECT * FROM c \
+            where c.id = '" + trackingNumber + "' \
+            and ( \
+                (c.delivered = true and c.lastHardFetch > DateTimeAdd('hh', -24, GetCurrentDateTime())) \
+                or (c.lastHardFetch > DateTimeAdd('mi', -15, GetCurrentDateTime())) \
+            ) \
+        ");
+
+        if(qr.hasMoreResults) {
+            let rec = await qr.fetchNext();
+            return rec.resources[0];
+        }
+
+        return null;
+    }
+
     async GetTrackingNumberCount() {
         return await this.container.items.query("select count(1) from c");
     }
