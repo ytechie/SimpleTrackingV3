@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<TrackResponse>
-    <TrackInfo ID="CW974653145US">
-        <TrackSummary>The item is currently in transit to the destination as of October 23, 2017 at 9:05 am.</TrackSummary>
-        <TrackDetail>In Transit to Destination, October 22, 2017, 9:05 am</TrackDetail>
-        <TrackDetail>In Transit to Destination, October 21, 2017, 9:05 am</TrackDetail>
-        <TrackDetail>USPS in possession of item, October 20, 2017, 11:05 am, MISSION, TX 78572</TrackDetail>
-    </TrackInfo>
-</TrackResponse>

@@ -6,10 +6,11 @@ import { ActivityData } from '../ActivityData';
 import { Location } from '../../Location';
 
 export class UspsTracker implements ITracker {
-    requestUrl:string = 'http://production.shippingapis.com/ShippingAPI.dll?'
-        + 'API=TrackV2&XML=<TrackRequest PASSWORD="{password}" USERID="{userId}">'
-        + '<TrackID ID="{trackingNumber}" /></TrackRequest>'
-        
+    requestUrl:string = 'https://secure.shippingapis.com/ShippingAPI.dll?'
+        + 'API=TrackV2&XML=<TrackFieldRequest PASSWORD="{password}" USERID="{userId}">'
+        + '<Revision>1</Revision><ClientIp>127.0.0.1</ClientIp><SourceId>XYZCasdfasdf</SourceId>'
+        + '<TrackID ID="{trackingNumber}" /></TrackFieldRequest>';
+
     userId: string;
     password:string;
 
@@ -65,43 +66,33 @@ export class UspsTracker implements ITracker {
 
         let detail = json.TrackResponse.TrackInfo.TrackDetail;
 
-        if(detail instanceof Array) {
-            detail.forEach((event) => {
-                let ad = new ActivityData();
-
-                let parsed = this.ParseUspsTrackDetail(event);
-                if(parsed) {
-                    ad.location = parsed.location;
-                    ad.shortDescription = parsed.description;
-                    ad.timestamp = parsed.timestamp;
-
-                    td.activity.push(ad);
-                }
-            });
-        } else {
-            let summaryDetail = json.TrackResponse.TrackInfo.TrackDetail;
-            let ad = new ActivityData();
-            let parsed = this.ParseUspsTrackDetail(summaryDetail);
-            if(parsed) {
-                ad.location = parsed.location;
-                ad.shortDescription = parsed.description;
-                ad.timestamp = parsed.timestamp;
-
-                td.activity.push(ad);
-            }
+        if(!(detail instanceof Array)) {
+            detail = [];
+            detail.push(json.TrackResponse.TrackInfo.TrackDetail);
         }
 
-        /* Parsing doesn't currently work for the summary
-        let summary = json.TrackResponse.TrackInfo.TrackSummary;
-        let ad = new ActivityData();
-        let parsed = this.ParseUspsTrackDetail(summary);
-        if(parsed) {
-            ad.location = parsed.location;
-            ad.shortDescription = parsed.description;
-            ad.timestamp = parsed.timestamp;
+        detail.unshift(json.TrackResponse.TrackInfo.TrackSummary);
+        for (var event of detail) {
+            let ad = new ActivityData();
+
+            const cleanLoc = UspsTracker.cleanCityName(event.EventCity as string);
+            if(cleanLoc) {
+                ad.location.city = cleanLoc.city;
+                ad.location.state = cleanLoc.state;
+            } else {
+                ad.location.city = event.EventCity;
+                ad.location.state = event.EventState;
+            }
+
+            ad.location.zip = event.EventZIPCode;
+            ad.location.countryCode = event.EventCountry;
+
+            ad.timestamp = new Date(event.EventDate + ' ' + event.EventTime);
+
+            ad.shortDescription = event.Event;
 
             td.activity.push(ad);
-        }*/
+        };
 
         td.usageRequirements = 'NOTICE: U.S.P.S. authorizes you to use U.S.P.S. tracking systems'
             + ' solely to track shipments tendered by or for you to U.S.P.S. for delivery and'
@@ -111,100 +102,24 @@ export class UspsTracker implements ITracker {
         return td;
     }
 
-    public static ParseUspsTrackDetail(input:string) {
-        if(input === 'Origin Post is Preparing Shipment') {
-            return {
-                description: input,
-                location: new Location(),
-                timestamp: null
-            }
+    static cleanCityName(cityStr:string) {
+        //City names can sometimes have a description in them like:
+        // OAK CREEK WI DISTRIBUTION CENTER
+        let dcIndex = cityStr.indexOf('NETWORK DISTRIBUTION');
+        if(dcIndex === -1) {
+            dcIndex = cityStr.indexOf('DISTRIBUTION');
+        }
+        if(dcIndex === -1) {
+            dcIndex = cityStr.indexOf('PROCESSING CENTER');
         }
 
-        //Don't look for the I because of casing
-        if(input.indexOf('ransit to') > -1) {
+        if(dcIndex > 0) {
+            return {
+                state: cityStr.substr(dcIndex - 3, 2),
+                city: cityStr.substring(0, dcIndex - 4)
+            };
+        } else {
             return null;
         }
-
-        let data = {
-            description:'',
-            timestamp:new Date(),
-            location:new Location()
-        };
-        let parts = input.split(', ');
-
-        //The position of the month/day/time is critical to parsing
-
-        var monthPattern = new RegExp(/(January|February|March|April|May|June|July|August|September|October|November|December) \d{1,2}/g);
-        //Determine the position of the month day
-        let monthPosition = parts.findIndex((text) => {
-            return !!monthPattern.exec(text);
-        });
-
-        data.timestamp = new Date(Date.parse(parts[monthPosition] + ', ' + parts[monthPosition+1] + ', ' + parts[monthPosition+2]));
-
-        //the parts before the date are the description
-        let descParts = parts.slice(0, monthPosition);
-        data.description = descParts.join(', ');
-
-        let locParts = parts.slice(monthPosition+3);
-        let locationStr = locParts.join(', ');
-        data.location = UspsTracker.ParseLocation(locationStr);
-
-        return data;
-    }
-
-    public static ParseLocation(location:string):Location {
-        let ret = new Location();
-
-        //This is the fallback
-        ret.rawLocationString = location;
-
-        //MIAMI, UNITED STATES
-        let r = RegExp(/([^,]+), UNITED STATES/g);
-        let a = r.exec(location);
-        if(a) {
-            ret.city = a[1];
-            ret.countryCode = 'US'
-            return ret;
-        }
-
-        //REXFORD, NY 12148
-        r = RegExp(/(.*), ([A-Z]{2}) ([\d-]+)/g);
-        a = r.exec(location);
-        if(a) {
-            ret.city = a[1];
-            ret.state = a[2];
-            ret.zip = a[3];
-            return ret;
-        }
-
-        //FORT WORTH TX
-        r = RegExp(/^([A-Z ]+) ([A-Z]{2})$/);
-        a = r.exec(location);
-        if(a) {
-            ret.city = a[1];
-            ret.state = a[2];
-            return ret;
-        }
-
-        //Distribution center
-        //SEATTLE WA NETWORK DISTRIBUTION CENTER
-        r = RegExp(/([A-Z ]+) ([A-Z]{2})(?: NETWORK)* DISTRIBUTION CENTER/);
-        a = r.exec(location);
-        if(a) {
-            ret.city = a[1];
-            ret.state = a[2];
-            return ret;
-        }
-
-        //ISRAEL
-        r = RegExp(/^([A-Z ]+)$/);
-        a = r.exec(location);
-        if(a) {
-            ret.countryCode = a[1];
-            return ret;
-        }
-
-        return ret;
     }
 }

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TrackResponse>
+    <TrackInfo ID="92612999963309000205676694">
+        <Class>Parcel Select</Class>
+        <ClassOfMailCode>PS</ClassOfMailCode>
+        <DestinationCity>OCONOMOWOC</DestinationCity>
+        <DestinationState>WI</DestinationState>
+        <DestinationZip>53066</DestinationZip>
+        <EmailEnabled>true</EmailEnabled>
+        <KahalaIndicator>false</KahalaIndicator>
+        <MailTypeCode>DM</MailTypeCode>
+        <MPDATE>2020-12-22 15:16:50.000000</MPDATE>
+        <MPSUFFIX>637708176</MPSUFFIX>
+        <OnTime>false</OnTime>
+        <OriginCity>OCONOMOWOC</OriginCity>
+        <OriginState>WI</OriginState>
+        <OriginZip>53066</OriginZip>
+        <PodEnabled>false</PodEnabled>
+        <TPodEnabled>false</TPodEnabled>
+        <PredictedDeliveryDate>December 24, 2020</PredictedDeliveryDate>
+        <RestoreEnabled>false</RestoreEnabled>
+        <RramEnabled>false</RramEnabled>
+        <RreEnabled>false</RreEnabled>
+        <Service>USPS Tracking&lt;SUP>&amp;#174;&lt;/SUP></Service>
+        <ServiceTypeCode>612</ServiceTypeCode>
+        <Status>Arrived at Post Office</Status>
+        <StatusCategory>In Transit</StatusCategory>
+        <StatusSummary>Your item arrived at the Post Office at 1:19 pm on December 23, 2020 in OCONOMOWOC, WI 53066.</StatusSummary>
+        <TABLECODE>T</TABLECODE>
+        <TrackSummary>
+            <EventTime>1:19 pm</EventTime>
+            <EventDate>December 23, 2020</EventDate>
+            <Event>Arrived at Post Office</Event>
+            <EventCity>OCONOMOWOC</EventCity>
+            <EventState>WI</EventState>
+            <EventZIPCode>53066</EventZIPCode>
+            <EventCountry/>
+            <FirmName/>
+            <Name/>
+            <AuthorizedAgent>false</AuthorizedAgent>
+            <EventCode>07</EventCode>
+        </TrackSummary>
+        <TrackDetail>
+            <EventTime>12:04 pm</EventTime>
+            <EventDate>December 23, 2020</EventDate>
+            <Event>Accepted at USPS Destination Facility</Event>
+            <EventCity>OCONOMOWOC</EventCity>
+            <EventState>WI</EventState>
+            <EventZIPCode>53066</EventZIPCode>
+            <EventCountry/>
+            <FirmName/>
+            <Name/>
+            <AuthorizedAgent>false</AuthorizedAgent>
+            <EventCode>AD</EventCode>
+        </TrackDetail>
+        <TrackDetail>
+            <EventTime>2:20 pm</EventTime>
+            <EventDate>December 22, 2020</EventDate>
+            <Event>Departed Shipping Partner Facility, USPS Awaiting Item</Event>
+            <EventCity>HEBRON</EventCity>
+            <EventState>KY</EventState>
+            <EventZIPCode>41048</EventZIPCode>
+            <EventCountry/>
+            <FirmName/>
+            <Name/>
+            <AuthorizedAgent>false</AuthorizedAgent>
+            <EventCode>82</EventCode>
+        </TrackDetail>
+        <TrackDetail>
+            <EventTime>1:32 pm</EventTime>
+            <EventDate>December 22, 2020</EventDate>
+            <Event>Arrived Shipping Partner Facility, USPS Awaiting Item</Event>
+            <EventCity>MELROSE PARK</EventCity>
+            <EventState>IL</EventState>
+            <EventZIPCode>60160</EventZIPCode>
+            <EventCountry/>
+            <FirmName/>
+            <Name/>
+            <AuthorizedAgent>false</AuthorizedAgent>
+            <EventCode>81</EventCode>
+        </TrackDetail>
+    </TrackInfo>
+</TrackResponse>

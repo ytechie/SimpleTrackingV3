@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TrackResponse>
+    <TrackInfo ID="9300120224100056623222">
+        <Class>First-Class Package Service</Class>
+        <ClassOfMailCode>FC</ClassOfMailCode>
+        <DestinationCity>OCONOMOWOC</DestinationCity>
+        <DestinationState>WI</DestinationState>
+        <DestinationZip>53066</DestinationZip>
+        <EmailEnabled>true</EmailEnabled>
+        <KahalaIndicator>false</KahalaIndicator>
+        <MailTypeCode>DM</MailTypeCode>
+        <MPDATE>2020-12-02 07:13:08.000000</MPDATE>
+        <MPSUFFIX>727752140</MPSUFFIX>
+        <OriginCity>INGLEWOOD</OriginCity>
+        <OriginState>CA</OriginState>
+        <OriginZip>90304</OriginZip>
+        <PodEnabled>false</PodEnabled>
+        <TPodEnabled>false</TPodEnabled>
+        <RestoreEnabled>false</RestoreEnabled>
+        <RramEnabled>false</RramEnabled>
+        <RreEnabled>false</RreEnabled>
+        <Service>USPS Tracking&lt;SUP>&amp;#174;&lt;/SUP></Service>
+        <ServiceTypeCode>001</ServiceTypeCode>
+        <Status>Delivered, In/At Mailbox</Status>
+        <StatusCategory>Delivered</StatusCategory>
+        <StatusSummary>Your item was delivered in or at the mailbox at 2:16 pm on December 21, 2020 in OCONOMOWOC, WI 53066.</StatusSummary>
+        <TABLECODE>T</TABLECODE>
+        <TrackSummary>
+            <EventTime>2:16 pm</EventTime>
+            <EventDate>December 21, 2020</EventDate>
+            <Event>Delivered, In/At Mailbox</Event>
+            <EventCity>OCONOMOWOC</EventCity>
+            <EventState>WI</EventState>
+            <EventZIPCode>53066</EventZIPCode>
+            <EventCountry/>
+            <FirmName/>
+            <Name/>
+            <AuthorizedAgent>false</AuthorizedAgent>
+            <EventCode>01</EventCode>
+            <DeliveryAttributeCode>01</DeliveryAttributeCode>
+        </TrackSummary>
+        <TrackDetail>
+            <EventTime>6:51 am</EventTime>
+            <EventDate>December 21, 2020</EventDate>
+            <Event>Out for Delivery</Event>
+            <EventCity>OCONOMOWOC</EventCity>
+            <EventState>WI</EventState>
+            <EventZIPCode>53066</EventZIPCode>
+            <EventCountry/>
+            <FirmName/>
+            <Name/>
+            <AuthorizedAgent>false</AuthorizedAgent>
+            <EventCode>OF</EventCode>
+        </TrackDetail>
+        <TrackDetail>
+            <EventTime>6:40 am</EventTime>
+            <EventDate>December 21, 2020</EventDate>
+            <Event>Arrived at Post Office</Event>
+            <EventCity>OCONOMOWOC</EventCity>
+            <EventState>WI</EventState>
+            <EventZIPCode>53066</EventZIPCode>
+            <EventCountry/>
+            <FirmName/>
+            <Name/>
+            <AuthorizedAgent>false</AuthorizedAgent>
+            <EventCode>07</EventCode>
+        </TrackDetail>
+        <TrackDetail>
+            <EventTime/>
+            <EventDate>December 20, 2020</EventDate>
+            <Event>In Transit to Next Facility</Event>
+            <EventCity/>
+            <EventState/>
+            <EventZIPCode/>
+            <EventCountry/>
+            <FirmName/>
+            <Name/>
+            <AuthorizedAgent>false</AuthorizedAgent>
+            <EventCode>NT</EventCode>
+        </TrackDetail>
+        <TrackDetail>
+            <EventTime>7:39 pm</EventTime>
+            <EventDate>December 19, 2020</EventDate>
+            <Event>Arrived at USPS Regional Destination Facility</Event>
+            <EventCity>OAK CREEK WI DISTRIBUTION CENTER</EventCity>
+            <EventState/>
+            <EventZIPCode/>
+            <EventCountry/>
+            <FirmName/>
+            <Name/>
+            <AuthorizedAgent>false</AuthorizedAgent>
+            <EventCode>10</EventCode>
+        </TrackDetail>
+        <TrackDetail>
+            <EventTime>7:45 am</EventTime>
+            <EventDate>December 19, 2020</EventDate>
+            <Event>Arrived at USPS Facility</Event>
+            <EventCity>ELKHORN</EventCity>
+            <EventState>WI</EventState>
+            <EventZIPCode>53121</EventZIPCode>
+            <EventCountry/>
+            <FirmName/>
+            <Name/>
+            <AuthorizedAgent>false</AuthorizedAgent>
+            <EventCode>08</EventCode>
+        </TrackDetail>
+        <TrackDetail>
+            <EventTime>4:42 am</EventTime>
+            <EventDate>December 19, 2020</EventDate>
+            <Event>Arrived at USPS Facility</Event>
+            <EventCity>OCONOMOWOC</EventCity>
+            <EventState>WI</EventState>
+            <EventZIPCode>53066</EventZIPCode>
+            <EventCountry/>
+            <FirmName/>
+            <Name/>
+            <AuthorizedAgent>false</AuthorizedAgent>
+            <EventCode>U1</EventCode>
+        </TrackDetail>
+        <TrackDetail>
+            <EventTime>11:48 pm</EventTime>
+            <EventDate>December 18, 2020</EventDate>
+            <Event>Departed USPS Regional Facility</Event>
+            <EventCity>OAK CREEK WI DISTRIBUTION CENTER</EventCity>
+            <EventState/>
+            <EventZIPCode/>
+            <EventCountry/>
+            <FirmName/>
+            <Name/>
+            <AuthorizedAgent>false</AuthorizedAgent>
+            <EventCode>T1</EventCode>
+        </TrackDetail>
+        <TrackDetail>
+            <EventTime>8:54 pm</EventTime>
+            <EventDate>December 18, 2020</EventDate>
+            <Event>Arrived at USPS Regional Destination Facility</Event>
+            <EventCity>OAK CREEK WI DISTRIBUTION CENTER</EventCity>
+            <EventState/>
+            <EventZIPCode/>
+            <EventCountry/>
+            <FirmName/>
+            <Name/>
+            <AuthorizedAgent>false</AuthorizedAgent>
+            <EventCode>10</EventCode>
+        </TrackDetail>
+        <TrackDetail>
+            <EventTime>12:12 am</EventTime>
+            <EventDate>December 9, 2020</EventDate>
+            <Event>Arrived at USPS Origin Facility</Event>
+            <EventCity>CARSON</EventCity>
+            <EventState>CA</EventState>
+            <EventZIPCode>90747</EventZIPCode>
+            <EventCountry/>
+            <FirmName/>
+            <Name/>
+            <AuthorizedAgent>false</AuthorizedAgent>
+            <EventCode>10</EventCode>
+        </TrackDetail>
+        <TrackDetail>
+            <EventTime>10:57 pm</EventTime>
+            <EventDate>December 8, 2020</EventDate>
+            <Event>Accepted at USPS Origin Facility</Event>
+            <EventCity>INGLEWOOD</EventCity>
+            <EventState>CA</EventState>
+            <EventZIPCode>90304</EventZIPCode>
+            <EventCountry/>
+            <FirmName/>
+            <Name/>
+            <AuthorizedAgent>false</AuthorizedAgent>
+            <EventCode>OA</EventCode>
+        </TrackDetail>
+        <TrackDetail>
+            <EventTime>8:09 am</EventTime>
+            <EventDate>December 2, 2020</EventDate>
+            <Event>Shipping Label Created, USPS Awaiting Item</Event>
+            <EventCity>INGLEWOOD</EventCity>
+            <EventState>CA</EventState>
+            <EventZIPCode>90304</EventZIPCode>
+            <EventCountry/>
+            <FirmName/>
+            <Name/>
+            <AuthorizedAgent>false</AuthorizedAgent>
+            <EventCode>GX</EventCode>
+            <DeliveryAttributeCode>33</DeliveryAttributeCode>
+        </TrackDetail>
+    </TrackInfo>
+</TrackResponse>
