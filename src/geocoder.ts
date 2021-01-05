@@ -1,20 +1,45 @@
-import * as sqlite from 'sqlite';
 import * as request from 'request-promise';
 
 import * as fs from 'fs';
 import * as path from 'path';
 import { Location } from './Location';
 
+var parse = require('csv-parse');
+
 export class Geocoder {
-    db:sqlite.Database;
+    geocodeCache:Array<any>;
 
     readonly googleGeocodeUrl = 'http://maps.googleapis.com/maps/api/geocode/json?address={address}'
 
     constructor() {
-        let dbPath = path.join(__dirname, 'geocode.db');
+        console.log("Geocoder ctor - important that this is reused");
+        
+        this.loadUSCities();
+    }
 
-        sqlite.open(dbPath).then((dbConn) => {
-            this.db = dbConn;
+    loadUSCities() {
+        console.time('Geocode-load-cities');
+
+        this.geocodeCache = new Array();
+        let _this = this;
+
+        const csvPath = path.resolve(__dirname, '.') + '/uscitiesv1.3.csv';
+
+        fs.createReadStream(csvPath)
+            .pipe(parse())
+            .on('data', function(csvrow) {
+                if(csvrow[0] !== 'city') {
+                    //key format: city st
+                    const key = csvrow[1].toUpperCase() + ' ' + csvrow[2];
+                    const lat = parseFloat(csvrow[7]);
+                    const long = parseFloat(csvrow[8]);
+
+                    _this.geocodeCache[key] = {lat, long};
+                }
+            })
+        .on('end',function() {
+            console.timeEnd('Geocode-load-cities');
+            console.log(_this.geocodeCache);
         });
     }
 
@@ -28,82 +53,37 @@ export class Geocoder {
 
         console.time('Geocode');
         try {
-        if(await this.TryLocalGeocode(location)) {
-            return;
-        }
-        if(await this.TryGeocodeWithGoogle(location)) {
-            await this.AddToLocalCache(location);
-            return;
-        }
+            if(await this.TryLocalGeocode(location)) {
+                console.timeEnd('Geocode');
+                return;
+            }
+
+            if(await this.TryGeocodeWithGoogle(location)) {
+                console.timeEnd('Geocode');
+                return;
+            }
         } catch(err) {
+            console.timeEnd('Geocode');
             console.warn('Could not geocode location');
         }
-        console.timeEnd('Geocode');
     }
 
     async TryLocalGeocode(location:Location) {
-        let sql='';
-        let sqlParams:any = {};
-        if(location.city && location.state) {
-            sql = 'select * from uscities where city=$city COLLATE NOCASE and state_id=$state;';
-            sqlParams.$city = location.city;
-            sqlParams.$state = location.state;
-        } else {
-            sql = 'select * from otherlocations where location=$location;';
-            sqlParams.$location = location.toString();
-        }
+        const key = location.city.toUpperCase() + ' ' + location.state.toUpperCase();
+        const rec = this.geocodeCache[key]
 
-        let rows = await this.db.all(sql, sqlParams); 
-        if(rows && rows.length >= 1) {
-            location.lat = parseFloat(rows[0].lat);
-            location.long = parseFloat(rows[0].lng);
+        if(rec) {
+            location.lat = rec.lat;
+            location.long = rec.long;
+
             return true;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
-    async AddToLocalCache(location:Location) {
-            if(location.city && location.state) {
-                let sqlParams:any = {};
-                if(location.state.length > 2) {
-                    sqlParams.$state_name = location.state;
-                } else {
-                    sqlParams.$state_id = location.state;
-                }
 
-                sqlParams.$city = location.city;
-                sqlParams.$lat = location.lat;
-                sqlParams.$lng = location.long;
-                sqlParams.$new = 1;
-                
-                let sql = Geocoder.GetInsertStatement('uscities', sqlParams);
 
-                await this.db.run(sql, sqlParams);
-            } else {
-                let sqlParams:any = {};
-                sqlParams.$location = location.toString();
-                sqlParams.$new = 1;
-                sqlParams.$lat = location.lat;
-                sqlParams.$lng = location.long;
-
-                let sql = Geocoder.GetInsertStatement('otherlocations', sqlParams);
-
-                await this.db.run(sql, sqlParams);
-            }
-    }
-
-    static GetInsertStatement(tableName:string, sqlParams:any) {
-        let columns = new Array<string>();                
-        for(let key of Object.keys(sqlParams)) {
-            columns.push(key.replace('$',''));
-        }
-        let sql = 'insert into ' + tableName + ' ';
-        sql += '(' + columns.join(',') + ')';
-        sql += ' values($' +  columns.join(',$') + ')';
-
-        return sql;
-    }
 
     async TryGeocodeWithGoogle(location:Location) {
         //http://maps.googleapis.com/maps/api/geocode/json?address=DALLAS/FT. WORTH A/P, TX, US
