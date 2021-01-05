@@ -30,7 +30,7 @@ jobs:
         context: .
         file: ./Dockerfile
         push: false
-        tags: st:latest
+        tags: st
     - name: Export container
       run: docker save st > st-image.tar
     - name: Save Docker image as artifact
