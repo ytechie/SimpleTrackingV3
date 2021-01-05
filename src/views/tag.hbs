@@ -1,0 +1,32 @@
+<script crossorigin src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<h1>Tag: {{ tagName }}</h1>
+
+<div id="tagRoot" />
+
+<script type="text/babel">
+    const tagData = {{{tagData}}};
+    //const state = { trackingNumbers }
+
+    function TrackingRow(props) {
+        return <tr><td>{props.trackingNumber}</td></tr>
+    }
+
+    function TrackingTable(props) {
+        const trackingRows = props.trackingNumbers.map((tn) => 
+            <TrackingRow trackingNumber={tn} />
+        );
+
+        return <table>{trackingRows}</table>;
+    }
+
+    const rootElement = <TrackingTable trackingNumbers={tagData.trackingNumbers}/>;
+
+    ReactDOM.render(
+        rootElement,
+        document.getElementById('tagRoot')
+    );
+
+</script>

@@ -6,8 +6,10 @@ import * as expressHandlebars from 'express-handlebars';
 import { Tracker } from './providers/Tracker'
 import { RssFormatter } from './providers/RssFormatter';
 import { Info } from './info';
+import { TagController } from './tagging/TagController';
+import { Cosmos } from './db/Cosmos';
+import { TagRouting } from './tagging/TagRouting';
 
-var express = require('express');
 var app = express();
 
 //Load configuration
@@ -73,6 +75,13 @@ app.get('/track/:trackingNumber.rss', function (req, res) {
         res.send(err);
     });
 });
+app.get('/track/:trackingNumber.json', function (req, res) {
+    tracker.Track(req.params.trackingNumber).then((trackData) => {
+        res.json(trackData);
+    }).catch((err) => {
+        res.send(err);
+    });
+});
 app.get('/track/:trackingNumber?', function (req, res) {
     if(!req.params.trackingNumber) {
         res.redirect(301, '/');
@@ -97,6 +106,8 @@ app.get('/info', function(req, res) {
         res.render('info.hbs', i);
     })
 });
+
+const tr = new TagRouting(app, tracker);
 
 const port: number = 3080;
 const server = http.createServer(app);
