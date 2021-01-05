@@ -39,7 +39,6 @@ export class Geocoder {
             })
         .on('end',function() {
             console.timeEnd('Geocode-load-cities');
-            console.log(_this.geocodeCache);
         });
     }
 
