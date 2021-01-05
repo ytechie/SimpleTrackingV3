@@ -30,9 +30,9 @@ jobs:
         context: .
         file: ./Dockerfile
         push: false
-        tags: st
+        tags: ytechie/simpletracking:latest
     - name: Export container
-      run: docker save st > st-image.tar
+      run: docker save ytechie/simpletracking:latest > st-image.tar
     - name: Save Docker image as artifact
       uses: actions/upload-artifact@master
       with:
