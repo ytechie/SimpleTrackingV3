@@ -35,9 +35,9 @@ jobs:
       run: docker save st > st-image.tar
     - name: Save Docker image as artifact
       uses: actions/upload-artifact@master
-        with:
-          name: image-file
-          path: st-image.tar
+      with:
+        name: image-file
+        path: st-image.tar
 
   deploy-docker-hub:
     runs-on: ubuntu-latest
