@@ -21,7 +21,7 @@ jobs:
       run: |
         npm run build --if-present
     - name: Spit out version file
-      run: echo "`date -u`" > out/when.txt
+      run: echo "`date -u`" > srv/when.txt
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1  
     - name: Build Docker image
