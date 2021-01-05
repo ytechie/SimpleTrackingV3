@@ -4,6 +4,7 @@
   "description": "The SimpleTracking.com Website",
   "main": "index.js",
   "scripts": {
+    "build": "./node_modules/typescript/bin/tsc",
     "test": "mocha \"src/**/*.test.js\""
   },
   "author": "Jason Young",
