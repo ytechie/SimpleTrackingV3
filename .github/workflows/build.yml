@@ -17,12 +17,10 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: npm install, build, and test
+    - name: npm build
       run: |
         npm run build --if-present
-    - name: Spit out version file
-      run: echo "`date -u`" > src/when.txt
-    - name: Set up Docker Buildx
+    - name: Build Container
       run: docker build -t ytechie/simpletracking .
     - name: Export container
       run: docker save ytechie/simpletracking:latest > st-image.tar
@@ -41,7 +39,6 @@ jobs:
         uses: actions/download-artifact@master
         with:
           name: image-file
-          path: st-image.tar
       - name: Load Docker image
         run: docker load --input st-image.tar
       - name: Login to DockerHub
@@ -49,3 +46,5 @@ jobs:
         with:
           username: ${{ secrets.dockerhub_user }}
           password: ${{ secrets.dockerhub_password }}
+      - name: Publish to DockerHub
+        run: docker push ytechie/simpletracking
