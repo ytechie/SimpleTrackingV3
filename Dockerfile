@@ -4,7 +4,7 @@ RUN apk add --update nodejs
 RUN apk add bash
 
 COPY ./src /usr/share/node
-COPY ./node_modules /usr/share/node
+COPY ./node_modules /usr/share/node/node_modules
 COPY ./start.sh /usr/share
 
 RUN echo "`date -u`" > /usr/share/node/static/when.txt
