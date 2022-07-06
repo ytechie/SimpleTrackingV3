@@ -31,7 +31,7 @@
     "forever": "^3.0.4",
     "handlebars": "^4.7.6",
     "mochawesome": "^6.2.1",
-    "moment": "^2.29.1",
+    "moment": "^2.29.4",
     "mongodb": "^3.6.3",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
