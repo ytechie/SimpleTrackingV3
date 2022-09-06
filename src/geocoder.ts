@@ -43,6 +43,10 @@ export class Geocoder {
     }
 
     async Geocode(location:Location) {
+        if(location.toString() === undefined) {
+            return;
+        }
+
         //Not specific enough to locate - this avoid all kinds
         //of stange bugs and makes the distance really high
         if(location.toString().length <= 2
