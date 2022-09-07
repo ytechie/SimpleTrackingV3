@@ -13,7 +13,6 @@
     "url": "https://github.com/ytechie/SimpleTrackingV3"
   },
   "dependencies": {
-    "@azure/cosmos": "^3.9.3",
     "@types/chai": "^4.2.14",
     "@types/lodash": "^4.14.165",
     "@types/mocha": "^2.2.48",
@@ -41,6 +40,7 @@
     "xml2js-es6-promise": "^1.1.1"
   },
   "devDependencies": {
+    "@azure/cosmos": "^3.16.4",
     "@types/express": "^4.17.9",
     "@types/node": "^14.14.14",
     "@types/react": "^17.0.0",
