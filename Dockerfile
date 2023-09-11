@@ -14,5 +14,5 @@ RUN npm install
 
 CMD ["node","server.js"]
 
-EXPOSE 80
-#EXPOSE 3080
+#EXPOSE 80
+EXPOSE 3080
