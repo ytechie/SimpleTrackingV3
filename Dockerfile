@@ -1,21 +1,18 @@
-FROM nginx:alpine
+FROM node:alpine
 
-RUN apk add --update nodejs
-RUN apk add npm
-RUN apk add bash
+#RUN apk add --update nodejs
+#RUN apk add npm
+#RUN apk add bash
 
-COPY ./src /usr/share/node
-COPY ./package.json /usr/share/node
-COPY ./start.sh /usr/share
+COPY ./src /home/node/app
+COPY ./package.json /home/node/app
 
-RUN echo "`date -u`" > /usr/share/node/static/when.txt
+RUN echo "`date -u`" > /home/node/app/static/when.txt
 
-WORKDIR /usr/share/node/
+WORKDIR /home/node/app
 RUN npm install
 
-COPY nginx.conf /etc/nginx/nginx.conf
-
-CMD ["/usr/share/start.sh"]
+CMD ["node","server.js"]
 
 EXPOSE 80
 #EXPOSE 3080

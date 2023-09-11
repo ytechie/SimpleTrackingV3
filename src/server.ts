@@ -29,7 +29,6 @@ appInsights.start();
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded());
 
-//Only used for local dev. In prod, nginx serves these
 app.use(express.static(path.resolve(__dirname, 'static')));
 
 app.engine('hbs', expressHandlebars({

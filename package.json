@@ -1,11 +1,12 @@
 {
   "name": "package-tracking",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "The SimpleTracking.com Website",
   "main": "index.js",
   "scripts": {
     "build": "./node_modules/typescript/bin/tsc",
-    "test": "mocha \"src/**/*.test.js\""
+    "test": "mocha \"src/**/*.test.js\"",
+    "start": "node src/server.js"
   },
   "author": "Jason Young",
   "license": "ISC",
