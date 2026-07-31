@@ -1,0 +1,56 @@
+{
+    "transactionId": "f1a2b3c4-1111-2222-3333-444455556666",
+    "output": {
+        "completeTrackResults": [
+            {
+                "trackingNumber": "789536724391",
+                "trackResults": [
+                    {
+                        "trackingNumberInfo": {
+                            "trackingNumber": "789536724391",
+                            "carrierCode": "FDXE"
+                        },
+                        "latestStatusDetail": {
+                            "code": "IT",
+                            "description": "In transit"
+                        },
+                        "serviceDetail": {
+                            "type": "FEDEX_EXPRESS_SAVER",
+                            "description": "FedEx Express Saver"
+                        },
+                        "dateAndTimes": [
+                            {
+                                "type": "ESTIMATED_DELIVERY",
+                                "dateTime": "2021-04-02T00:00:00-05:00"
+                            }
+                        ],
+                        "scanEvents": [
+                            {
+                                "date": "2021-03-31T03:18:00-05:00",
+                                "eventType": "DP",
+                                "eventDescription": "Departed FedEx hub",
+                                "scanLocation": {
+                                    "city": "MEMPHIS",
+                                    "stateOrProvinceCode": "TN",
+                                    "postalCode": "38118",
+                                    "countryCode": "US"
+                                }
+                            },
+                            {
+                                "date": "2021-03-30T22:45:00-05:00",
+                                "eventType": "AR",
+                                "eventDescription": "Arrived at FedEx hub",
+                                "scanLocation": {
+                                    "city": "MEMPHIS",
+                                    "stateOrProvinceCode": "TN",
+                                    "postalCode": "38118",
+                                    "countryCode": "US"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

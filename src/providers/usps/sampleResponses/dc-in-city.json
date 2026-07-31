@@ -1,0 +1,88 @@
+{
+    "trackingNumber": "9300120224100056623222",
+    "mailClass": "FIRST-CLASS_MAIL",
+    "destinationCity": "OCONOMOWOC",
+    "destinationState": "WI",
+    "destinationZIP": "53066",
+    "originCity": "INGLEWOOD",
+    "originState": "CA",
+    "originZIP": "90304",
+    "status": "Delivered, In/At Mailbox",
+    "statusCategory": "Delivered",
+    "statusSummary": "Your item was delivered in or at the mailbox at 2:16 pm on December 21, 2020 in OCONOMOWOC, WI 53066.",
+    "expectedDeliveryTimeStamp": "2020-12-21T20:00:00.000Z",
+    "trackingEvents": [
+        {
+            "eventType": "Delivered, In/At Mailbox",
+            "GMTTimestamp": "2020-12-21T20:16:00.000Z",
+            "eventCity": "OCONOMOWOC",
+            "eventState": "WI",
+            "eventZIP": "53066",
+            "eventCountry": "US",
+            "eventCode": "01"
+        },
+        {
+            "eventType": "Out for Delivery",
+            "GMTTimestamp": "2020-12-21T12:51:00.000Z",
+            "eventCity": "OCONOMOWOC",
+            "eventState": "WI",
+            "eventZIP": "53066",
+            "eventCountry": "US",
+            "eventCode": "OF"
+        },
+        {
+            "eventType": "Arrived at Post Office",
+            "GMTTimestamp": "2020-12-21T12:40:00.000Z",
+            "eventCity": "OCONOMOWOC",
+            "eventState": "WI",
+            "eventZIP": "53066",
+            "eventCountry": "US",
+            "eventCode": "07"
+        },
+        {
+            "eventType": "In Transit to Next Facility",
+            "GMTTimestamp": "2020-12-20T12:00:00.000Z",
+            "eventCity": "",
+            "eventState": "",
+            "eventZIP": "",
+            "eventCountry": "US",
+            "eventCode": "NT"
+        },
+        {
+            "eventType": "Arrived at USPS Regional Destination Facility",
+            "GMTTimestamp": "2020-12-20T01:39:00.000Z",
+            "eventCity": "OAK CREEK WI DISTRIBUTION CENTER",
+            "eventState": "",
+            "eventZIP": "",
+            "eventCountry": "US",
+            "eventCode": "10"
+        },
+        {
+            "eventType": "Arrived at USPS Facility",
+            "GMTTimestamp": "2020-12-19T13:45:00.000Z",
+            "eventCity": "ELKHORN",
+            "eventState": "WI",
+            "eventZIP": "53121",
+            "eventCountry": "US",
+            "eventCode": "08"
+        },
+        {
+            "eventType": "Departed USPS Regional Facility",
+            "GMTTimestamp": "2020-12-19T05:48:00.000Z",
+            "eventCity": "OAK CREEK WI DISTRIBUTION CENTER",
+            "eventState": "",
+            "eventZIP": "",
+            "eventCountry": "US",
+            "eventCode": "T1"
+        },
+        {
+            "eventType": "Accepted at USPS Origin Facility",
+            "GMTTimestamp": "2020-12-09T06:57:00.000Z",
+            "eventCity": "INGLEWOOD",
+            "eventState": "CA",
+            "eventZIP": "90304",
+            "eventCountry": "US",
+            "eventCode": "OA"
+        }
+    ]
+}

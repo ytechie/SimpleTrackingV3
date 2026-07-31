@@ -23,7 +23,7 @@ describe('UPS Tracker', function () {
     it('Verify activity address', function() {
         let sample = loadSample('1Z6Y09Y00383605008');
         let td = UpsTracker.UpsTracker.StandardizeTrackingData(sample);
-        
+
         td.activity[0].location.city.should.equal('BOTHELL');
         td.activity[0].location.state.should.equal('WA');
         td.activity[0].location.zip.should.equal('98012');
@@ -38,13 +38,13 @@ describe('UPS Tracker', function () {
         td.activity[1].location.city.should.equal('REDMOND');
         td.activity[1].location.state.should.equal('WA');
         td.activity[1].location.countryCode.should.equal('US');
-        
+
         td.activity.length.should.be.equal(7);
     });
     it('Verify activity address with only country', function() {
         let sample = loadSample('1Z6Y09Y00383605008');
         let td = UpsTracker.UpsTracker.StandardizeTrackingData(sample);
-        
+
         td.activity[6].location.countryCode.should.equal('US');
     });
 });
@@ -57,25 +57,42 @@ describe('Package Attributes', () => {
         td.estimatedDelivery.should.be.eql(new Date(Date.parse('2018-02-07')));
         //20180207
     });
+    it('Should have service type and weight', () => {
+        let sample = loadSample('1ZR8Y7710355363026');
+        let td = UpsTracker.UpsTracker.StandardizeTrackingData(sample);
+
+        td.serviceType.should.equal('UPS Ground');
+        td.weight.should.equal('2.00LBS');
+    });
     it('Should handle activity not being an array', () => {
         let sample = loadSample('activity-is-not-an-array');
         let td = UpsTracker.UpsTracker.StandardizeTrackingData(sample);
 
-        td.estimatedDelivery.should.be.eql(new Date(Date.parse('2020-12-23 18:00')));
+        td.activity.length.should.equal(1);
+        td.estimatedDelivery.toISOString().should.equal('2020-12-23T00:00:00.000Z');
     });
 });
 
 describe('Multi-package shipment', () => {
     it('Should return correct package', () => {
         let sample = loadSample('1Z7586X30315192479');
-        let td = UpsTracker.UpsTracker.StandardizeTrackingData(sample);
+        let td = UpsTracker.UpsTracker.StandardizeTrackingData(sample, '1Z7586X30315192479');
 
         td.trackingNumber.should.equal('1Z7586X30315192479')
     });
 });
 
+describe('UPS Valid Tracking Numbers', () => {
+    it('Accepts a 1Z number', () => {
+        UpsTracker.UpsTracker.IsValidTrackingNumber('1Z6Y09Y00383605008').should.be.true;
+    });
+    it('Rejects a non-1Z number', () => {
+        UpsTracker.UpsTracker.IsValidTrackingNumber('123456789012').should.be.false;
+    });
+});
+
 function loadSample(name) {
-    let contents = fs.readFileSync(path.resolve(__dirname, 'sampleResponses/' + name + '.txt'));
+    let contents = fs.readFileSync(path.resolve(__dirname, 'sampleResponses/' + name + '.json'));
     let jsonObj = JSON.parse(contents.toString());
     return jsonObj;
 }

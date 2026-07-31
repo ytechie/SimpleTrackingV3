@@ -1,0 +1,144 @@
+{
+    "trackResponse": {
+        "shipment": [
+            {
+                "package": [
+                    {
+                        "trackingNumber": "1Z6Y09Y00383605008",
+                        "service": {
+                            "code": "03",
+                            "description": "UPS Ground"
+                        },
+                        "weight": {
+                            "unitOfMeasurement": "LBS",
+                            "weight": "5.00"
+                        },
+                        "deliveryDate": [
+                            {
+                                "type": "DEL",
+                                "date": "20171214"
+                            }
+                        ],
+                        "activity": [
+                            {
+                                "location": {
+                                    "address": {
+                                        "city": "BOTHELL",
+                                        "stateProvince": "WA",
+                                        "postalCode": "98012",
+                                        "country": "US"
+                                    }
+                                },
+                                "status": {
+                                    "type": "D",
+                                    "description": "Delivered",
+                                    "code": "FS"
+                                },
+                                "date": "20171214",
+                                "time": "151000"
+                            },
+                            {
+                                "location": {
+                                    "address": {
+                                        "city": "REDMOND",
+                                        "stateProvince": "WA",
+                                        "country": "US"
+                                    }
+                                },
+                                "status": {
+                                    "type": "I",
+                                    "description": "Out For Delivery Today",
+                                    "code": "OF"
+                                },
+                                "date": "20171214",
+                                "time": "090700"
+                            },
+                            {
+                                "location": {
+                                    "address": {
+                                        "city": "REDMOND",
+                                        "stateProvince": "WA",
+                                        "postalCode": "98052",
+                                        "country": "US"
+                                    }
+                                },
+                                "status": {
+                                    "type": "I",
+                                    "description": "Destination Scan",
+                                    "code": "DS"
+                                },
+                                "date": "20171214",
+                                "time": "063500"
+                            },
+                            {
+                                "location": {
+                                    "address": {
+                                        "city": "REDMOND",
+                                        "stateProvince": "WA",
+                                        "postalCode": "98052",
+                                        "country": "US"
+                                    }
+                                },
+                                "status": {
+                                    "type": "I",
+                                    "description": "Arrival Scan",
+                                    "code": "AR"
+                                },
+                                "date": "20171214",
+                                "time": "041200"
+                            },
+                            {
+                                "location": {
+                                    "address": {
+                                        "city": "SPOKANE",
+                                        "stateProvince": "WA",
+                                        "postalCode": "99216",
+                                        "country": "US"
+                                    }
+                                },
+                                "status": {
+                                    "type": "I",
+                                    "description": "Departure Scan",
+                                    "code": "DP"
+                                },
+                                "date": "20171213",
+                                "time": "230000"
+                            },
+                            {
+                                "location": {
+                                    "address": {
+                                        "city": "SPOKANE",
+                                        "stateProvince": "WA",
+                                        "postalCode": "99216",
+                                        "country": "US"
+                                    }
+                                },
+                                "status": {
+                                    "type": "I",
+                                    "description": "Arrival Scan",
+                                    "code": "AR"
+                                },
+                                "date": "20171213",
+                                "time": "180000"
+                            },
+                            {
+                                "location": {
+                                    "address": {
+                                        "country": "US"
+                                    }
+                                },
+                                "status": {
+                                    "type": "M",
+                                    "description": "Order Processed: Ready for UPS",
+                                    "code": "MP"
+                                },
+                                "date": "20171212",
+                                "time": "200000"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

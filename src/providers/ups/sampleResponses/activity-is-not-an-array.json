@@ -1,0 +1,38 @@
+{
+    "trackResponse": {
+        "shipment": {
+            "package": {
+                "trackingNumber": "1Z862W901301234567",
+                "service": {
+                    "code": "03",
+                    "description": "UPS Ground"
+                },
+                "weight": {
+                    "unitOfMeasurement": "LBS",
+                    "weight": "1.00"
+                },
+                "deliveryDate": {
+                    "type": "DEL",
+                    "date": "20201223"
+                },
+                "activity": {
+                    "location": {
+                        "address": {
+                            "city": "AUSTIN",
+                            "stateProvince": "TX",
+                            "postalCode": "78701",
+                            "country": "US"
+                        }
+                    },
+                    "status": {
+                        "type": "D",
+                        "description": "Delivered",
+                        "code": "FS"
+                    },
+                    "date": "20201223",
+                    "time": "180000"
+                }
+            }
+        }
+    }
+}

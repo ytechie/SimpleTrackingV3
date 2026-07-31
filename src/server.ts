@@ -17,13 +17,16 @@ if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config({path: path.resolve(__dirname, '..', '.env')});
 }
 
-if(!process.env.UPS_KEY) {
+if(!process.env.UPS_CLIENT_ID) {
     console.error('Settings not loaded, check your environment');
 }
 
-const appInsights = require('applicationinsights');
-appInsights.setup('1ecc74c4-f098-440d-af50-395d91273245').start();
-appInsights.start();
+const appInsightsKey = process.env.APPINSIGHTS_INSTRUMENTATIONKEY || '1ecc74c4-f098-440d-af50-395d91273245';
+if (process.env.NODE_ENV === 'production' && process.env.DISABLE_APPINSIGHTS !== 'true') {
+    const appInsights = require('applicationinsights');
+    appInsights.setup(appInsightsKey).start();
+    appInsights.start();
+}
 
 //Needed for a form post to work
 var bodyParser = require('body-parser');

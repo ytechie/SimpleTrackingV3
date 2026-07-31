@@ -1,154 +1,177 @@
-var request = require('request');
-var fs = require('fs');
-var path = require('path');
-import * as _ from "lodash";
+import * as request from 'request-promise';
+import * as _ from 'lodash';
+import * as moment from 'moment';
 
-import { TrackingData } from "../TrackingData";
-import { ActivityData } from "../ActivityData";
+import { TrackingData } from '../TrackingData';
+import { ActivityData } from '../ActivityData';
 import { ITracker } from '../ITracker';
+import { OAuthTokenProvider } from '../OAuthTokenProvider';
 
-import * as moment from 'moment'
-
+// UPS Tracking API (REST/JSON + OAuth 2.0).
+// Docs: https://developer.ups.com/api/reference?loc=en_US#tag/Tracking
 export class UpsTracker implements ITracker {
-    UPS_DEV_URL = 'https://onlinetools.ups.com/rest/Track';
+    UPS_BASE_URL = 'https://onlinetools.ups.com';
 
-    username: string;
-    password: string;
-    apikey: string;
+    tokenProvider: OAuthTokenProvider;
 
-    constructor(username:string, password:string, apiKey:string) {
-        this.username = username;
-        this.password = password;
-        this.apikey = apiKey;
-    }
-
-    async Track(trackingNumber:string) {
-        return new Promise<TrackingData>((resolve, reject) => {
-            if(!UpsTracker.IsValidTrackingNumber(trackingNumber)) {
-                console.log('Not a USPS Tracking Number');
-                resolve(null)
-                return;
-            }
-
-            let req = this.buildRequest(trackingNumber);
-
-            request.post(this.UPS_DEV_URL, {json: true, body: req}, (error, response, body) => {
-                try {
-                    if(error) {
-                        console.log("Error in UPS tracker request: " + error);
-                        reject("Error in UPS tracker request: " + error);
-                    }
-                    let td = UpsTracker.StandardizeTrackingData(body);
-                    td.lastHardFetch = new Date();
-                    resolve(td);
-                } catch(err) {
-                    reject(err);
-                }
-            });
-        });
-    }
-
-    public static IsValidTrackingNumber(trackingNumber:string) {
-        return trackingNumber.length === 18
-            && trackingNumber.startsWith("1Z");
-    }
-
-    private buildRequest(trackingNumber:string) {
-        return {
-            "UPSSecurity": {
-                "UsernameToken": {
-                    "Username": this.username,
-                    "Password": this.password
-                },
-                "ServiceAccessToken": {
-                    "AccessLicenseNumber": this.apikey
-                }
-            },
-            "TrackRequest": {
-                "Request": {
-                    "RequestOption": "1", "TransactionReference": {
-                        "CustomerContext": "Your Test Case Summary Description"
-                    }
-                },
-                "InquiryNumber": trackingNumber
-            }
+    constructor(clientId: string, clientSecret: string, baseUrl?: string) {
+        if (baseUrl) {
+            this.UPS_BASE_URL = baseUrl;
         }
+        // UPS expects the client credentials as an HTTP Basic auth header.
+        this.tokenProvider = new OAuthTokenProvider(
+            this.UPS_BASE_URL + '/security/v1/oauth/token',
+            clientId,
+            clientSecret,
+            { useBasicAuth: true }
+        );
     }
 
-    public static StandardizeTrackingData(upsNativeTrackingData:any) {
-        if(upsNativeTrackingData.Fault) {
+    async Track(trackingNumber: string) {
+        if (!UpsTracker.IsValidTrackingNumber(trackingNumber)) {
+            console.log('Not a UPS Tracking Number');
+            return null;
+        }
+
+        const token = await this.tokenProvider.getToken();
+
+        let body;
+        try {
+            body = await request.get(
+                this.UPS_BASE_URL + '/api/track/v1/details/' + encodeURIComponent(trackingNumber),
+                {
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'transId': Date.now().toString(),
+                        'transactionSrc': 'simpletracking',
+                        'Content-Type': 'application/json'
+                    },
+                    qs: { locale: 'en_US' },
+                    json: true
+                }
+            );
+        } catch (err) {
+            // UPS returns a 404 with an errors payload when it has no data for the package.
+            if (err && err.statusCode === 404) {
+                console.log('UPS says they have no data for the package');
+                return null;
+            }
+            throw err;
+        }
+
+        const td = UpsTracker.StandardizeTrackingData(body, trackingNumber);
+        if (td) {
+            td.lastHardFetch = new Date();
+        }
+        return td;
+    }
+
+    public static IsValidTrackingNumber(trackingNumber: string) {
+        return trackingNumber.length === 18
+            && trackingNumber.startsWith('1Z');
+    }
+
+    public static StandardizeTrackingData(upsNativeTrackingData: any, inquiryNumber?: string) {
+        if (!upsNativeTrackingData || !upsNativeTrackingData.trackResponse) {
             console.log('UPS says they have no data for the package');
             return null;
         }
 
-        let td = new TrackingData();
-
-        //td.soureData = upsNativeTrackingData;
-        td.trackerName = "UPS";
-        td.usageRequirements = 'NOTICE: The UPS package tracking systems accessed via this service (the \"Tracking Systems\") and tracking information' +
-        ' obtained through this service (the "Information") are the private property of UPS. UPS authorizes you to use the Tracking Systems solely to track shipments' +
-        ' tendered by or for you to UPS for delivery and for no other purpose. Without limitation, you are not authorized to make the Information available on any web' +
-        ' site or otherwise reproduce, distribute, copy, store, use or sell the Information for commercial gain without the express written consent of UPS. This is a' +
-        ' personal service, thus your right to use the Tracking Systems or Information is non-assignable. Any access or use that is inconsistent with these terms is' +
-        ' unauthorized and strictly prohibited.';
-
-        let p = upsNativeTrackingData.TrackResponse.Shipment.Package;
-
-        td.trackingNumber = upsNativeTrackingData.TrackResponse.Shipment.InquiryNumber.Value;
-
-        //TODO: FIND THE RIGHT PACKAGE!!!
-        if(p instanceof Array) {
-            p = _.find(p, (x) => { return x.TrackingNumber === td.trackingNumber });
-            //p = p[0]; //very bad for multi-package shipment
+        // An error response carries a `response.errors` array instead of trackResponse.
+        if (upsNativeTrackingData.response && upsNativeTrackingData.response.errors) {
+            console.log('UPS says they have no data for the package');
+            return null;
         }
 
-        
+        let shipment = upsNativeTrackingData.trackResponse.shipment;
+        if (!(shipment instanceof Array)) {
+            shipment = [shipment];
+        }
+        if (shipment.length === 0 || !shipment[0]) {
+            return null;
+        }
 
-        if(upsNativeTrackingData.TrackResponse.Shipment.DeliveryDetail
-            && upsNativeTrackingData.TrackResponse.Shipment.DeliveryDetail.Type.Code === "03") {
-                let upsDateString = upsNativeTrackingData.TrackResponse.Shipment.DeliveryDetail.Date;
-                let year = parseInt(upsDateString.substring(0,4));
-                let month = parseInt(upsDateString.substring(4,6));
-                let day = parseInt(upsDateString.substring(6,8));
+        let packages = shipment[0].package;
+        if (!(packages instanceof Array)) {
+            packages = [packages];
+        }
+        if (packages.length === 0 || !packages[0]) {
+            return null;
+        }
 
-                td.estimatedDelivery = new Date(Date.UTC(year, month-1, day));
+        // For multi-package shipments, select the package matching the inquiry number.
+        let p = packages[0];
+        if (inquiryNumber && packages.length > 1) {
+            const match = _.find(packages, (x: any) => x.trackingNumber === inquiryNumber);
+            if (match) {
+                p = match;
+            }
+        }
+
+        const td = new TrackingData();
+        td.trackerName = 'UPS';
+        td.usageRequirements = 'NOTICE: The UPS package tracking systems accessed via this service (the \"Tracking Systems\") and tracking information' +
+            ' obtained through this service (the "Information") are the private property of UPS. UPS authorizes you to use the Tracking Systems solely to track shipments' +
+            ' tendered by or for you to UPS for delivery and for no other purpose. Without limitation, you are not authorized to make the Information available on any web' +
+            ' site or otherwise reproduce, distribute, copy, store, use or sell the Information for commercial gain without the express written consent of UPS. This is a' +
+            ' personal service, thus your right to use the Tracking Systems or Information is non-assignable. Any access or use that is inconsistent with these terms is' +
+            ' unauthorized and strictly prohibited.';
+
+        td.trackingNumber = p.trackingNumber;
+
+        if (p.service && p.service.description) {
+            td.serviceType = p.service.description;
+        }
+
+        if (p.weight && p.weight.weight) {
+            td.weight = p.weight.weight + (p.weight.unitOfMeasurement || '');
+        }
+
+        // deliveryDate is an array of typed dates (DEL = delivered, RDD = rescheduled, etc.)
+        let deliveryDates = p.deliveryDate;
+        if (deliveryDates && !(deliveryDates instanceof Array)) {
+            deliveryDates = [deliveryDates];
+        }
+        if (deliveryDates instanceof Array && deliveryDates.length > 0) {
+            const delivery = _.find(deliveryDates, (d: any) => d.type === 'DEL') || deliveryDates[0];
+            if (delivery && delivery.date) {
+                // Date format: "20171214"
+                const year = parseInt(delivery.date.substring(0, 4), 10);
+                const month = parseInt(delivery.date.substring(4, 6), 10);
+                const day = parseInt(delivery.date.substring(6, 8), 10);
+
+                td.estimatedDelivery = new Date(Date.UTC(year, month - 1, day));
                 td.estimatedDeliveryFriendly = moment(td.estimatedDelivery).calendar();
             }
+        }
 
-        //td.estimatedDelivery =
-        td.serviceType = upsNativeTrackingData.TrackResponse.Shipment.Service.Description;
-        td.weight = p.PackageWeight.Weight + p.PackageWeight.UnitOfMeasurement.Code;
-
-        let activity = p.Activity;
         td.activity = new Array<ActivityData>();
-        if(activity) {
-            if(!(activity instanceof Array)) {
-                let activityArr = [];
-                activityArr.push(activity);
-                activity = activityArr;
+        let activity = p.activity;
+        if (activity) {
+            if (!(activity instanceof Array)) {
+                activity = [activity];
             }
 
-            activity.forEach(a => {
-                let newActivity = new ActivityData();
-                if(a.ActivityLocation && a.ActivityLocation.Address) {
-                    let address = a.ActivityLocation.Address;
+            activity.forEach((a) => {
+                const newActivity = new ActivityData();
+                if (a.location && a.location.address) {
+                    const address = a.location.address;
 
-                    newActivity.location.city = address.City;
-                    newActivity.location.state = address.StateProvinceCode;
-                    newActivity.location.zip = address.PostalCode;
-                    newActivity.location.countryCode = address.CountryCode;
+                    newActivity.location.city = address.city;
+                    newActivity.location.state = address.stateProvince;
+                    newActivity.location.zip = address.postalCode;
+                    newActivity.location.countryCode = address.country;
                 }
-                
-                newActivity.shortDescription = a.Status && a.Status.Description;
-                if(a.Time && a.Date) {
-                    //Date format: "20171214"
-                    //Time format: "151000"
-                    let year = parseInt(a.Date.substring(0,4));
-                    let month = parseInt(a.Date.substring(4,6)) - 1; //month is zero based
-                    let day = parseInt(a.Date.substring(6,8));
-                    let hour = parseInt(a.Time.substring(0,2));
-                    let minute = parseInt(a.Time.substring(2,4));
-                    let second = parseInt(a.Time.substring(4,6));
+
+                newActivity.shortDescription = a.status && a.status.description;
+                if (a.time && a.date) {
+                    // Date format: "20171214", Time format: "151000"
+                    const year = parseInt(a.date.substring(0, 4), 10);
+                    const month = parseInt(a.date.substring(4, 6), 10) - 1; //month is zero based
+                    const day = parseInt(a.date.substring(6, 8), 10);
+                    const hour = parseInt(a.time.substring(0, 2), 10);
+                    const minute = parseInt(a.time.substring(2, 4), 10);
+                    const second = parseInt(a.time.substring(4, 6), 10);
 
                     newActivity.timestamp = new Date(year, month, day, hour, minute, second);
                 }

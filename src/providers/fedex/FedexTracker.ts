@@ -1,122 +1,131 @@
-import * as fs from 'fs';
-import * as path from 'path';
 import * as request from 'request-promise';
-import * as xml2js from 'xml2js-es6-promise';
 import { TrackingData } from '../TrackingData';
 import { ITracker } from '../ITracker';
 import { ActivityData } from '../ActivityData';
+import { OAuthTokenProvider } from '../OAuthTokenProvider';
 
+// FedEx Track API v1 (REST/JSON + OAuth 2.0).
+// Docs: https://developer.fedex.com/api/en-us/catalog/track/v1/docs.html
 export class FedexTracker implements ITracker {
-    FEDEX_API_URL = "https://wsbeta.fedex.com:443/web-services/track";
+    // Production host. The sandbox host is https://apissandbox.fedex.com
+    FEDEX_BASE_URL = 'https://apis.fedex.com';
 
-    trackRequestTemplate:string = '';
+    tokenProvider: OAuthTokenProvider;
 
-    key:string;
-    password:string;
-    accountNumber:string;
-    meterNumber:string;
-
-    constructor(key:string, password:string, accountNumber:string, meterNumber:string) {
-        this.key = key;
-        this.password = password;
-        this.accountNumber = accountNumber;
-        this.meterNumber = meterNumber;
-    }
-
-    private buildRequest(trackingNumber:string) {
-        if(this.trackRequestTemplate.length === 0) {
-            let templatePath = path.join(__dirname, 'RequestTemplate.xml');
-            this.trackRequestTemplate = fs.readFileSync(templatePath).toString();
+    constructor(clientId: string, clientSecret: string, baseUrl?: string) {
+        if (baseUrl) {
+            this.FEDEX_BASE_URL = baseUrl;
         }
-
-        return this.trackRequestTemplate 
-            .replace('{key}', this.key)
-            .replace('{password}', this.password)
-            .replace('{accountNumber}', this.accountNumber)
-            .replace('{meterNumber}', this.meterNumber)
-            .replace('{trackingNumber}', trackingNumber);
+        this.tokenProvider = new OAuthTokenProvider(
+            this.FEDEX_BASE_URL + '/oauth/token',
+            clientId,
+            clientSecret
+        );
     }
 
-    async Track(trackingNumber:string) {
-        if(!FedexTracker.IsValidTrackingNumber(trackingNumber)) {
+    async Track(trackingNumber: string) {
+        if (!FedexTracker.IsValidTrackingNumber(trackingNumber)) {
             console.log('Not a FedEx Tracking Number');
             return null;
         }
 
-        let req = this.buildRequest(trackingNumber);
+        const token = await this.tokenProvider.getToken();
 
-        let options = {
-                body:req,
-                headers:
+        const body = await request.post(this.FEDEX_BASE_URL + '/track/v1/trackingnumbers', {
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'X-locale': 'en_US',
+                'Content-Type': 'application/json'
+            },
+            body: {
+                includeDetailedScans: true,
+                trackingInfo: [
                     {
-                        //'Host': 'wsbeta.fedex.com:443',
+                        trackingNumberInfo: {
+                            trackingNumber: trackingNumber
+                        }
                     }
-        };
+                ]
+            },
+            json: true
+        });
 
-        let body = await request.post(this.FEDEX_API_URL, options);
-        let json = await xml2js(body, {explicitArray: false});
-
-        //Unwrap the SOAP envelope
-        json = json['SOAP-ENV:Envelope']['SOAP-ENV:Body'];
-
-        let td = FedexTracker.ConvertJsonToStandardFormat(json);
-        td.lastHardFetch = new Date();
+        const td = FedexTracker.ConvertJsonToStandardFormat(body && body.output);
+        if (td) {
+            td.lastHardFetch = new Date();
+        }
         return td;
     }
 
-    public static IsValidTrackingNumber(trackingNumber:string) {
+    public static IsValidTrackingNumber(trackingNumber: string) {
         return trackingNumber.length === 12
             || trackingNumber.length === 15
             || trackingNumber.length === 22;
     }
 
-    public static ConvertJsonToStandardFormat(results:any):TrackingData {
-        if(results["v3:TrackReply"] && results["v3:TrackReply"]["v3:HighestSeverity"] === "ERROR") {
-            console.error('Got a non-expected error from fedex');
+    // Accepts the `output` object from the Track API response.
+    public static ConvertJsonToStandardFormat(output: any): TrackingData {
+        if (!output || !(output.completeTrackResults instanceof Array) || output.completeTrackResults.length === 0) {
+            console.error('Got a non-expected response from FedEx');
             return null;
         }
 
-        //Check for invalid tracking number code
-        if(results.TrackReply.CompletedTrackDetails.TrackDetails.Notification.Code === "9040") {
+        const completeResult = output.completeTrackResults[0];
+        if (!completeResult || !(completeResult.trackResults instanceof Array) || completeResult.trackResults.length === 0) {
+            return null;
+        }
+
+        const result = completeResult.trackResults[0];
+
+        // No data / invalid tracking number is reported as an error object on the result.
+        if (!result || result.error) {
             console.log('Fedex says they have no data for the package');
             return null;
         }
 
-        let td = new TrackingData();
-        td.trackerName = "FedEx";
+        const td = new TrackingData();
+        td.trackerName = 'FedEx';
         td.activity = new Array<ActivityData>();
-        let a = results.TrackReply.CompletedTrackDetails.TrackDetails;
-        let trackDetail = results.TrackReply.CompletedTrackDetails.TrackDetails;
 
-        td.trackingNumber = trackDetail.TrackingNumber;
-        if(trackDetail.PackageWeight) {
-            td.weight = trackDetail.PackageWeight.Value + trackDetail.PackageWeight.Units;
+        td.trackingNumber = result.trackingNumberInfo && result.trackingNumberInfo.trackingNumber;
+
+        if (result.serviceDetail && result.serviceDetail.description) {
+            td.serviceType = result.serviceDetail.description;
         }
-        if(trackDetail.ActualDeliveryTimestamp) {
-            td.estimatedDelivery = new Date(Date.parse(trackDetail.ActualDeliveryTimestamp));
+
+        const weightAndDimensions = result.packageDetails && result.packageDetails.weightAndDimensions;
+        if (weightAndDimensions && weightAndDimensions.weight instanceof Array && weightAndDimensions.weight.length > 0) {
+            const w = weightAndDimensions.weight[0];
+            td.weight = w.value + w.unit;
         }
-        if(trackDetail.Events instanceof Array) {
-            trackDetail.Events.forEach((event) => {
-                var ad = new ActivityData();
-                ad.timestamp = new Date(Date.parse(event.Timestamp));
 
-                ad.location.city = event.Address.City;
-                ad.location.state = event.Address.StateOrProvinceCode;
-                ad.location.zip = event.Address.PostalCode;
-                ad.location.countryCode = event.Address.CountryCode;
+        if (result.dateAndTimes instanceof Array) {
+            const delivery = result.dateAndTimes.find((d) =>
+                d.type === 'ACTUAL_DELIVERY' || d.type === 'ESTIMATED_DELIVERY');
+            if (delivery && delivery.dateTime) {
+                td.estimatedDelivery = new Date(Date.parse(delivery.dateTime));
+            }
+        }
 
-                ad.shortDescription = event.EventDescription;
+        if (result.scanEvents instanceof Array) {
+            result.scanEvents.forEach((event) => {
+                const ad = new ActivityData();
+
+                if (event.date) {
+                    ad.timestamp = new Date(Date.parse(event.date));
+                }
+
+                const loc = event.scanLocation;
+                if (loc) {
+                    ad.location.city = loc.city;
+                    ad.location.state = loc.stateOrProvinceCode;
+                    ad.location.zip = loc.postalCode;
+                    ad.location.countryCode = loc.countryCode;
+                }
+
+                ad.shortDescription = event.eventDescription;
                 td.activity.push(ad);
             });
-        } else {
-            var ad = new ActivityData();
-            ad.timestamp = new Date(Date.parse(trackDetail.Events.Timestamp));
-            ad.location.city = trackDetail.Events.Address.City;
-            ad.location.state = trackDetail.Events.Address.StateOrProvinceCode;
-            ad.location.zip = trackDetail.Events.Address.PostalCode;
-            ad.location.countryCode = trackDetail.Events.Address.CountryCode;
-
-            td.activity.push(ad);
         }
 
         td.usageRequirements = "NOTICE: FedEx authorizes you to use FedEx tracking"

@@ -1,46 +1,67 @@
 import * as request from 'request-promise';
-import * as xml2js from 'xml2js-es6-promise';
 import { TrackingData } from '../TrackingData';
 import { ITracker } from '../ITracker';
 import { ActivityData } from '../ActivityData';
-import { Location } from '../../Location';
+import { OAuthTokenProvider } from '../OAuthTokenProvider';
 
+// USPS Tracking API v3 (REST/JSON + OAuth 2.0).
+// Docs: https://developer.usps.com/trackingv3
+// Replaces the retired Web Tools XML API (ShippingAPI.dll).
 export class UspsTracker implements ITracker {
-    requestUrl:string = 'https://secure.shippingapis.com/ShippingAPI.dll?'
-        + 'API=TrackV2&XML=<TrackFieldRequest PASSWORD="{password}" USERID="{userId}">'
-        + '<Revision>1</Revision><ClientIp>127.0.0.1</ClientIp><SourceId>XYZCasdfasdf</SourceId>'
-        + '<TrackID ID="{trackingNumber}" /></TrackFieldRequest>';
+    USPS_BASE_URL = 'https://apis.usps.com';
 
-    userId: string;
-    password:string;
+    tokenProvider: OAuthTokenProvider;
 
-    constructor(userId:string, password:string) {
-        this.userId = userId;
-        this.password = password;
+    constructor(clientId: string, clientSecret: string, baseUrl?: string) {
+        if (baseUrl) {
+            this.USPS_BASE_URL = baseUrl;
+        }
+        this.tokenProvider = new OAuthTokenProvider(
+            this.USPS_BASE_URL + '/oauth2/v3/token',
+            clientId,
+            clientSecret,
+            { json: true, extraParams: { scope: 'tracking' } }
+        );
     }
 
-    private buildRequest(trackingNumber:string) {
-        return this.requestUrl
-            .replace('{userId}', this.userId)
-            .replace('{password}', this.password)
-            .replace('{trackingNumber}', trackingNumber);
-    }
+    async Track(trackingNumber: string) {
+        if (!UspsTracker.IsValidTrackingNumber(trackingNumber)) {
+            console.log('Not a USPS Tracking Number');
+            return null;
+        }
 
-    async Track(trackingNumber:string) {
-            if(!UspsTracker.IsValidTrackingNumber(trackingNumber)) {
-                console.log('Not a USPS Tracking Number');
+        const token = await this.tokenProvider.getToken();
+
+        let body;
+        try {
+            body = await request.get(
+                this.USPS_BASE_URL + '/tracking/v3/tracking/' + encodeURIComponent(trackingNumber),
+                {
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Accept': 'application/json'
+                    },
+                    qs: { expand: 'DETAIL' },
+                    json: true
+                }
+            );
+        } catch (err) {
+            // USPS returns a 404 when it has no data for the package.
+            if (err && err.statusCode === 404) {
+                console.log('USPS says they have no data for the package');
                 return null;
             }
+            throw err;
+        }
 
-            let reqUrl = this.buildRequest(trackingNumber);
-
-            let body = await request.get(reqUrl);
-            let td = await UspsTracker.ConvertResponseToTrackData(body);
+        const td = await UspsTracker.ConvertResponseToTrackData(body);
+        if (td) {
             td.lastHardFetch = new Date();
-            return td;
+        }
+        return td;
     }
 
-    public static IsValidTrackingNumber(trackingNumber:string) {
+    public static IsValidTrackingNumber(trackingNumber: string) {
         //valid: Number types: https://tools.usps.com/go/TrackConfirmAction_input
 
         return trackingNumber.length === 30
@@ -51,48 +72,58 @@ export class UspsTracker implements ITracker {
             || trackingNumber.length === 10;
     }
 
-    public static async ConvertResponseToTrackData(response:any) {
-        let json = await xml2js(response, {explicitArray: false});
-        let td = UspsTracker.ParseJsonToTrackData(json)
-        return td;
+    // Accepts either a parsed response object or a JSON string.
+    public static async ConvertResponseToTrackData(response: any) {
+        const json = (typeof response === 'string') ? JSON.parse(response) : response;
+        return UspsTracker.ParseJsonToTrackData(json);
     }
 
-    static ParseJsonToTrackData(json:any):TrackingData {
-        let td = new TrackingData();
-        td.trackerName = "USPS";
+    static ParseJsonToTrackData(json: any): TrackingData {
+        const td = new TrackingData();
+        td.trackerName = 'USPS';
         td.activity = new Array<ActivityData>();
 
-        td.trackingNumber = json.TrackResponse.TrackInfo['$'].ID;
-
-        let detail = json.TrackResponse.TrackInfo.TrackDetail;
-
-        if(!(detail instanceof Array)) {
-            detail = [];
-            detail.push(json.TrackResponse.TrackInfo.TrackDetail);
+        if (!json) {
+            return null;
         }
 
-        detail.unshift(json.TrackResponse.TrackInfo.TrackSummary);
-        for (var event of detail) {
-            let ad = new ActivityData();
+        td.trackingNumber = json.trackingNumber;
 
-            const cleanLoc = UspsTracker.cleanCityName(event.EventCity as string);
-            if(cleanLoc) {
+        if (json.mailClass) {
+            td.serviceType = json.mailClass;
+        }
+
+        if (json.expectedDeliveryTimeStamp) {
+            td.estimatedDelivery = new Date(Date.parse(json.expectedDeliveryTimeStamp));
+        }
+
+        // trackingEvents are returned in reverse chronological order (most recent first).
+        const events = (json.trackingEvents instanceof Array) ? json.trackingEvents : [];
+        for (const event of events) {
+            const ad = new ActivityData();
+
+            const cleanLoc = UspsTracker.cleanCityName(event.eventCity);
+            if (cleanLoc) {
                 ad.location.city = cleanLoc.city;
                 ad.location.state = cleanLoc.state;
             } else {
-                ad.location.city = event.EventCity;
-                ad.location.state = event.EventState;
+                ad.location.city = event.eventCity;
+                ad.location.state = event.eventState;
             }
 
-            ad.location.zip = event.EventZIPCode;
-            ad.location.countryCode = event.EventCountry;
+            ad.location.zip = event.eventZIP;
+            ad.location.countryCode = event.eventCountry;
 
-            ad.timestamp = new Date(event.EventDate + ' ' + event.EventTime);
+            // Prefer the explicit GMT timestamp when present; it is timezone-unambiguous.
+            const timestamp = event.GMTTimestamp || event.eventTimestamp;
+            if (timestamp) {
+                ad.timestamp = new Date(Date.parse(timestamp));
+            }
 
-            ad.shortDescription = event.Event;
+            ad.shortDescription = event.eventType;
 
             td.activity.push(ad);
-        };
+        }
 
         td.usageRequirements = 'NOTICE: U.S.P.S. authorizes you to use U.S.P.S. tracking systems'
             + ' solely to track shipments tendered by or for you to U.S.P.S. for delivery and'
@@ -102,18 +133,22 @@ export class UspsTracker implements ITracker {
         return td;
     }
 
-    static cleanCityName(cityStr:string) {
+    static cleanCityName(cityStr: string) {
+        if (!cityStr) {
+            return null;
+        }
+
         //City names can sometimes have a description in them like:
         // OAK CREEK WI DISTRIBUTION CENTER
         let dcIndex = cityStr.indexOf('NETWORK DISTRIBUTION');
-        if(dcIndex === -1) {
+        if (dcIndex === -1) {
             dcIndex = cityStr.indexOf('DISTRIBUTION');
         }
-        if(dcIndex === -1) {
+        if (dcIndex === -1) {
             dcIndex = cityStr.indexOf('PROCESSING CENTER');
         }
 
-        if(dcIndex > 0) {
+        if (dcIndex > 0) {
             return {
                 state: cityStr.substr(dcIndex - 3, 2),
                 city: cityStr.substring(0, dcIndex - 4)

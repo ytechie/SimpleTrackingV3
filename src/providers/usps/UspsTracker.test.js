@@ -10,7 +10,7 @@ describe('USPS Sample Responses', function () {
     it('Real Data 1', async () => {
         let sample = loadSample('detailed1');
         let td = await UspsTracker.ConvertResponseToTrackData(sample);
-        
+
         td.should.not.be.null;
     });
 });
@@ -19,20 +19,20 @@ describe('Activity Parsing', () => {
     it('Parse Date/time', async () => {
         let sample = loadSample('detailed1');
         let td = await UspsTracker.ConvertResponseToTrackData(sample);
-        
+
         td.activity[0].timestamp.toISOString().should.equal('2020-12-23T19:19:00.000Z');
     });
     it('Parse event description', async () => {
         let sample = loadSample('detailed1');
         let td = await UspsTracker.ConvertResponseToTrackData(sample);
-        
+
         td.activity[0].shortDescription.should.equal('Arrived at Post Office');
     });
 
     it('Parse DC Annex in city name', async () => {
         let sample = loadSample('dc-in-city');
         let td = await UspsTracker.ConvertResponseToTrackData(sample);
-        
+
         td.activity[4].location.city.should.equal('OAK CREEK');
         td.activity[4].location.state.should.equal('WI');
     });
@@ -68,20 +68,19 @@ describe('Clean City Name', () => {
     });
     it('LOS ANGELES CA NETWORK DISTRIBUTION CENTER', async () => {
         let result = UspsTracker.cleanCityName('LOS ANGELES CA NETWORK DISTRIBUTION CENTER');
- 
+
         result.city.should.equal('LOS ANGELES');
         result.state.should.equal('CA');
      });
      it('MILWAUKEE WI PROCESSING CENTER', async () => {
         let result = UspsTracker.cleanCityName('MILWAUKEE WI PROCESSING CENTER');
- 
+
         result.city.should.equal('MILWAUKEE');
         result.state.should.equal('WI');
      });
 });
 
 function loadSample(name) {
-    let contents = fs.readFileSync(path.resolve(__dirname, 'sampleResponses/' + name + '.xml'));
-
-    return contents;
+    let contents = fs.readFileSync(path.resolve(__dirname, 'sampleResponses/' + name + '.json'));
+    return JSON.parse(contents.toString());
 }

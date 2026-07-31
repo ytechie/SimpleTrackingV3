@@ -1,0 +1,114 @@
+{
+    "trackResponse": {
+        "shipment": [
+            {
+                "package": [
+                    {
+                        "trackingNumber": "1ZR8Y7710355363026",
+                        "service": {
+                            "code": "03",
+                            "description": "UPS Ground"
+                        },
+                        "weight": {
+                            "unitOfMeasurement": "LBS",
+                            "weight": "2.00"
+                        },
+                        "deliveryDate": [
+                            {
+                                "type": "DEL",
+                                "date": "20180207"
+                            }
+                        ],
+                        "activity": [
+                            {
+                                "location": {
+                                    "address": {
+                                        "city": "ORLANDO",
+                                        "stateProvince": "FL",
+                                        "postalCode": "32801",
+                                        "country": "US"
+                                    }
+                                },
+                                "status": {
+                                    "type": "D",
+                                    "description": "Delivered",
+                                    "code": "FS"
+                                },
+                                "date": "20180207",
+                                "time": "112300"
+                            },
+                            {
+                                "location": {
+                                    "address": {
+                                        "city": "ORLANDO",
+                                        "stateProvince": "FL",
+                                        "postalCode": "32809",
+                                        "country": "US"
+                                    }
+                                },
+                                "status": {
+                                    "type": "I",
+                                    "description": "Out For Delivery Today",
+                                    "code": "OF"
+                                },
+                                "date": "20180207",
+                                "time": "085500"
+                            },
+                            {
+                                "location": {
+                                    "address": {
+                                        "city": "ORLANDO",
+                                        "stateProvince": "FL",
+                                        "postalCode": "32809",
+                                        "country": "US"
+                                    }
+                                },
+                                "status": {
+                                    "type": "I",
+                                    "description": "Destination Scan",
+                                    "code": "DS"
+                                },
+                                "date": "20180207",
+                                "time": "061500"
+                            },
+                            {
+                                "location": {
+                                    "address": {
+                                        "city": "JACKSONVILLE",
+                                        "stateProvince": "FL",
+                                        "postalCode": "32218",
+                                        "country": "US"
+                                    }
+                                },
+                                "status": {
+                                    "type": "I",
+                                    "description": "Departure Scan",
+                                    "code": "DP"
+                                },
+                                "date": "20180206",
+                                "time": "224500"
+                            },
+                            {
+                                "location": {
+                                    "address": {
+                                        "city": "JACKSONVILLE",
+                                        "stateProvince": "FL",
+                                        "postalCode": "32218",
+                                        "country": "US"
+                                    }
+                                },
+                                "status": {
+                                    "type": "I",
+                                    "description": "Origin Scan",
+                                    "code": "OR"
+                                },
+                                "date": "20180206",
+                                "time": "180000"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

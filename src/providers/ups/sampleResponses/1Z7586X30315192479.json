@@ -1,0 +1,76 @@
+{
+    "trackResponse": {
+        "shipment": [
+            {
+                "package": [
+                    {
+                        "trackingNumber": "1Z7586X30315190000",
+                        "service": {
+                            "code": "03",
+                            "description": "UPS Ground"
+                        },
+                        "weight": {
+                            "unitOfMeasurement": "LBS",
+                            "weight": "8.00"
+                        },
+                        "activity": [
+                            {
+                                "location": {
+                                    "address": {
+                                        "city": "CHICAGO",
+                                        "stateProvince": "IL",
+                                        "postalCode": "60601",
+                                        "country": "US"
+                                    }
+                                },
+                                "status": {
+                                    "type": "I",
+                                    "description": "Departure Scan",
+                                    "code": "DP"
+                                },
+                                "date": "20210110",
+                                "time": "120000"
+                            }
+                        ]
+                    },
+                    {
+                        "trackingNumber": "1Z7586X30315192479",
+                        "service": {
+                            "code": "03",
+                            "description": "UPS Ground"
+                        },
+                        "weight": {
+                            "unitOfMeasurement": "LBS",
+                            "weight": "12.00"
+                        },
+                        "deliveryDate": [
+                            {
+                                "type": "DEL",
+                                "date": "20210112"
+                            }
+                        ],
+                        "activity": [
+                            {
+                                "location": {
+                                    "address": {
+                                        "city": "DENVER",
+                                        "stateProvince": "CO",
+                                        "postalCode": "80202",
+                                        "country": "US"
+                                    }
+                                },
+                                "status": {
+                                    "type": "D",
+                                    "description": "Delivered",
+                                    "code": "FS"
+                                },
+                                "date": "20210112",
+                                "time": "143000"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

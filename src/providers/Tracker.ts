@@ -24,39 +24,33 @@ export class Tracker implements ITracker {
         let simTracker = new SimTracker();
         trackers.push(simTracker);
 
-        if(process.env.UPS_USERNAME
-            && process.env.UPS_PASSWORD
-            && process.env.UPS_KEY) {
+        if(process.env.UPS_CLIENT_ID
+            && process.env.UPS_CLIENT_SECRET) {
             let upsTracker = new UpsTracker(
-                process.env.UPS_USERNAME,
-                process.env.UPS_PASSWORD,
-                process.env.UPS_KEY
+                process.env.UPS_CLIENT_ID,
+                process.env.UPS_CLIENT_SECRET
             );
             trackers.push(upsTracker);
         } else {
             console.error('UPS Tracker not loaded due to missing environment variables');
         }
 
-        if(process.env.FEDEX_KEY
-            && process.env.FEDEX_PASSWORD
-            && process.env.FEDEX_ACCOUNT_NUMBER
-            && process.env.FEDEX_METER_NUMBER) {
+        if(process.env.FEDEX_CLIENT_ID
+            && process.env.FEDEX_CLIENT_SECRET) {
             let fedexTracker = new FedexTracker(
-                process.env.FEDEX_KEY,
-                process.env.FEDEX_PASSWORD,
-                process.env.FEDEX_ACCOUNT_NUMBER,
-                process.env.FEDEX_METER_NUMBER
+                process.env.FEDEX_CLIENT_ID,
+                process.env.FEDEX_CLIENT_SECRET
             );
             trackers.push(fedexTracker);
         } else {
             console.error('Fedex Tracker not loaded due to missing environment variables');
         }
 
-        if(process.env.USPS_USERNAME
-            && process.env.USPS_PASSWORD) {
+        if(process.env.USPS_CLIENT_ID
+            && process.env.USPS_CLIENT_SECRET) {
             let uspsTracker = new UspsTracker(
-                process.env.USPS_USERNAME,
-                process.env.USPS_PASSWORD
+                process.env.USPS_CLIENT_ID,
+                process.env.USPS_CLIENT_SECRET
             );
             trackers.push(uspsTracker);
         } else {

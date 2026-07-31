@@ -1,0 +1,81 @@
+{
+    "transactionId": "624deea6-b709-470c-8c39-4b5511281492",
+    "output": {
+        "completeTrackResults": [
+            {
+                "trackingNumber": "462209522802",
+                "trackResults": [
+                    {
+                        "trackingNumberInfo": {
+                            "trackingNumber": "462209522802",
+                            "carrierCode": "FDXG"
+                        },
+                        "latestStatusDetail": {
+                            "code": "DL",
+                            "description": "Delivered"
+                        },
+                        "serviceDetail": {
+                            "type": "FEDEX_GROUND",
+                            "description": "FedEx Ground"
+                        },
+                        "dateAndTimes": [
+                            {
+                                "type": "ACTUAL_DELIVERY",
+                                "dateTime": "2021-03-15T14:32:00-07:00"
+                            },
+                            {
+                                "type": "SHIP",
+                                "dateTime": "2021-03-12T00:00:00-07:00"
+                            }
+                        ],
+                        "packageDetails": {
+                            "weightAndDimensions": {
+                                "weight": [
+                                    {
+                                        "value": "10.0",
+                                        "unit": "LB"
+                                    }
+                                ]
+                            }
+                        },
+                        "scanEvents": [
+                            {
+                                "date": "2021-03-15T14:32:00-07:00",
+                                "eventType": "DL",
+                                "eventDescription": "Delivered",
+                                "scanLocation": {
+                                    "city": "SEATTLE",
+                                    "stateOrProvinceCode": "WA",
+                                    "postalCode": "98101",
+                                    "countryCode": "US"
+                                }
+                            },
+                            {
+                                "date": "2021-03-15T06:10:00-07:00",
+                                "eventType": "OD",
+                                "eventDescription": "On FedEx vehicle for delivery",
+                                "scanLocation": {
+                                    "city": "SEATTLE",
+                                    "stateOrProvinceCode": "WA",
+                                    "postalCode": "98101",
+                                    "countryCode": "US"
+                                }
+                            },
+                            {
+                                "date": "2021-03-14T20:00:00-07:00",
+                                "eventType": "AR",
+                                "eventDescription": "At local FedEx facility",
+                                "scanLocation": {
+                                    "city": "KENT",
+                                    "stateOrProvinceCode": "WA",
+                                    "postalCode": "98032",
+                                    "countryCode": "US"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}
